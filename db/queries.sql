@@ -5,7 +5,7 @@
 CREATE DATABASE InLinked_Db;
 
 CREATE TABLE IF NOT EXISTS `User` (
-    UserId INTEGER NOT NULL,
+    UserId INTEGER NOT NULL AUTO_INCREMENT,
     Username CHAR(20) NOT NULL,
     Headline VARCHAR(255),
     Password VARCHAR(255) NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `Candidate` (
 );
 
 CREATE TABLE IF NOT EXISTS `Job` (
-    JobId INTEGER NOT NULL,
+    JobId INTEGER NOT NULL AUTO_INCREMENT,
     OrganizationId INTERGER NOT NULL,
     JobTitle VARCHAR(50),
     JobDescription TEXT,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `Job` (
 );
 
 CREATE TABLE IF NOT EXISTS `Employee` (
-    EmployeeId INTEGER NOT NULL,
+    EmployeeId INTEGER NOT NULL AUTO_INCREMENT,
     Role VARCHAR(50),
     DateJoined DATE NOT NULL,
     SupervisorId INTEGER,
