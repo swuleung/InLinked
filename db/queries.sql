@@ -9,20 +9,20 @@ CREATE TABLE IF NOT EXISTS `User` (
     Username CHAR(20) NOT NULL,
     Headline VARCHAR(255),
     Password VARCHAR(255) NOT NULL,
-    Email CHAR(60) NOT NULL
-    PRIMARY KEY (UserId
+    Email CHAR(60) NOT NULL,
+    PRIMARY KEY (UserId)
 );
 
 -- Inherits User
-CREATE TABLE IF NOT EXISTS `Organization`
-    OrganizationId INTEGER NOT NULL
-    OrganizationName VARCHAR(90) NOT NULL
-    OrganizationDescription VARCHAR(255) NOT NULL
+CREATE TABLE IF NOT EXISTS `Organization` (
+    OrganizationId INTEGER NOT NULL,
+    OrganizationName VARCHAR(90) NOT NULL,
+    OrganizationDescription VARCHAR(255) NOT NULL,
     CEO VARCHAR(50),
     HeadQuarters VARCHAR(255),
     Industry VARCHAR(50),
     PRIMARY KEY (OrganizationId),
-    FOREIGN KEY OrganizationId REFERENCES User(UserId)
+    FOREIGN KEY (OrganizationId) REFERENCES User(UserId)
 );
 
 -- Inherits User
@@ -31,13 +31,13 @@ CREATE TABLE IF NOT EXISTS `Candidate` (
     FullName VARCHAR(50),
     Skills TEXT,
     Experience TEXT,
-    PRIMARY KEY CandidateId,
-    FOREIGN KEY CandidateId REFERENCES Candidate(UserId)
+    PRIMARY KEY (CandidateId),
+    FOREIGN KEY (CandidateId) REFERENCES User(UserId)
 );
 
 CREATE TABLE IF NOT EXISTS `Job` (
     JobId INTEGER NOT NULL AUTO_INCREMENT,
-    OrganizationId INTERGER NOT NULL,
+    OrganizationId INTEGER NOT NULL,
     JobTitle VARCHAR(50),
     JobDescription TEXT,
     Salary INTEGER,
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `ManageUsers` (
     PRIMARY KEY (EmployeeId, UserId)
 );
 
-CREATE TABLE IF NOT EXISTS 'ManagesJobs' (
+CREATE TABLE IF NOT EXISTS `ManageJobs` (
     EmployeeId INTEGER,
     JobId INTEGER,
     FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId),
@@ -88,9 +88,9 @@ CREATE TABLE IF NOT EXISTS `Applies` (
     JobId INTEGER,
     CandidateId INTEGER,
     DateApplied DATETIME,
+    PRIMARY KEY (JobId, CandidateId),
     FOREIGN KEY (JobId) REFERENCES Job(JobId),
-    FOREIGN KEY (Candidate) REFERENCES Candidate(CandidateId),
-    PRIMARY KEY (JobId, CandidateId)
+    FOREIGN KEY (CandidateId) REFERENCES Candidate(CandidateId)
 );
 
 
