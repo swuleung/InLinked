@@ -1,5 +1,5 @@
-# SJS
-The best movie database system there is.
+# InLinked
+* Get a job or your money back guaranteed.
 
 ## Tech Stack
 * **MySQL** - for database management
