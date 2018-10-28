@@ -100,40 +100,40 @@ DELIMITER //
 CREATE TRIGGER `PositiveSalaryCheck` BEFORE INSERT ON `Job`
 FOR EACH ROW
     BEGIN
-        IF Job.Salary < 0 THEN
-            SIGNAL SQLSTATE '1' SET MESSAGE_TEXT = 'Invalid Salary' -- Stop insertion, throw error
+        IF `NEW`.Salary < 0 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid Salary'; -- Stop insertion, throw error
         END IF;
     END//
 
 CREATE TRIGGER `EmploymentTypeCheck` BEFORE INSERT ON 'Job'
 FOR EACH ROW
     BEGIN
-        IF LOWER(Job.EmploymentType) NOT IN ('full time', 'part time', 'contract', 'temporary', 'volunteer', 'other') THEN
-            SIGNAL SQLSTATE '2' SET MESSAGE_TEXT = 'Invalid Employment Type' -- Stop insertion, throw error
+        IF LOWER(`NEW`.EmploymentType) NOT IN ('full time', 'part time', 'contract', 'temporary', 'volunteer', 'other') THEN
+            SIGNAL SQLSTATE '45001' SET MESSAGE_TEXT = 'Invalid Employment Type'; -- Stop insertion, throw error
         END IF;
     END//
 
 CREATE TRIGGER `ExperienceLevelCheck` BEFORE INSERT ON `Job`
 FOR EACH ROW
     BEGIN
-        IF LOWER(Job.ExperienceLevel) NOT IN ('entry level', 'internship', 'associate', 'senior', 'director', 'executive') THEN
-            SIGNAL SQLSTATE '3' SET MESSAGE_TEXT = 'Invalid Experience Level' -- Stop insertion, throw error
+        IF LOWER(`NEW`.ExperienceLevel) NOT IN ('entry level', 'internship', 'associate', 'senior', 'director', 'executive') THEN
+            SIGNAL SQLSTATE '45002' SET MESSAGE_TEXT = 'Invalid Experience Level'; -- Stop insertion, throw error
         END IF;
     END//
 
 CREATE TRIGGER `JobEducationLevelCheck` BEFORE INSERT ON `Job`
 FOR EACH ROW
     BEGIN
-        IF LOWER(Job.EducationLevel) NOT IN ('high school', 'bachelors', 'masters', 'doctorate', 'postdoc') THEN
-            SIGNAL SQLSTATE '4' SET MESSAGE_TEXT = 'Invalid Job Education Level'
+        IF LOWER(`NEW`.EducationLevel) NOT IN ('high school', 'bachelors', 'masters', 'doctorate', 'postdoc') THEN
+            SIGNAL SQLSTATE '45003' SET MESSAGE_TEXT = 'Invalid Job Education Level';
         END IF;
     END//
 
 CREATE TRIGGER `CandidateEducationLevelCheck` BEFORE INSERT ON `Candidate`
 FOR EACH ROW
     BEGIN
-        IF LOWER(Candidate.EducationLevel) NOT IN ('high school', 'bachelors', 'masters', 'doctorate', 'postdoc') THEN
-          SIGNAL SQLSTATE '5' SET MESSAGE_TEXT = 'Invalid Candidate Education Level'
+        IF LOWER(`NEW`.EducationLevel) NOT IN ('high school', 'bachelors', 'masters', 'doctorate', 'postdoc') THEN
+          SIGNAL SQLSTATE '45004' SET MESSAGE_TEXT = 'Invalid Candidate Education Level';
         END IF;
     END//
 
