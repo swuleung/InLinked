@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `Candidate` (
     FullName VARCHAR(50),
     Skills TEXT,
     Experience TEXT,
+    EducationLevel VARCHAR(30),
     PRIMARY KEY (CandidateId),
     FOREIGN KEY (CandidateId) REFERENCES User(UserId)
 );
