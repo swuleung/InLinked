@@ -105,7 +105,7 @@ FOR EACH ROW
         END IF;
     END//
 
-CREATE TRIGGER `EmploymentTypeCheck` BEFORE INSERT ON 'Job'
+CREATE TRIGGER `EmploymentTypeCheck` BEFORE INSERT ON `Job`
 FOR EACH ROW
     BEGIN
         IF LOWER(`NEW`.EmploymentType) NOT IN ('full time', 'part time', 'contract', 'temporary', 'volunteer', 'other') THEN
