@@ -9,9 +9,18 @@ VALUES (1, 'Google', 'Best Company Ever', 'Sundar Pichai', 'Mountain View, CA', 
 
 /*
     TESTING TRIGGER FOR USER/ORGANIZATION
+    INVALID
 */
 INSERT INTO Job (EnterpriseId, JobTitle, JobDescription, Salary, EmploymentType, ExperienceLevel, EducationLevel, City, Province, Country)
 VALUES (1, 'Software Engineer', 'Code and shit', -1, 'Full Time', 'Entry Level', 'high school', 'New York', 'New York', 'United States');
+
+
+/*
+    TESTING TRIGGER FOR EMPLOYMENT
+    INVALID
+*/
+INSERT INTO Job (EnterpriseId, JobTitle, JobDescription, Salary, EmploymentType, ExperienceLevel, EducationLevel, City, Province, Country)
+VALUES (1, 'Software Engineer Intern', 'Code and shit', 90000, 'random type', 'Internship', 'high school', 'New York', 'New York', 'United States');
 
 /*
     DELETE ENTRIES IN TABLE
