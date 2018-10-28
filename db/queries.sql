@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS `User` (
     Headline VARCHAR(255),
     Password VARCHAR(255) NOT NULL,
     Email CHAR(60) NOT NULL,
-    PRIMARY KEY (UserId)
+    PRIMARY KEY (UserId),
+    UNIQUE(Email)
 );
 
 -- Inherits User
