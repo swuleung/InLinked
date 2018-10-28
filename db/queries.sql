@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `User` (
     Password VARCHAR(255) NOT NULL,
     Email CHAR(60) NOT NULL,
     PRIMARY KEY (UserId),
-    UNIQUE(Email)
+    UNIQUE (Email)
 );
 
 -- Inherits User
