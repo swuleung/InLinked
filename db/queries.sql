@@ -2,7 +2,7 @@
     Proprietary code for InLinked TM
 */
 
-CREATE DATABASE InLinked_Db;
+CREATE DATABASE IF NOT EXISTS InLinked_Db;
 
 CREATE TABLE IF NOT EXISTS `User` (
     UserId INTEGER NOT NULL AUTO_INCREMENT,
@@ -14,15 +14,15 @@ CREATE TABLE IF NOT EXISTS `User` (
 );
 
 -- Inherits User
-CREATE TABLE IF NOT EXISTS `Organization` (
-    OrganizationId INTEGER NOT NULL,
-    OrganizationName VARCHAR(90) NOT NULL,
-    OrganizationDescription VARCHAR(255) NOT NULL,
+CREATE TABLE IF NOT EXISTS `Enterprise` (
+    EnterpriseId INTEGER NOT NULL,
+    EnterpriseName VARCHAR(90) NOT NULL,
+    EnterpriseDescription VARCHAR(255) NOT NULL,
     CEO VARCHAR(50),
     HeadQuarters VARCHAR(255),
     Industry VARCHAR(50),
-    PRIMARY KEY (OrganizationId),
-    FOREIGN KEY (OrganizationId) REFERENCES User(UserId)
+    PRIMARY KEY (EnterpriseId),
+    FOREIGN KEY (EnterpriseId) REFERENCES User(UserId)
 );
 
 -- Inherits User
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `Candidate` (
 
 CREATE TABLE IF NOT EXISTS `Job` (
     JobId INTEGER NOT NULL AUTO_INCREMENT,
-    OrganizationId INTEGER NOT NULL,
+    EnterpriseId INTEGER NOT NULL,
     JobTitle VARCHAR(50),
     JobDescription TEXT,
     Salary INTEGER,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `Job` (
     Province VARCHAR(255),
     Country VARCHAR(255),
     PRIMARY KEY (JobId),
-    FOREIGN KEY (OrganizationId) REFERENCES Organization(OrganizationId)
+    FOREIGN KEY (EnterpriseId) REFERENCES Enterprise(EnterpriseId)
 );
 
 CREATE TABLE IF NOT EXISTS `Employee` (
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `Posts` (
     EmployerId INTEGER,
     JobId INTEGER,
     PostDate DATETIME,
-    FOREIGN KEY (EmployerId) REFERENCES Organization(OrganizationId),
+    FOREIGN KEY (EmployerId) REFERENCES Enterprise(EnterpriseId),
     FOREIGN KEY (JobId) REFERENCES Job(JobId)
 );
 
