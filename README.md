@@ -10,3 +10,10 @@
 * We will be using LucidChart.
 * For desinging ERDs, we will follow Peter Chen's model.
 * Entities and attributes are given in doc.
+
+## How to Run
+### Front End
+* `npm start`
+
+### Back End
+* `npm build && npm start`
