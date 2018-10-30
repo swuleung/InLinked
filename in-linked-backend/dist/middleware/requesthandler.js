@@ -1,12 +1,7 @@
-/**
- * Middleware for handling HTTP errors
- * Can be extended to send custom messages back to server
- */
-import { Error, NextFunction, Request, Response } from 'express';
-import * as HttpStatus from 'http-status-codes';
-
-import * as errors from '../utils/errors';
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const HttpStatus = require("http-status-codes");
+const errors = require("../utils/errors");
 /**
  * Error response middleware for 404 not found. This middleware function should be at the very bottom of the stack.
  *
@@ -14,7 +9,7 @@ import * as errors from '../utils/errors';
  * @param  {object}   res
  * @param  {function} next
  */
-export function notFoundError(req: Request, res: Response, next: NextFunction) {
+function notFoundError(req, res, next) {
     res.status(HttpStatus.NOT_FOUND).json({
         error: {
             code: HttpStatus.NOT_FOUND,
@@ -22,7 +17,7 @@ export function notFoundError(req: Request, res: Response, next: NextFunction) {
         }
     });
 }
-
+exports.notFoundError = notFoundError;
 /**
  * Generic error response middleware for validation and internal server errors.
  *
@@ -32,12 +27,7 @@ export function notFoundError(req: Request, res: Response, next: NextFunction) {
  * @param {Response} res
  * @param {NextFunction} next
  */
-export function genericErrorHandler(
-    err: any,
-    req: Request,
-    res: Response,
-    next: NextFunction
-) {
+function genericErrorHandler(err, req, res, next) {
     // eslint-disable-line no-unused-vars
     if (err.stack) {
         console.log('Error stack trace: ', err.stack);
@@ -45,3 +35,5 @@ export function genericErrorHandler(
     const error = errors.buildError(err);
     res.status(error.code).json({ error });
 }
+exports.genericErrorHandler = genericErrorHandler;
+//# sourceMappingURL=requesthandler.js.map

@@ -8,10 +8,10 @@ import * as helmet from 'helmet';
 import * as morgan from 'morgan';
 import * as path from 'path';
 
+import * as ErrorMiddleware from './middleware/requesthandler';
 import { Routes } from './routes/routes';
 
 /* Import local libs */
-// import routes from './routes';
 
 class App {
     public app: express.Application;
@@ -28,6 +28,10 @@ class App {
 
         // Initialize and bind routes
         this.routes = new Routes(this.app);
+
+        /* Error middleware */
+        this.app.use(ErrorMiddleware.genericErrorHandler);
+        this.app.use(ErrorMiddleware.notFoundError);
     }
 }
 
