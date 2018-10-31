@@ -7,7 +7,8 @@
       "noUnusedLocals": false,
       "noUnusedParameters": false,
       "typeRoots": [
-        "node_modules/@types"
+        "node_modules/@types",
+        "utils/types/json.d.ts"
       ]
     },
     "include": [
