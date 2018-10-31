@@ -1,5 +1,5 @@
 import app from './app';
-const PORT = 3000;
+import config from './config/config';
 
 // If we want HTTPS
 // const httpsOptions = {
@@ -11,6 +11,6 @@ const PORT = 3000;
 //     console.log('Express server listening on port ' + PORT);
 // })
 
-app.listen(PORT, () =>
-    console.info(`Listening on port ${PORT}`)
+app.listen(config.app.PORT, () =>
+    console.info(`Listening on port ${config.app.PORT}`)
 );
