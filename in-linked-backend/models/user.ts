@@ -2,9 +2,11 @@
  * User model for InLinked (candidates and managers)
  */
 export interface User {
-    id: number;
+    userId: number;
     username: string;
     headline?: string;
     password: string;
     email: string;
+    profilePicture?: string;
+    coverPhoto?: string;
 }

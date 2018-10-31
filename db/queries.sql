@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS `User` (
     Headline VARCHAR(255),
     Password VARCHAR(255) NOT NULL,
     Email CHAR(60) NOT NULL,
+    ProfilePicture TEXT;
+    CoverPhoto TEXT;
     PRIMARY KEY (UserId),
     UNIQUE (Email)
 );
@@ -40,8 +42,8 @@ CREATE TABLE IF NOT EXISTS `Candidate` (
 CREATE TABLE IF NOT EXISTS `Job` (
     JobId INTEGER NOT NULL AUTO_INCREMENT,
     EnterpriseId INTEGER NOT NULL,
-    JobTitle VARCHAR(50),
-    JobDescription TEXT,
+    JobTitle VARCHAR(50) NOT NULL,
+    JobDescription TEXT NOT NULL,
     Salary INTEGER,
     EmploymentType VARCHAR(30),
     ExperienceLevel VARCHAR(30),
@@ -55,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `Job` (
 
 CREATE TABLE IF NOT EXISTS `Employee` (
     EmployeeId INTEGER NOT NULL AUTO_INCREMENT,
-    Role VARCHAR(50),
+    Role VARCHAR(50) NOT NULL,
     DateJoined DATE NOT NULL,
     SupervisorId INTEGER,
     PRIMARY KEY (EmployeeId),
