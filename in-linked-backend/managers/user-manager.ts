@@ -39,6 +39,6 @@ export class UserManager {
         const user = await this.repo.findByEmail(email);
 
         // Verify the password
-        return this.repo.changePassword(email, newPass);
+        return this.repo.changePassword(email, newPassword);
     }
 }
