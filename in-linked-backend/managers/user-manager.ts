@@ -20,8 +20,7 @@ export class UserManager {
         return this.repo.insert(user); 
     }
 
-    public async get(email: string): Promise<User> {
-
+    public async findByEmail(email: string): Promise<User> {
         return this.repo.findByEmail(email);
     }
 
@@ -33,5 +32,13 @@ export class UserManager {
     public async delete(userId: number): Promise<void> {
 
         return this.repo.delete(userId);
+    }
+
+    /* Specific functionality */
+    public async changePassword(email: string, newPassword: string, oldPassword: string): Promise<void> {
+        const user = await this.repo.findByEmail(email);
+
+        // Verify the password
+        return this.repo.changePassword(email, newPass);
     }
 }
