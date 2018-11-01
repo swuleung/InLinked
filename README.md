@@ -1,19 +1,19 @@
-# InLinked
-* Get a job or your money back guaranteed.
+<h1 align=center>InLinked</h1>
+<h3 align=center>Connecting the world's leading professionals and experts to expansive industries.</h3>
 
-## Tech Stack
-* **MySQL** - for database management
-* **Angular** - front-end framework
-* **Node.js** - back-end routes.
+## Deployment
+#### Front-end
+```
+cd in-linked && npm start
+```
 
-## Designing ERD
-* We will be using LucidChart.
-* For desinging ERDs, we will follow Peter Chen's model.
-* Entities and attributes are given in doc.
+#### Back-end
+```
+cd in-linked-backend && tsc && npm start
+```
 
-## How to Run
-### Front End
-* `npm start`
-
-### Back End
-* `npm build && npm start`
+## Built With
+* :honeybee: [Angular](https://angular.io/) - one framework for mobile and desktop
+* :nose: [Node.js](https://nodejs.org/en/) - JavaScript runtime to power our application.
+* :speak_no_evil: [knex](https://knexjs.org/) - query builder for interfacing with the database.
+* :whale: [MySQL](https://www.mysql.com/) - the database management
