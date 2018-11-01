@@ -1,3 +1,4 @@
+import { User } from '../models';
 import { UserRepository } from '../repositories/user-repository';
 
 /**
@@ -13,7 +14,24 @@ export class UserManager {
     }
 
     /* CRUD */
-    public async create(user: User) {
-        
+    public async create(user: User): Promise<User> {
+        // Hash passwords before creating user
+
+        return this.repo.insert(user); 
+    }
+
+    public async get(email: string): Promise<User> {
+
+        return this.repo.findByEmail(email);
+    }
+
+    public async update(user: User): Promise<User> {
+
+        return this.repo.update(user);
+    }
+
+    public async delete(userId: number): Promise<void> {
+
+        return this.repo.delete(userId);
     }
 }

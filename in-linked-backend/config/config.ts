@@ -8,5 +8,13 @@ const PORT = process.env.PORT || 8080;
 export default {
     app: {
         PORT,
+    },
+    database: {
+        host: '',
+        port: 3306,
+        user: '',
+        password: '',
+        database: '',
+        debug: false
     }
 };
