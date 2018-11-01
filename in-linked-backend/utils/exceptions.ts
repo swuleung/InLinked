@@ -19,3 +19,15 @@ export class ExceptionBase extends Error {
         }
     }
 }
+
+export class NotFoundException extends ExceptionBase {
+    constructor(msg: string) {
+        super(100, msg);
+    }
+}
+
+export class ValidationException extends ExceptionBase {
+    constructor(msg: string, err: Error) {
+        super(200, msg, err);
+    }
+}
