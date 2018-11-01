@@ -12,6 +12,65 @@ export class MySql {
     private retryDbConnectionPromise: Promise<knex> | undefined; // Query builder for our application
 
     /**
+     * Establishses conncetion to our database and retries if it fails
+     * 
+     * @returns {Promise<knex>} - promise containing our knex object
+     * @memberof MySql
+     */
+    public async getConnection(): Promise<knex> {
+        if (!this.connection) {
+            this.connection = await this.retryDbConnection(); // Await to get conenction to db
+        }
+
+        return this.connection;
+    }
+
+    /**
+     * Wrap a regular query request in knex with a transaction so that we can explicitly rollback in case of an error
+     * 
+     * @returns {Promise<knex.Transaction>} 
+     * @memberof MySql
+     */
+    public async getTransaction(): Promise<knex.Transaction> {
+        const connection = await this.getConnection(); // Establish connection
+
+        return new Promise<knex.Transaction>((resolve, reject) => {
+            try {
+                connection.transaction((trx: knex.Transaction) => {
+                    resolve(trx); // IF no errors, run the transaction to the db (could be multiple sql statements)
+                });
+            } catch(err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Close connection to the database
+     * 
+     * @returns {Promise<void>} - void promise
+     * @memberof MySql
+     */
+    public async closeDatabase(): Promise<void> {
+        if (this.connection) {
+            await this.connection.destroy();
+            this.connection = undefined;
+        }
+    }
+
+    /**
+     * Create migration file which allows for easier database upgrade and downgrades if entities change in the process
+     * 
+     * @memberof MySql
+     */
+    public async schemaMigration() {
+        const connection = await this.getConnection(); // Establish connection first
+        await connection.migrate.latest({
+            directory: path.resolve(__dirname, './migrations'); // Update the queries that we have used to migration file
+        });
+    }
+
+    /**
      * Initializes connection with SQL server and tests for stable connection
      * 
      * @private
@@ -32,7 +91,7 @@ export class MySql {
             },
             debug: config.database.debug,
             migrations: {
-                tableName: 'migrations'
+                tableName: 'migrations' // Store create schema updates
             }
         }
 
@@ -41,9 +100,15 @@ export class MySql {
         return db;
     }
 
-    
+    /**
+     * Attempt to establish a connection to the database and return a promise containing the knex object
+     * 
+     * @private
+     * @returns {Promise<knex>} - wrapper containing the knex object to interface with the database
+     * @memberof MySql
+     */
     private retryDbConnection(): Promise<knex> {
-        // Return the promise if it is already defined
+        // Return the promise if it is already defined (this was called in the middle of a request to get the mysql connection already running)
         if (this.retryDbConnectionPromise instanceof Promise) {
             return this.retryDbConnectionPromise;
         }
@@ -62,7 +127,7 @@ export class MySql {
             retry(
                 { times: 3, interval: 1000 }, // 3 tries, 1 second offset
                 methodToRetry, // Wrapper to callback
-                (err: Error | undefined, db: knex) => {
+                (err: Error | undefined, db: knex) => { // Callback itself
                     // Check for error after being called
                     if (err) {
                         reject(err);
@@ -76,7 +141,5 @@ export class MySql {
         });
 
         return this.retryDbConnectionPromise;
-
-
     }
 }
