@@ -1,3 +1,7 @@
+/**
+ * Start the server for the app (MAIN ENTRY POINT)
+ */
+
 import app from './app';
 import config from './config/config';
 

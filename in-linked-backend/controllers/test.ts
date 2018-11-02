@@ -3,7 +3,7 @@
  * PLEASE TEST ME
  */
 
-import { Request, Response, NextFunction, Application } from 'express';
+import { Application, NextFunction, Request, Response } from 'express';
 import { IController } from './controller.interface';
 
 /* Import services being used */
@@ -30,7 +30,7 @@ export class TestController implements IController {
      * Bind the different functions to routes
      * @param app Express app to bind the routes to
      */
-    public bindRoute(app: Application): void {
+    public bindRoutes(app: Application): void {
         app.route('/test')
             .post(this.add)
             .get(this.get);

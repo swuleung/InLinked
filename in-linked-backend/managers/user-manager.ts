@@ -62,7 +62,7 @@ export class UserManager {
 
         // Verify the password
         const hashedPass = await this.hash.hashPassword(newPassword);
-        return this.repo.changePassword(email, newPassword);
+        return this.repo.changePassword(email, hashedPass);
     }
 
     /**

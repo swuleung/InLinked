@@ -18,6 +18,6 @@ export class Routes {
         this.testController = new Controllers.TestController();
 
         // Bind routes
-        this.testController.bindRoute(app);
+        this.testController.bindRoutes(app);
     }
 }
