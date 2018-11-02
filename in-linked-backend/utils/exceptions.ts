@@ -31,3 +31,9 @@ export class ValidationException extends ExceptionBase {
         super(200, msg, err);
     }
 }
+
+export class UnauthorizedException extends ExceptionBase {
+    constructor(msg: string, err: Error) {
+        super(300, msg, err);
+    }
+}
