@@ -130,7 +130,8 @@ export class UserRepository {
             password: row.Password,
             email: row.Email,
             profilePicture: row.ProfilePicture,
-            coverPhoto: row.CoverPhoto
+            coverPhoto: row.CoverPhoto,
+            role: row.User
         };
     }
 

@@ -64,7 +64,7 @@ export class JWTAuth implements Auth {
             },
             this.secret,
             {
-                expiresIn: 60 * 60
+                expiresIn: '2 days'
             }
         );
     }
@@ -80,7 +80,7 @@ export class JWTAuth implements Auth {
      */
     public async validate(token: string): Promise<IUser> {
         try {
-            const decode: any = jwt.verify(token, this.secret);
+            const decode: any = jwt.verify(token, this.secret); // Verify that the given token is a valid token
             const user: any = await this.repo.findByEmail(decode.email);
 
             return {

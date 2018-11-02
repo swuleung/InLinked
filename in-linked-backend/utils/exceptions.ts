@@ -27,7 +27,7 @@ export class NotFoundException extends ExceptionBase {
 }
 
 export class ValidationException extends ExceptionBase {
-    constructor(msg: string, err: Error) {
+    constructor(msg: string, err?: Error) {
         super(200, msg, err);
     }
 }
@@ -35,5 +35,11 @@ export class ValidationException extends ExceptionBase {
 export class UnauthorizedException extends ExceptionBase {
     constructor(msg: string, err: Error) {
         super(300, msg, err);
+    }
+}
+
+export class PermissionException extends ExceptionBase {
+    constructor(error?: Error) {
+        super(301, 'Permission denied', error);
     }
 }
