@@ -17,9 +17,10 @@ export class UserController implements IController {
     }
 
     public create(req: Request, res: Response, next: NextFunction) {
-        // const user: User = req.body; // Create a user from body
+        const user: User = req.body; // Create a user from body
+        this.manager.create(user);
 
-        res.json('Create hit!')
+        res.json('Create hit! - ' + JSON.stringify(user));
     }
 
     public get(req: Request, res: Response, next: NextFunction) {
@@ -49,7 +50,7 @@ export class UserController implements IController {
      */
     public bindRoutes(app: Application): void {
         app.route(`/${config.app.api_route}/${config.app.api_ver}/user`)
-            .post(this.add)
+            .post(this.create)
             .get(this.get);
         app.route(`/${config.app.api_route}/${config.app.api_ver}/:num`)
             .put(this.update)

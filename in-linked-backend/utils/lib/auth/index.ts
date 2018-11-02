@@ -27,7 +27,7 @@ export interface IUser {
  * @export
  * @interface Auth
  */
-export interface Auth {
+export interface IAuth {
     authenticate(user: User): string;
     validate(token: string): Promise<IUser>;
 }

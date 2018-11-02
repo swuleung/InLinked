@@ -1,8 +1,8 @@
 import { User } from '../models';
 import { UserRepository } from '../repositories/user-repository';
-import { Auth } from '../utils/lib/auth';
-import { BCryptHash } from '../utils/lib/hash';
 import { ValidationException } from '../utils/exceptions';
+import { IAuth } from '../utils/lib/auth';
+import { BCryptHash } from '../utils/lib/hash';
 
 /**
  * Manages user account data before sending to repository
@@ -14,7 +14,7 @@ export class UserManager {
     private auth: Auth;
     private hash: BCryptHash;
 
-    constructor(repo: UserRepository, auth: Auth, hash: BCryptHash) {
+    constructor(repo: UserRepository, auth: IAuth, hash: BCryptHash) {
         this.repo = repo;
         this.auth = auth;
         this.hash = hash;

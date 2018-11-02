@@ -7,9 +7,23 @@ import * as knex from 'knex';
 import * as path from 'path';
 import config from '../../../config/config';
 
+export interface DBConfig {
+    host: string,
+    port: number,
+    username: string,
+    password: string,
+    database: string,
+    debug: boolean
+}
+
 export class MySql {
     private connection: knex | undefined;
     private retryDbConnectionPromise: Promise<knex> | undefined; // Query builder for our application
+    private config: DBConfig;
+
+    constructor(c: DBConfig) {
+        this.config = c;
+    }
 
     /**
      * Establishses conncetion to our database and retries if it fails

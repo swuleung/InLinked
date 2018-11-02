@@ -7,9 +7,11 @@ import * as express from 'express';
 import * as helmet from 'helmet';
 import * as morgan from 'morgan';
 import * as path from 'path';
-
 import * as ErrorMiddleware from './middleware/requesthandler';
+
 import { Routes } from './routes/routes';
+import { buildModule } from './utils/module/service-module';
+import { MySql } from './utils/lib/database';
 
 /* Import local libs */
 
@@ -25,6 +27,13 @@ class App {
         this.app.use(helmet());
         this.app.use(morgan('dev')); // HTTP request logger
         this.app.use(bodyParser.json());
+
+        // Establish MySql connection
+        const db = new MySql({
+
+        });
+
+        const container = buildModule(db);
 
         // Initialize and bind routes
         this.routes = new Routes(this.app);

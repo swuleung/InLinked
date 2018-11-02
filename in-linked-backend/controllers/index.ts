@@ -1,2 +1,3 @@
 /* List all controllers */
-export * from './test';
+export { TestController } from './test';
+export { UserController } from './user';

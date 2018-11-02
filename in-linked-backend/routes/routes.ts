@@ -1,21 +1,20 @@
 /**
  * Main route files containing other routes/controllers
  */
-import { Application, Router } from 'express';
+import { Application } from 'express';
 
 /* Import controllers */
 import * as Controllers from '../controllers';
-
-const router = Router();
-router.get('/', Controllers.TestController);
 
 export class Routes {
 
     /* Controllers */
     public testController: Controllers.TestController;
+    public userController: Controllers.UserController;
     
     constructor(app: Application) {
         this.testController = new Controllers.TestController();
+        this.userController = new Controllers.UserController();
 
         // Bind routes
         this.testController.bindRoutes(app);
