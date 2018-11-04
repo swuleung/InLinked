@@ -8,6 +8,7 @@ import { EnterpriseProfileComponent } from './pages/enterprise-profile/enterpris
 import { LoginComponent } from './pages/login/login.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { SearchPageComponent } from './pages/search-page/search-page.component';
+import { AppRoutingModule } from './/app-routing.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { SearchPageComponent } from './pages/search-page/search-page.component';
     SearchPageComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
