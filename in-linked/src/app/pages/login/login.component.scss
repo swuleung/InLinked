@@ -1,0 +1,17 @@
+div {
+    height: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.remove-padding {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#background-div {
+    margin-right: 0;
+    margin-left: 0;
+    background-image: url("../../../assets/mountain-background.jpg");
+    background-size: cover;
+}
