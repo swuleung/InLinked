@@ -19,5 +19,6 @@ export class Routes {
 
         // Bind routes
         this.testController.bindRoutes(app);
+        this.userController.bindRoutes(app);
     }
 }

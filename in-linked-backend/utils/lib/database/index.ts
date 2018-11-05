@@ -108,7 +108,7 @@ export class MySql {
             }
         }
 
-        const db = knex(this.config); // Establish db connection
+        const db = knex(knexConfig); // Establish db connection
         await db.raw('select 1').timeout(500); // Check connection, may or may not succeed
         return db;
     }

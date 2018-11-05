@@ -1,18 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * Main route files containing other routes/controllers
- */
-const express_1 = require("express");
 /* Import controllers */
 const Controllers = require("../controllers");
-const router = express_1.Router();
-router.get('/', Controllers.TestController);
 class Routes {
-    constructor(app) {
+    constructor(app, module) {
         this.testController = new Controllers.TestController();
+        this.userController = new Controllers.UserController(module.managers.user);
         // Bind routes
-        this.testController.bindRoute(app);
+        this.testController.bindRoutes(app);
+        this.userController.bindRoutes(app);
     }
 }
 exports.Routes = Routes;

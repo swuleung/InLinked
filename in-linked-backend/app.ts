@@ -27,6 +27,9 @@ class App {
         this.app.use(cors()); // Authorization
         this.app.use(helmet());
         this.app.use(morgan('dev')); // HTTP request logger
+        this.app.use(bodyParser.urlencoded({
+            extended: true
+        }));
         this.app.use(bodyParser.json());
 
         // Establish MySql connection

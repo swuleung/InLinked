@@ -43,3 +43,9 @@ export class PermissionException extends ExceptionBase {
         super(301, 'Permission denied', error);
     }
 }
+
+export class UnauthenticatedException extends ExceptionBase {
+    constructor(msg: string) {
+        super(400, msg);
+    }
+}

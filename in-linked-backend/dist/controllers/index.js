@@ -1,8 +1,8 @@
 "use strict";
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
 Object.defineProperty(exports, "__esModule", { value: true });
 /* List all controllers */
-__export(require("./test"));
+var test_1 = require("./test");
+exports.TestController = test_1.TestController;
+var user_1 = require("./user");
+exports.UserController = user_1.UserController;
 //# sourceMappingURL=index.js.map

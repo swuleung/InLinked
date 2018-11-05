@@ -68,8 +68,8 @@ export class UserController implements IController {
     public async login(req: Request, res: Response, next: NextFunction) {
         const email: string = req.body.email;
         const pass: string = req.body.password;
-        const authToken: string = await this.manager.login(email, pass);
-        res.send({ authToken });
+        // const authToken: string = await this.manager.login(email, pass);
+        res.send({ email, pass });
     }
 
     /**
@@ -94,15 +94,15 @@ export class UserController implements IController {
      */
     public bindRoutes(app: Application): void {
         app.route(`/${config.app.api_route}/${config.app.api_ver}/user`)
-            .post(this.create)
-            .get(this.get);
+            .post(this.create.bind(this)) // Bind with this to provide contex to this curent object (user controller)
+            .get(this.get.bind(this));
         app.route(`/${config.app.api_route}/${config.app.api_ver}/:num`)
-            .put(this.update)
-            .delete(this.delete);
+            .put(this.update.bind(this))
+            .delete(this.delete.bind(this));
 
         app.route(`/${config.app.api_route}/${config.app.api_ver}/login`)
-            .post(this.login);
+            .post(this.login.bind(this));
         app.route(`/${config.app.api_route}/${config.app.api_ver}/changepass`)
-            .post(this.changePassword);
+            .post(this.changePassword.bind(this));
     }
 }

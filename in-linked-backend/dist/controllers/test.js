@@ -22,7 +22,7 @@ class TestController {
      * Bind the different functions to routes
      * @param app Express app to bind the routes to
      */
-    bindRoute(app) {
+    bindRoutes(app) {
         app.route('/test')
             .post(this.add)
             .get(this.get);

@@ -32,10 +32,10 @@ export class TestController implements IController {
      */
     public bindRoutes(app: Application): void {
         app.route('/test')
-            .post(this.add)
-            .get(this.get);
+            .post(this.add.bind(this))
+            .get(this.get.bind(this));
         app.route('/test/:num')
-            .put(this.update)
-            .delete(this.delete);
+            .put(this.update.bind(this))
+            .delete(this.delete.bind(this));
     }
 }
