@@ -1,17 +1,41 @@
-div {
-    height: 100%;
-    margin-left: 0;
-    margin-right: 0;
-}
+@import '../../../global/app';
 
-.remove-padding {
-    padding-left: 0;
-    padding-right: 0;
-}
+.login-container {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    width: 100%;
 
-#background-div {
-    margin-right: 0;
-    margin-left: 0;
-    background-image: url("../../../assets/mountain-background.jpg");
-    background-size: cover;
+    .login-panel {
+        align-items: center;
+        box-shadow: inset 8px 0px 12px 0px rgba(29, 49, 64, 0.4);
+        background-color: $login-primary;
+        color: #fff;
+        display: flex;
+        max-width: 500px;
+        padding: $padding-base * 3.5;
+    }
+
+    .remove-padding {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    #background-div {
+        background-size: cover;
+        margin-right: 0;
+        margin-left: 0;
+        background-image: url("../../../assets/mountain-background.jpg");
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-image: linear-gradient(to bottom right, $login-gradient-1, $login-gradient-2);
+            opacity: .3; 
+          }
+    }
 }
