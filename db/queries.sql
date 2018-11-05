@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `User` (
     Email CHAR(60) NOT NULL,
     ProfilePicture TEXT;
     CoverPhoto TEXT,
-    AccType CHAR(20),
+    AccType CHAR(20) NOT NULL,
     PRIMARY KEY (UserId),
     UNIQUE (Email)
 );
