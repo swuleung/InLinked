@@ -34,7 +34,8 @@ export class UserRepository {
                 Password: user.password,
                 Email: user.email,
                 ProfilePicture: user.profilePicture,
-                CoverPhoto: user.coverPhoto
+                CoverPhoto: user.coverPhoto,
+                AccType: user.acctype
             });
 
             user.userId = res[0];
@@ -131,7 +132,8 @@ export class UserRepository {
             email: row.Email,
             profilePicture: row.ProfilePicture,
             coverPhoto: row.CoverPhoto,
-            role: row.User
+            role: row.User,
+            acctype: row.AccType
         };
     }
 

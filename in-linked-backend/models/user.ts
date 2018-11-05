@@ -10,4 +10,5 @@ export interface User {
     email: string;
     profilePicture?: string;
     coverPhoto?: string;
+    acctype: string;
 }

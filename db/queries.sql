@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS `User` (
     Password VARCHAR(255) NOT NULL,
     Email CHAR(60) NOT NULL,
     ProfilePicture TEXT;
-    CoverPhoto TEXT;
+    CoverPhoto TEXT,
+    AccType CHAR(20),
     PRIMARY KEY (UserId),
     UNIQUE (Email)
 );

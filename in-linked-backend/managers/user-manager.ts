@@ -11,7 +11,7 @@ export class UserManager {
     private repo: UserRepository;
     
     // Lib instances
-    private auth: Auth;
+    private auth: IAuth;
     private hash: BCryptHash;
 
     constructor(repo: UserRepository, auth: IAuth, hash: BCryptHash) {
