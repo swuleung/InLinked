@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { JWTAuth } from '../utils/lib/auth';
 import { UnauthenticatedException } from '../utils/exceptions';
+import { JWTAuth } from '../utils/lib/auth';
 
 /**
  * Authentication middleware to verify auth token sent by user via headers
@@ -12,8 +12,9 @@ import { UnauthenticatedException } from '../utils/exceptions';
 export function authentication(auth: JWTAuth) {
     return async (req: Request, res: Response, next: () => Promise<any>) => {
         const token = req.headers.authorization;
-        if (!token)
+        if (!token) {
             throw new UnauthenticatedException('User is unauthenticated!');
+        }
         
         const user = await auth.validate(token);
         req.user = user; // Pass user to subsequent middleware

@@ -6,8 +6,8 @@ import { Application, NextFunction, Request, Response } from 'express';
 import config from '../config/config';
 import { UserManager } from '../managers';
 import { User } from '../models';
-import { IController } from './controller.interface';
 import { IUser } from '../utils/lib/auth';
+import { IController } from './controller.interface';
 
 export class UserController implements IController {
 
