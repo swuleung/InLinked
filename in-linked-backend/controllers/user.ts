@@ -36,11 +36,13 @@ export class UserController implements IController {
     }
 
     /* Specific functions */
-    public login(req: Request, res: Response, next: NextFunction) {
-        
+    public async login(req: Request, res: Response, next: NextFunction) {
+        const email: string = req.body.email;
+        const pass: string = req.body.password;
+        const authToken = this.manager.login(email, pass);
     }
 
-    public changePassword(req: Request, res: Response, next: NextFunction) {
+    public async changePassword(req: Request, res: Response, next: NextFunction) {
 
     } 
 

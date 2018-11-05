@@ -39,7 +39,7 @@ export interface IAuth {
  * @class JWTAuth
  * @implements {Auth}
  */
-export class JWTAuth implements Auth {
+export class JWTAuth implements IAuth {
     private repo: UserRepository;
     private secret: string;
 

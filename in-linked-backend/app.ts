@@ -12,6 +12,7 @@ import * as ErrorMiddleware from './middleware/requesthandler';
 import { Routes } from './routes/routes';
 import { buildModule } from './utils/module/service-module';
 import { MySql } from './utils/lib/database';
+import * as config from './config/config';
 
 /* Import local libs */
 
@@ -30,13 +31,18 @@ class App {
 
         // Establish MySql connection
         const db = new MySql({
-
+            host: config.default.database.host,
+            port: config.default.database.port || 3306,
+            username: config.default.database.user,
+            password: config.default.database.password,
+            database: config.default.database.database,
+            debug: config.default.database.debug
         });
 
-        const container = buildModule(db);
+        const module = buildModule(db);
 
         // Initialize and bind routes
-        this.routes = new Routes(this.app);
+        this.routes = new Routes(this.app, module);
 
         /* Error middleware */
         this.app.use(ErrorMiddleware.genericErrorHandler);

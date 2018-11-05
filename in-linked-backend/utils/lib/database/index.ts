@@ -5,7 +5,6 @@ import { AsyncResultCallback, retry } from 'async';
 
 import * as knex from 'knex';
 import * as path from 'path';
-import config from '../../../config/config';
 
 export interface DBConfig {
     host: string,
@@ -80,7 +79,7 @@ export class MySql {
     public async schemaMigration() {
         const connection = await this.getConnection(); // Establish connection first
         await connection.migrate.latest({
-            directory: path.resolve(__dirname, './migrations'); // Update the queries that we have used to migration file
+            directory: path.resolve(__dirname, './migrations') // Update the queries that we have used to migration file
         });
     }
 
@@ -97,19 +96,19 @@ export class MySql {
         const knexConfig: knex.Config = {
             client: 'mysql2',
             connection: {
-                host: config.database.host,
-                port: config.database.port,
-                user: config.database.user,
-                password: config.database.password,
-                database: config.database.database
+                host: this.config.host,
+                port: this.config.port,
+                user: this.config.username,
+                password: this.config.password,
+                database: this.config.database
             },
-            debug: config.database.debug,
+            debug: this.config.debug,
             migrations: {
                 tableName: 'migrations' // Store create schema updates
             }
         }
 
-        const db = knex(config); // Establish db connection
+        const db = knex(this.config); // Establish db connection
         await db.raw('select 1').timeout(500); // Check connection, may or may not succeed
         return db;
     }

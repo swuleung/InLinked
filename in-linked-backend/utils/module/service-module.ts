@@ -40,7 +40,7 @@ export function buildModule(db: MySql): ServiceModule {
             hash
         },
         managers: {
-            user: new UserManager(userRepo, auth, hash);
+            user: new UserManager(userRepo, auth, hash)
         },
         repositories: {
             user: userRepo

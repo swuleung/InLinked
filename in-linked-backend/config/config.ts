@@ -12,11 +12,11 @@ export default {
         api_ver: 'v1'
     },
     database: {
-        host: '',
+        host: 'localhost',
         port: 3306,
-        user: '',
-        password: '',
-        database: '',
+        user: 'root',
+        password: 'password',
+        database: 'InLinked_Db',
         debug: false
     }
 };
