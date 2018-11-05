@@ -7,6 +7,7 @@ import config from '../config/config';
 import { UserManager } from '../managers';
 import { User } from '../models';
 import { IController } from './controller.interface';
+import { IUser } from '../utils/lib/auth';
 
 export class UserController implements IController {
 
@@ -16,34 +17,75 @@ export class UserController implements IController {
         this.manager = manager;
     }
 
-    public create(req: Request, res: Response, next: NextFunction) {
-        const user: User = req.body; // Create a user from body
-        this.manager.create(user);
+    public async create(req: Request, res: Response, next: NextFunction) {
+        // const user: User = req.body; // Create a user from body
+        // const ret = await this.manager.create(user);
 
-        res.json('Create hit! - ' + JSON.stringify(user));
+        // // res.json('Create hit! - ' + JSON.stringify(ret));
+        // res.status(201).send({ ret });
+
+        res.json('Create hit!');
     }
 
-    public get(req: Request, res: Response, next: NextFunction) {
+    public async get(req: Request, res: Response, next: NextFunction) {
+        // const authUser: IUser = req.body; // Pass in attr for IUser in request body
+        // const user = await this.manager.findByEmail(authUser.email);
+
+        // res.status(200).send({ user }); // Return details for user
+
         res.json('Get hit!');
     }
 
-    public update(req: Request, res: Response, next: NextFunction) {
+    public async update(req: Request, res: Response, next: NextFunction) {
+        // const newUserData: User = req.body.newUser;
+        // const user = await this.manager.findByEmail(req.body.email);
+
+        // // Update vars
+        // user.coverPhoto = newUserData.coverPhoto;
+        // user.headline = newUserData.headline;
+        // user.profilePicture = newUserData.profilePicture;
+
         res.json('Update hit!');
     }
 
-    public delete(req: Request, res: Response, next: NextFunction) {
+    public async delete(req: Request, res: Response, next: NextFunction) {
+        // await this.manager.delete(req.body.id);// Delete the user by ID
+        // res.status(204);
+
         res.json('Delete hit!');
     }
 
     /* Specific functions */
+
+    /**
+     * Forwards login requerst for the user and returns auth token
+     *
+     * @param {Request} req
+     * @param {Response} res
+     * @param {NextFunction} next
+     * @memberof UserController
+     */
     public async login(req: Request, res: Response, next: NextFunction) {
         const email: string = req.body.email;
         const pass: string = req.body.password;
-        const authToken = this.manager.login(email, pass);
+        const authToken: string = await this.manager.login(email, pass);
+        res.send({ authToken });
     }
 
+    /**
+     * Forwards request to update the password of the user
+     *
+     * @param {Request} req
+     * @param {Response} res
+     * @param {NextFunction} next
+     * @memberof UserController
+     */
     public async changePassword(req: Request, res: Response, next: NextFunction) {
-
+        const email = req.body.email;
+        const oldPass = req.body.oldPassword;
+        const newPass = req.body.newPassword;
+        await this.manager.changePassword(email, newPass, oldPass);
+        res.status(204); // Send no content
     } 
 
     /**
