@@ -12,7 +12,7 @@
         background-color: $login-primary;
         color: #fff;
         display: flex;
-        max-width: 500px;
+        max-width: $small-screen;
         padding: $padding-base * 3.5;
     }
 
