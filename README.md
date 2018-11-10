@@ -18,3 +18,13 @@ cd in-linked-backend && tsc && npm start
 * :dash: [Express](https://expressjs.com/) - minimal web framework for the web.
 * :speak_no_evil: [knex](https://knexjs.org/) - query builder for interfacing with the database.
 * :whale: [MySQL](https://www.mysql.com/) - the database management
+
+## Pages [Remove Later]
+* Log in page
+* Sign Up page (one for both enterprises & candidates)
+* Profile page for enterprises 
+* Profile page for candidates
+* Job search page 
+* View jobs posted page
+* View applicants for a job page 
+
