@@ -1,6 +1,6 @@
 import { User } from '../models';
 import { UserRepository } from '../repositories/user-repository';
-import { ValidationException, ExceptionBase, NotFoundException } from '../utils/exceptions';
+import { ValidationException } from '../utils/exceptions';
 import { IAuth } from '../utils/lib/auth';
 import { BCryptHash } from '../utils/lib/hash';
 
