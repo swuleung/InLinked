@@ -39,7 +39,8 @@ class App {
             username: config.default.database.user,
             password: config.default.database.password,
             database: config.default.database.database,
-            debug: config.default.database.debug
+            debug: config.default.database.debug,
+            insecureAuth: true
         });
 
         const module = buildModule(db);

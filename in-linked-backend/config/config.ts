@@ -16,7 +16,7 @@ export default {
         port: 3306,
         user: 'root',
         password: 'password',
-        database: 'InLinked_Db',
+        database: 'inlinked_db',
         debug: false
     }
 };

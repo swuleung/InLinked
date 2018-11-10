@@ -12,7 +12,8 @@ export interface DBConfig {
     username: string,
     password: string,
     database: string,
-    debug: boolean
+    debug: boolean,
+    insecureAuth: boolean
 }
 
 export class MySql {

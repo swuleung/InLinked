@@ -71,8 +71,8 @@ export class UserController implements IController {
     public async login(req: Request, res: Response, next: NextFunction) {
         const email: string = req.body.email;
         const pass: string = req.body.password;
-        // const authToken: string = await this.manager.login(email, pass);
-        res.send({ email, pass });
+        const authToken: string = await this.manager.login(email, pass);
+        res.send({ authToken });
     }
 
     /**
@@ -109,12 +109,26 @@ export class UserController implements IController {
                 this.get.bind(this)
             );
         app.route(`/${config.app.api_route}/${config.app.api_ver}/:num`)
-            .put(this.update.bind(this))
-            .delete(this.delete.bind(this));
+            .put(
+                middleware.authentication(module.libs.auth),
+                middleware.authorization([Role.USER, Role.ADMIN]),
+                this.update.bind(this)
+            )
+            .delete(
+                middleware.authentication(module.libs.auth),
+                middleware.authorization([Role.ADMIN]),
+                this.delete.bind(this)
+            );
 
         app.route(`/${config.app.api_route}/${config.app.api_ver}/login`)
-            .post(this.login.bind(this));
+            .post(
+                this.login.bind(this)
+            );
         app.route(`/${config.app.api_route}/${config.app.api_ver}/changepass`)
-            .post(this.changePassword.bind(this));
+            .post(
+                middleware.authentication(module.libs.auth),
+                middleware.authorization([Role.USER, Role.ADMIN]),
+                this.changePassword.bind(this)
+            );
     }
 }
