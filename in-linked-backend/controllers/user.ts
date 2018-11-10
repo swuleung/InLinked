@@ -6,8 +6,11 @@ import { Application, NextFunction, Request, Response } from 'express';
 import config from '../config/config';
 import { UserManager } from '../managers';
 import { User } from '../models';
-import { IUser } from '../utils/lib/auth';
+import { IUser, Role } from '../utils/lib/auth';
+import { ServiceModule } from '../utils/module/service-module';
 import { IController } from './controller.interface';
+
+import * as middleware from '../middleware';
 
 export class UserController implements IController {
 
@@ -92,10 +95,19 @@ export class UserController implements IController {
      * Bind the different functions to routes
      * @param app Express app to bind the routes to
      */
-    public bindRoutes(app: Application): void {
+    public bindRoutes(app: Application, module: ServiceModule): void {
+        // Bind with this to provide contex to this curent object (user controller)
         app.route(`/${config.app.api_route}/${config.app.api_ver}/user`)
-            .post(this.create.bind(this)) // Bind with this to provide contex to this curent object (user controller)
-            .get(this.get.bind(this));
+            .post(
+                middleware.authentication(module.libs.auth),
+                middleware.authorization([Role.USER, Role.ADMIN]),
+                this.create.bind(this)
+            )
+            .get(
+                middleware.authentication(module.libs.auth),
+                middleware.authorization([Role.USER, Role.ADMIN]),
+                this.get.bind(this)
+            );
         app.route(`/${config.app.api_route}/${config.app.api_ver}/:num`)
             .put(this.update.bind(this))
             .delete(this.delete.bind(this));
