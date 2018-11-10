@@ -9,6 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const config_1 = require("../config/config");
+const auth_1 = require("../utils/lib/auth");
+const middleware = require("../middleware");
 class UserController {
     constructor(manager) {
         this.manager = manager;
@@ -61,8 +63,8 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             const email = req.body.email;
             const pass = req.body.password;
-            // const authToken: string = await this.manager.login(email, pass);
-            res.send({ email, pass });
+            const authToken = yield this.manager.login(email, pass);
+            res.send({ authToken });
         });
     }
     /**
@@ -86,17 +88,18 @@ class UserController {
      * Bind the different functions to routes
      * @param app Express app to bind the routes to
      */
-    bindRoutes(app) {
+    bindRoutes(app, module) {
+        // Bind with this to provide contex to this curent object (user controller)
         app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/user`)
-            .post(this.create.bind(this)) // Bind with this to provide contex to this curent object (user controller)
-            .get(this.get.bind(this));
+            .post(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.create.bind(this))
+            .get(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.get.bind(this));
         app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/:num`)
-            .put(this.update.bind(this))
-            .delete(this.delete.bind(this));
+            .put(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.update.bind(this))
+            .delete(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.ADMIN]), this.delete.bind(this));
         app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/login`)
             .post(this.login.bind(this));
         app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/changepass`)
-            .post(this.changePassword.bind(this));
+            .post(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.changePassword.bind(this));
     }
 }
 exports.UserController = UserController;

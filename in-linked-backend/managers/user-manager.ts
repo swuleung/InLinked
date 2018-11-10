@@ -1,6 +1,6 @@
 import { User } from '../models';
 import { UserRepository } from '../repositories/user-repository';
-import { ValidationException } from '../utils/exceptions';
+import { ValidationException, ExceptionBase, NotFoundException } from '../utils/exceptions';
 import { IAuth } from '../utils/lib/auth';
 import { BCryptHash } from '../utils/lib/hash';
 
@@ -75,11 +75,15 @@ export class UserManager {
      * @memberof UserManager
      */
     public async login(email: string, password: string): Promise<string> {
-        const user = await this.repo.findByEmail(email);
+        try {
+            const user = await this.repo.findByEmail(email);
 
-        if (await this.hash.verifyPassword(password, user.password)) {
-            return this.auth.authenticate(user); // Return token for auth
+            if (await this.hash.verifyPassword(password, user.password)) {
+                return this.auth.authenticate(user); // Return token for auth
+            }
+            throw new ValidationException('Wrong credentials');
+        } catch (ex) {
+            return {...ex.toObject(), success: 0 }; // Use success code to determine if we can read token
         }
-        throw new ValidationException('Wrong credentials');
     }
 }

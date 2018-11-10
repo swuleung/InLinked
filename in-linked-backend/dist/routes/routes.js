@@ -8,7 +8,7 @@ class Routes {
         this.userController = new Controllers.UserController(module.managers.user);
         // Bind routes
         this.testController.bindRoutes(app);
-        this.userController.bindRoutes(app);
+        this.userController.bindRoutes(app, module);
     }
 }
 exports.Routes = Routes;

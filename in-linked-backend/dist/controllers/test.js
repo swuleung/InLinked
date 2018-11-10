@@ -24,11 +24,11 @@ class TestController {
      */
     bindRoutes(app) {
         app.route('/test')
-            .post(this.add)
-            .get(this.get);
+            .post(this.add.bind(this))
+            .get(this.get.bind(this));
         app.route('/test/:num')
-            .put(this.update)
-            .delete(this.delete);
+            .put(this.update.bind(this))
+            .delete(this.delete.bind(this));
     }
 }
 exports.TestController = TestController;

@@ -38,7 +38,8 @@ class JWTAuth {
         return jwt.sign({
             id: user.userId,
             email: user.email,
-            role: user.role
+            role: user.role,
+            success: 1
         }, this.secret, {
             expiresIn: '2 days'
         });

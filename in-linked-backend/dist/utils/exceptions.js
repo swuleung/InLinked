@@ -20,26 +20,46 @@ class ExceptionBase extends Error {
 exports.ExceptionBase = ExceptionBase;
 class NotFoundException extends ExceptionBase {
     constructor(msg) {
-        super(100, msg);
+        super(20000, msg);
     }
 }
 exports.NotFoundException = NotFoundException;
 class ValidationException extends ExceptionBase {
     constructor(msg, err) {
-        super(200, msg, err);
+        super(30000, msg, err);
     }
 }
 exports.ValidationException = ValidationException;
+class InvalidFieldException extends ExceptionBase {
+    constructor(message, fields, error) {
+        super(30001, message, error);
+        this.fields = fields;
+    }
+    toModel() {
+        return {
+            code: this.code,
+            message: this.message,
+            fields: this.fields
+        };
+    }
+}
+exports.InvalidFieldException = InvalidFieldException;
 class UnauthorizedException extends ExceptionBase {
     constructor(msg, err) {
-        super(300, msg, err);
+        super(30002, msg, err);
     }
 }
 exports.UnauthorizedException = UnauthorizedException;
 class PermissionException extends ExceptionBase {
     constructor(error) {
-        super(301, 'Permission denied', error);
+        super(30003, 'Permission denied', error);
     }
 }
 exports.PermissionException = PermissionException;
+class UnauthenticatedException extends ExceptionBase {
+    constructor(msg) {
+        super(400, msg);
+    }
+}
+exports.UnauthenticatedException = UnauthenticatedException;
 //# sourceMappingURL=exceptions.js.map

@@ -75,11 +75,16 @@ class UserManager {
      */
     login(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield this.repo.findByEmail(email);
-            if (yield this.hash.verifyPassword(password, user.password)) {
-                return this.auth.authenticate(user); // Return token for auth
+            try {
+                const user = yield this.repo.findByEmail(email);
+                if (yield this.hash.verifyPassword(password, user.password)) {
+                    return this.auth.authenticate(user); // Return token for auth
+                }
+                throw new exceptions_1.ValidationException('Wrong credentials');
             }
-            throw new exceptions_1.ValidationException('Wrong credentials');
+            catch (ex) {
+                return Object.assign({}, ex.toObject(), { success: 0 }); // Use success code to determine if we can read token
+            }
         });
     }
 }
