@@ -3,6 +3,7 @@ import { UserRepository } from '../../repositories';
 import { IAuth, JWTAuth } from '../lib/auth';
 import { MySql } from '../lib/database';
 import { BCryptHash, IHash } from '../lib/hash';
+import { Sanatize } from '../lib/sanitize';
 
 /**
  * A global instance that holds access to important components such as libs, managers, and repositories
@@ -11,6 +12,7 @@ export interface ServiceModule {
     libs: {
         auth: IAuth;
         hash: IHash;
+        sanatizer: Sanatize;
     };
     managers: {
         user: UserManager;
@@ -33,11 +35,13 @@ export function buildModule(db: MySql): ServiceModule {
 
     const auth = new JWTAuth(userRepo);
     const hash = new BCryptHash();
+    const sanatizer = new Sanatize();
 
     return {
         libs: {
             auth,
-            hash
+            hash,
+            sanatizer
         },
         managers: {
             user: new UserManager(userRepo, auth, hash)

@@ -5,3 +5,7 @@ export interface Candidate {
     experience?: string;
     educationLevel?: string;
 }
+
+export function isCandidate(obj: any): boolean {
+    return obj.type === 'Candidate';
+}

@@ -41,6 +41,7 @@ class App {
             debug: config.default.database.debug,
             insecureAuth: true
         });
+        this.applyMigration(db); // TODO: Needs testing
 
         const module = buildModule(db);
 
@@ -50,6 +51,10 @@ class App {
         /* Error middleware */
         this.app.use(ErrorMiddleware.genericErrorHandler);
         this.app.use(ErrorMiddleware.notFoundError);
+    }
+
+    public async applyMigration(db: MySql) {
+        await db.schemaMigration();
     }
 }
 
