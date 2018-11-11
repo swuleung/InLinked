@@ -18,9 +18,12 @@ const exceptions_1 = require("../utils/exceptions");
  */
 function authentication(auth) {
     return (req, res, next) => __awaiter(this, void 0, void 0, function* () {
-        const token = req.headers.authorization;
-        if (!token) {
+        let token = req.headers.authorization;
+        if (!token || token.split(' ')[0] !== 'Bearer') {
             throw new exceptions_1.UnauthenticatedException('User is unauthenticated!');
+        }
+        else {
+            token = token.split(' ')[1];
         }
         const user = yield auth.validate(token);
         req.user = user; // Pass user to subsequent middleware

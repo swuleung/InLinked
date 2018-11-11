@@ -105,7 +105,7 @@ export class UserController implements IController {
             )
             .get(
                 middleware.authentication(module.libs.auth),
-                middleware.authorization([Role.USER, Role.ADMIN]),
+                // middleware.authorization([Role.USER, Role.ADMIN]),
                 this.get.bind(this)
             );
         app.route(`/${config.app.api_route}/${config.app.api_ver}/:num`)

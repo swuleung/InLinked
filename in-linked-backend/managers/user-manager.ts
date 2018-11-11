@@ -23,14 +23,22 @@ export class UserManager {
     /* CRUD */
     public async create(user: User): Promise<User> {
         // Hash passwords before creating user
-        const hashedPass = await this.hash.hashPassword(user.password);
-        user.password = hashedPass; // Update password
-
-        return this.repo.insert(user); 
+        try {
+            const hashedPass = await this.hash.hashPassword(user.password);
+            user.password = hashedPass; // Update password
+    
+            return this.repo.insert(user); 
+        } catch (ex) {
+            return {...ex.toObject(), success: 0 };
+        }
     }
 
     public async findByEmail(email: string): Promise<User> {
-        return this.repo.findByEmail(email);
+        try {
+            return this.repo.findByEmail(email);
+        } catch (ex) {
+            return {...ex.toObject(), success: 0 };
+        }
     }
 
     public async update(user: User): Promise<User> {
@@ -79,12 +87,15 @@ export class UserManager {
             const user = await this.repo.findByEmail(email);
 
             if (await this.hash.verifyPassword(password, user.password)) {
-                return this.auth.authenticate(user); // Return token for auth
+                const val = this.auth.authenticate(user); // Return token for auth
+                this.auth.validate(val);
+                return val;
             }
             throw new ValidationException('Wrong credentials');
         } catch (ex) {
             const pass = await this.hash.hashPassword(password);
             return {...ex.toObject(), test: pass, success: 0 }; // Use success code to determine if we can read token
+            // TODO: remove
         }
     }
 }

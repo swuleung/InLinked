@@ -49,8 +49,8 @@ export class JWTAuth implements IAuth {
     constructor(repo: UserRepository) {
         this.repo = repo;
         const keys = path.join(__dirname, '..', '..', '..', 'config');
-        this.public = fs.readFileSync(`${keys}/public.key`).toString();
-        this.secret = fs.readFileSync(`${keys}/private.key`).toString();
+        this.public = fs.readFileSync(`${keys}/public.key`, 'utf8').toString();
+        this.secret = fs.readFileSync(`${keys}/private.key`, 'utf8').toString();
     }
 
     /**
@@ -70,6 +70,7 @@ export class JWTAuth implements IAuth {
             },
             this.secret,
             {
+                algorithm:  'RS256',
                 expiresIn: '2 days'
             }
         );
@@ -85,8 +86,8 @@ export class JWTAuth implements IAuth {
      * @memberof JWTAuth
      */
     public async validate(token: string): Promise<IUser> {
-        try {
-            const decode: any = jwt.verify(token, this.public); // Verify that the given token is a valid token
+        // try {
+            const decode: any = jwt.verify(token, this.public, { algorithms: ['RS256'] }); // Verify that the given token is a valid token
             const user: any = await this.repo.findByEmail(decode.email);
 
             return {
@@ -94,11 +95,11 @@ export class JWTAuth implements IAuth {
                 email: user.email,
                 role: user.role as Role
             };
-        } catch (err) {
-            throw new UnauthorizedException(
-                'User is unauthorized to access application data.',
-                err
-            );
-        }
+        // } catch (err) {
+        //     throw new UnauthorizedException(
+        //         'User is unauthorized to access application data.',
+        //         err
+        //     );
+        // }
     }
 }

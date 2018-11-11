@@ -92,7 +92,9 @@ class UserController {
         // Bind with this to provide contex to this curent object (user controller)
         app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/user`)
             .post(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.create.bind(this))
-            .get(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.get.bind(this));
+            .get(middleware.authentication(module.libs.auth), 
+        // middleware.authorization([Role.USER, Role.ADMIN]),
+        this.get.bind(this));
         app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/:num`)
             .put(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.update.bind(this))
             .delete(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.ADMIN]), this.delete.bind(this));
