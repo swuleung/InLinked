@@ -1,9 +1,12 @@
 /* Maps component color names to the color names */
 @import './colors.scss';
 
-/* EXAMPLE */
+/* Body Base */
+$body-background: $whisper;
 
 /* Navbar */
+$nav-background: $blue-dianne;
+$nav-space: 65px;
 
 /* Login */
 $login-primary: $blue-dianne;

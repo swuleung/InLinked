@@ -13,4 +13,10 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
   }
 
+  status: boolean = false;
+
+  toggleNavbar(){
+    this.status = !this.status;
+  }
 }
+

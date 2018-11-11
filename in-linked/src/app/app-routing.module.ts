@@ -32,11 +32,11 @@ const routes: Routes = [
         component: UserFeedComponent
       },
       { // temporary - no candidates can be loaded yet
-        path: 'candidate/',
+        path: 'candidate',
         component: CandidateProfileComponent
       },
       { // temporary - no enterprises can be loaded yet
-        path: 'enterprise/',
+        path: 'enterprise',
         component: EnterpriseProfileComponent
       },
       {
@@ -48,7 +48,7 @@ const routes: Routes = [
         component: EnterpriseProfileComponent
       },
       {
-        path: 'search/',
+        path: 'search',
         component: SearchPageComponent
       },
       {

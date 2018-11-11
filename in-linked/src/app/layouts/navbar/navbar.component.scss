@@ -1,0 +1,37 @@
+@import '../../../global/app';
+
+.navbar {
+    background-color: $nav-background;
+    color: white;
+}
+
+.search-form {
+    width: 100%;
+
+    .form-group {
+        margin-bottom: 0;
+    }
+}
+.inline-form {
+    display: inline-block !important;
+}
+
+.show-nav {
+    display: block;
+}
+
+.hide-nav {
+    display: none;
+}
+
+.search-bar{
+    display: inline-block;
+    width: 80%;
+    padding-right: 50px;
+}
+
+.search-submit {
+    display: inline;
+    margin-left: -50px;
+    vertical-align: baseline;
+}
