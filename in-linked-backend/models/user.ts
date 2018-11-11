@@ -12,3 +12,7 @@ export interface User {
     role: string;
     acctype: string;
 }
+
+export function isUser(obj: any): boolean {
+    return obj.type === 'User';
+}

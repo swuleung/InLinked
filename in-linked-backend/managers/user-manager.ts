@@ -29,15 +29,15 @@ export class UserManager {
     
             return this.repo.insert(user); 
         } catch (ex) {
-            return {...ex.toObject(), success: 0 };
+            return {...ex.toObject(), error: 1 };
         }
     }
 
     public async get(id: number): Promise<User> {
         try {
-            return this.repo.findByEmail(id);
+            return this.repo.get(id);
         } catch (ex) {
-            return {...ex.toObject(), success: 0 };
+            return {...ex.toObject(), error: 1 };
         }
     }
 
@@ -45,7 +45,7 @@ export class UserManager {
         try {
             return this.repo.findByEmail(email);
         } catch (ex) {
-            return {...ex.toObject(), success: 0 };
+            return {...ex.toObject(), error: 1 };
         }
     }
 
@@ -97,13 +97,12 @@ export class UserManager {
             if (await this.hash.verifyPassword(password, user.password)) {
                 const val = this.auth.authenticate(user); // Return token for auth
                 // this.auth.validate(val);
-                return { val, success: 1 };
+                return val;
             }
             throw new ValidationException('Wrong credentials');
         } catch (ex) {
             const pass = await this.hash.hashPassword(password);
-            return {...ex.toObject(), test: pass, success: 0 }; // Use success code to determine if we can read token
-            // TODO: remove
+            return {...ex.toObject(), test: pass, error: 1 }; // Use success code to determine if we can read token
         }
     }
 }

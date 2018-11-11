@@ -6,3 +6,7 @@ export interface Enterprise {
     headquarters?: string;
     industry?: string;
 }
+
+export function isEnterprise(obj: any): boolean {
+    return obj.type === 'Enterprise';
+}

@@ -91,7 +91,7 @@ export class JWTAuth implements IAuth {
      * @memberof JWTAuth
      */
     public async validate(token: string): Promise<IUser> {
-        // try {
+        try {
             const decode: any = jwt.verify(token, this.public, { algorithms: ['RS256'] }); // Verify that the given token is a valid token
             const user: any = await this.repo.findByEmail(decode.email);
 
@@ -100,11 +100,11 @@ export class JWTAuth implements IAuth {
                 email: user.email,
                 role: user.role as Role
             };
-        // } catch (err) {
-        //     throw new UnauthorizedException(
-        //         'User is unauthorized to access application data.',
-        //         err
-        //     );
-        // }
+        } catch (err) {
+            throw new UnauthorizedException(
+                'User is unauthorized to access application data.',
+                err
+            );
+        }
     }
 }

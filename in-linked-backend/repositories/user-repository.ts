@@ -28,7 +28,6 @@ export class UserRepository {
         const connection = await this.db.getConnection();
         try {
             const res = await connection.table(this.TABLE_NAME).insert({
-                UserId: user.userId,
                 Username: user.username,
                 Headline: user.headline,
                 Password: user.password,
@@ -102,7 +101,6 @@ export class UserRepository {
         const conn = await this.db.getConnection();
         await conn.table(this.TABLE_NAME).update({
             Headline: user.headline,
-            Password: user.password,
             ProfilePicture: user.profilePicture,
             CoverPhoto: user.coverPhoto
         });

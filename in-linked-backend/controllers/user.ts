@@ -3,13 +3,14 @@
  */
 import { Application, NextFunction, Request, Response } from 'express';
 
-import config from '../config/config';
 import { UserManager, CandidateManager, EnterpriseManager } from '../managers';
-import { User } from '../models';
-import { IUser, Role, AccType } from '../utils/lib/auth';
-import { ServiceModule } from '../utils/module/service-module';
+import { User, isUser, isCandidate, isEnterprise, Candidate, Enterprise } from '../models';
 import { IController } from './controller.interface';
+import { Role, AccType } from '../utils/lib/auth';
+import { ServiceModule } from '../utils/module/service-module';
+import { Sanatize } from '../utils/lib/sanitize';
 
+import config from '../config/config';
 import * as middleware from '../middleware';
 
 export class UserController implements IController {
@@ -17,16 +18,23 @@ export class UserController implements IController {
     private userManager: UserManager;
     private candidateManager: CandidateManager;
     private enterpriseManager: EnterpriseManager;
+    private module: ServiceModule;
 
-    constructor(userManager: UserManager, candidateManager: CandidateManager, enterpriseManager: EnterpriseManager) {
+    constructor(userManager: UserManager, candidateManager: CandidateManager, enterpriseManager: EnterpriseManager, module: ServiceModule) {
         this.userManager = userManager;
         this.candidateManager = candidateManager;
         this.enterpriseManager = enterpriseManager;
+        this.module = module;
     }
 
     public async create(req: Request, res: Response, next: NextFunction) {
         const user: User = req.body.user; // Create a user from body
         const ret = await this.userManager.create(user);
+
+        // Failed create, threw error cause of duplicate user
+        if (!isUser(ret)) {
+            res.status(201).send({ ret })
+        }
 
         // Create entries based on account type
         if (user.acctype === AccType.ENTERPRISE) {
@@ -37,11 +45,15 @@ export class UserController implements IController {
         res.status(201).send({ ret });
     }
 
-    // Gets generic info from users for searching
+    // Gets generic info for user given an id
     public async get(req: Request, res: Response, next: NextFunction) {
-        const user = await this.userManager.get(req.params.id);
+        let user = await this.userManager.get(req.params.id);
 
-        // TODO: Check for account type for candidate vs enterprise
+        // If response was an error, return it
+        if (!isUser(user)) {
+            res.status(200).send({ ...user });
+        }
+
         let special: any = null; // Store result for candidates/enterprise
         if (user.acctype === AccType.ENTERPRISE) {
             special = await this.enterpriseManager.get(req.body.enterprise);
@@ -49,34 +61,61 @@ export class UserController implements IController {
             special = await this.candidateManager.get(req.body.candidate);
         }
 
+        // Verify that responses for special objects succeeded
+        user = isCandidate(special) || isEnterprise(special) ? this.module.libs.sanatizer.sanatizeUser(user) : null
         res.status(200).send({ 
-            username: user.username,
-            headline: user.headline,
-            email: user.email,
-            profilePicture: user.profilePicture,
-            coverPhoto: user.coverPhoto,
+            ...user,
             ...special
-
-        }); // Return details for user (withj special data)
+        }); // Return details for user (with special data)
     }
 
     public async update(req: Request, res: Response, next: NextFunction) {
-        // const newUserData: User = req.body.newUser;
-        // const user = await this.manager.findByEmail(req.body.email);
+        const newUserData: User = req.body.user;
+        const user = await this.userManager.findByEmail(req.body.user.email);
 
-        // // Update vars
-        // user.coverPhoto = newUserData.coverPhoto;
-        // user.headline = newUserData.headline;
-        // user.profilePicture = newUserData.profilePicture;
+        // Update vars
+        user.coverPhoto = newUserData.coverPhoto;
+        user.headline = newUserData.headline;
+        user.profilePicture = newUserData.profilePicture;
 
-        res.json('Update hit!');
+        // TODO: Update candidate and enterprise
+        if (user.acctype === AccType.CANDIDATE) {
+            const newCandData: Candidate = req.body.candidate;
+            const cand = await this.candidateManager.get(user.userId);
+
+            cand.fullName = newCandData.fullName;
+            cand.skills = newCandData.skills;
+            cand.experience = newCandData.experience;
+            cand.educationLevel = newCandData.educationLevel;
+
+            await this.candidateManager.update(cand);
+        } else if (user.acctype === AccType.ENTERPRISE) {
+            const newEnterpriseData: Enterprise = req.body.enterprise;
+            const enterprise: Enterprise = await this.enterpriseManager.get(user.userId);
+
+            enterprise.enterpriseName = newEnterpriseData.enterpriseName;
+            enterprise.enterpriseDescription = newEnterpriseData.enterpriseDescription;
+            enterprise.ceo = newEnterpriseData.ceo;
+            enterprise.headquarters = newEnterpriseData.headquarters;
+            enterprise.industry = newEnterpriseData.industry;
+
+            await this.enterpriseManager.update(enterprise);
+        }
     }
 
     public async delete(req: Request, res: Response, next: NextFunction) {
-        // await this.manager.delete(req.params.id);// Delete the user by ID
-        // res.status(204);
-
-        res.json('Delete hit!');
+        const user = await this.userManager.get(req.params.id);
+        if (isUser(user)) { // Make sure it is not a user
+            if (user.acctype === AccType.CANDIDATE) {
+                await this.candidateManager.delete(user.userId);
+            } else if (user.acctype === AccType.ENTERPRISE) {
+                await this.enterpriseManager.delete(user.userId);
+            }
+    
+            await this.userManager.delete(req.params.id); // Delete the user by ID
+            
+        }
+        res.status(204);
     }
 
     /* Specific functions */
@@ -116,7 +155,7 @@ export class UserController implements IController {
      * Bind the different functions to routes
      * @param app Express app to bind the routes to
      */
-    public bindRoutes(app: Application, module: ServiceModule): void {
+    public bindRoutes(app: Application): void {
         // Bind with this to provide contex to this curent object (user controller)
         app.route(`/${config.app.api_route}/${config.app.api_ver}/user`)
             .post(
