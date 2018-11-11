@@ -10,8 +10,8 @@ VALUES (1, 'Google', 'Best Company Ever', 'Sundar Pichai', 'Mountain View, CA', 
 /*
     TEST DATA FOR USER
 */
-INSERT INTO User (Username, Headline, Password, Email, ProfilePicture, CoverPhoto, AccType)
-VALUES ('johndoe', 'first account', 'test', 'test@tst.com', 'img', 'img', 'USER');
+INSERT INTO User (Username, Headline, Password, Email, ProfilePicture, CoverPhoto, Role, AccType)
+VALUES ('johndoe', 'first account', 'test', 'test@tst.com', 'img', 'img', 'candidate', 'user');
 
 INSERT INTO Candidate (CandidateId, FullName, Skills, Experience, EducationLevel)
 VALUES (1, 'John Doe', 'C++, C#', 'I have lots of experience', 'bachelors');

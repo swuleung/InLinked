@@ -11,6 +11,11 @@ export enum Role {
     ADMIN = 'admin'
 }
 
+export enum AccType {
+    CANDIDATE = 'candidate',
+    ENTERPRISE = 'enterprise'
+}
+
 /**
  * User interface for for authentication
  * 

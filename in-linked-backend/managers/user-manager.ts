@@ -54,9 +54,9 @@ export class UserManager {
         return this.repo.update(user);
     }
 
-    public async delete(userId: number): Promise<void> {
+    public async delete(id: number): Promise<void> {
 
-        return this.repo.delete(userId);
+        return this.repo.delete(id);
     }
 
     /* Specific functionality */
@@ -96,8 +96,8 @@ export class UserManager {
 
             if (await this.hash.verifyPassword(password, user.password)) {
                 const val = this.auth.authenticate(user); // Return token for auth
-                this.auth.validate(val);
-                return val;
+                // this.auth.validate(val);
+                return { val, success: 1 };
             }
             throw new ValidationException('Wrong credentials');
         } catch (ex) {

@@ -116,13 +116,13 @@ export class UserRepository {
      * @returns {Promise<void>} - return a void promise :(
      * @memberof UserRepository
      */
-    public async delete(userId: number): Promise<void> {
+    public async delete(id: number): Promise<void> {
         const transaction = await this.db.getTransaction();
 
         try {
             await transaction.from(this.TABLE_NAME)
                 .delete()
-                .where({ UserId: userId });
+                .where({ UserId: id });
 
             await transaction.commit(); // Commit transaction
         } catch (error) {
@@ -148,7 +148,7 @@ export class UserRepository {
             email: row.Email,
             profilePicture: row.ProfilePicture,
             coverPhoto: row.CoverPhoto,
-            role: row.User,
+            role: row.Role,
             acctype: row.AccType
         };
     }

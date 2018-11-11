@@ -6,7 +6,7 @@ import { Application, NextFunction, Request, Response } from 'express';
 import config from '../config/config';
 import { UserManager, CandidateManager, EnterpriseManager } from '../managers';
 import { User } from '../models';
-import { IUser, Role } from '../utils/lib/auth';
+import { IUser, Role, AccType } from '../utils/lib/auth';
 import { ServiceModule } from '../utils/module/service-module';
 import { IController } from './controller.interface';
 
@@ -28,12 +28,13 @@ export class UserController implements IController {
         const user: User = req.body.user; // Create a user from body
         const ret = await this.userManager.create(user);
 
-        // TODO: Handle if user is candidate or enterprise
-
-        // res.json('Create hit! - ' + JSON.stringify(ret));
+        // Create entries based on account type
+        if (user.acctype === AccType.ENTERPRISE) {
+            await this.enterpriseManager.create(req.body.enterprise);
+        } else if (user.acctype === AccType.CANDIDATE) {
+            await this.candidateManager.create(req.body.candidate);
+        }
         res.status(201).send({ ret });
-
-        res.json('Create hit!');
     }
 
     // Gets generic info from users for searching
@@ -41,6 +42,12 @@ export class UserController implements IController {
         const user = await this.userManager.get(req.params.id);
 
         // TODO: Check for account type for candidate vs enterprise
+        let special: any = null; // Store result for candidates/enterprise
+        if (user.acctype === AccType.ENTERPRISE) {
+            special = await this.enterpriseManager.get(req.body.enterprise);
+        } else if (user.acctype === AccType.CANDIDATE) {
+            special = await this.candidateManager.get(req.body.candidate);
+        }
 
         res.status(200).send({ 
             username: user.username,
@@ -48,10 +55,9 @@ export class UserController implements IController {
             email: user.email,
             profilePicture: user.profilePicture,
             coverPhoto: user.coverPhoto,
+            ...special
 
-        }); // Return details for user
-
-        // res.json('Get hit!');
+        }); // Return details for user (withj special data)
     }
 
     public async update(req: Request, res: Response, next: NextFunction) {
