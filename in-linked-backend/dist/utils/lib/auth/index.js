@@ -8,7 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const fs = require("fs");
 const jwt = require("jsonwebtoken");
+const path = require("path");
 const exceptions_1 = require("../../exceptions");
 var Role;
 (function (Role) {
@@ -25,7 +27,9 @@ var Role;
 class JWTAuth {
     constructor(repo) {
         this.repo = repo;
-        this.secret = process.env.SECRET_KEY || 'secret';
+        const keys = path.join(__dirname, '..', '..', '..', 'config');
+        this.public = fs.readFileSync(`${keys}/public.key`).toString();
+        this.secret = fs.readFileSync(`${keys}/private.key`).toString();
     }
     /**
      * Authenticate a user by generating a token associated to it with an experiation time
@@ -56,7 +60,7 @@ class JWTAuth {
     validate(token) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const decode = jwt.verify(token, this.secret); // Verify that the given token is a valid token
+                const decode = jwt.verify(token, this.public); // Verify that the given token is a valid token
                 const user = yield this.repo.findByEmail(decode.email);
                 return {
                     userId: user.id,

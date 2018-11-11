@@ -6,7 +6,6 @@ import * as cors from 'cors';
 import * as express from 'express';
 import * as helmet from 'helmet';
 import * as morgan from 'morgan';
-import * as path from 'path';
 import * as ErrorMiddleware from './middleware/requesthandler';
 
 import { Routes } from './routes/routes';

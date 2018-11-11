@@ -83,7 +83,8 @@ export class UserManager {
             }
             throw new ValidationException('Wrong credentials');
         } catch (ex) {
-            return {...ex.toObject(), success: 0 }; // Use success code to determine if we can read token
+            const pass = await this.hash.hashPassword(password);
+            return {...ex.toObject(), test: pass, success: 0 }; // Use success code to determine if we can read token
         }
     }
 }

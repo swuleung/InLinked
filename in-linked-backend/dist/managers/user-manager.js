@@ -83,7 +83,8 @@ class UserManager {
                 throw new exceptions_1.ValidationException('Wrong credentials');
             }
             catch (ex) {
-                return Object.assign({}, ex.toObject(), { success: 0 }); // Use success code to determine if we can read token
+                const pass = yield this.hash.hashPassword(password);
+                return Object.assign({}, ex.toObject(), { test: pass, success: 0 }); // Use success code to determine if we can read token
             }
         });
     }
