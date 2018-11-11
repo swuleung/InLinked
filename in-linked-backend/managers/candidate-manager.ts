@@ -1,6 +1,7 @@
 import { IAuth } from '../utils/lib/auth';
 import { BCryptHash } from '../utils/lib/hash';
 import { Candidate } from '../models';
+import { CandidateRepository } from '../repositories/candidate-repository';
 
 /**
  * Manages candidate information that is tied to the user
