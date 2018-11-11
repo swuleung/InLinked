@@ -1,0 +1,39 @@
+.feed-container {
+    margin-top: 1%;
+
+    .rounded-circle {
+        margin-top: 10%;
+        padding-left: 15%;
+        padding-right: 15%;
+    }
+
+    .inline-image {
+
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+
+    .inline-input {
+        display: inline-block;
+    }
+
+    .post-card {
+        margin-bottom: 10px;
+    }
+
+    input[type=text]{
+        margin-top: 10px;
+        width: 100%;
+        padding-right: 50px;
+    }
+    
+    input[type=submit] {
+        margin-left: -50px;
+        height: 20px;
+        width: 50px;
+        height: 100%;
+    }
+    
+}
