@@ -33,6 +33,14 @@ export class UserManager {
         }
     }
 
+    public async get(id: number): Promise<User> {
+        try {
+            return this.repo.findByEmail(id);
+        } catch (ex) {
+            return {...ex.toObject(), success: 0 };
+        }
+    }
+
     public async findByEmail(email: string): Promise<User> {
         try {
             return this.repo.findByEmail(email);

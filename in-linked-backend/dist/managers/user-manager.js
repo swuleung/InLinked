@@ -32,6 +32,16 @@ class UserManager {
             }
         });
     }
+    get(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return this.repo.get(id);
+            }
+            catch (ex) {
+                return Object.assign({}, ex.toObject(), { success: 0 });
+            }
+        });
+    }
     findByEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

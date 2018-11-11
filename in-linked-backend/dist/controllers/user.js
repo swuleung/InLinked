@@ -24,12 +24,12 @@ class UserController {
             res.json('Create hit!');
         });
     }
+    // Gets generic info from users
     get(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            // const authUser: IUser = req.body; // Pass in attr for IUser in request body
-            // const user = await this.manager.findByEmail(authUser.email);
-            // res.status(200).send({ user }); // Return details for user
-            res.json('Get hit!');
+            const user = yield this.manager.get(req.params.id);
+            res.status(200).send({ user }); // Return details for user
+            // res.json('Get hit!');
         });
     }
     update(req, res, next) {
@@ -45,7 +45,7 @@ class UserController {
     }
     delete(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            // await this.manager.delete(req.body.id);// Delete the user by ID
+            // await this.manager.delete(req.params.id);// Delete the user by ID
             // res.status(204);
             res.json('Delete hit!');
         });
@@ -91,16 +91,14 @@ class UserController {
     bindRoutes(app, module) {
         // Bind with this to provide contex to this curent object (user controller)
         app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/user`)
-            .post(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.create.bind(this))
-            .get(middleware.authentication(module.libs.auth), 
-        // middleware.authorization([Role.USER, Role.ADMIN]),
-        this.get.bind(this));
-        app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/:num`)
+            .post(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.create.bind(this));
+        app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/user/:id`)
+            .get(middleware.authentication(module.libs.auth), this.get.bind(this))
             .put(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.update.bind(this))
             .delete(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.ADMIN]), this.delete.bind(this));
         app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/login`)
             .post(this.login.bind(this));
-        app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/changepass`)
+        app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/user/changepass`)
             .post(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.changePassword.bind(this));
     }
 }
