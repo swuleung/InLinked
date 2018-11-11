@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { JobApplicantsComponent } from './pages/job-applicants/job-applicants.component';
 import { CandidateProfileComponent } from './pages/candidate-profile/candidate-profile.component';
 import { CreateAccountComponent } from './pages/create-account/create-account.component';
+import { DashboardComponent } from './layouts/dashboard/container/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { CreateAccountComponent } from './pages/create-account/create-account.co
     SearchPageComponent,
     JobApplicantsComponent,
     CandidateProfileComponent,
-    CreateAccountComponent
+    CreateAccountComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
