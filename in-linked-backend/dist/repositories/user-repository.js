@@ -53,6 +53,19 @@ class UserRepository {
             }
         });
     }
+    get(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const connection = yield this.db.getConnection();
+            const row = yield connection
+                .table(this.TABLE_NAME)
+                .where({ UserId: id })
+                .first();
+            if (!row) {
+                throw new exceptions_1.NotFoundException(`The id '${id}' does not exist in the table.`);
+            }
+            return this.toModel(row);
+        });
+    }
     /**
      * Queries the database to find a user by email
      *

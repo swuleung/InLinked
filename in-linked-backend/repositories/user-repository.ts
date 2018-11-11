@@ -35,6 +35,7 @@ export class UserRepository {
                 Email: user.email,
                 ProfilePicture: user.profilePicture,
                 CoverPhoto: user.coverPhoto,
+                Role: user.role,
                 AccType: user.acctype
             });
 
@@ -50,6 +51,21 @@ export class UserRepository {
 
             throw err; // Other errors
         }
+    }
+
+    public async get(id: number): Promise<User> {
+        const connection = await this.db.getConnection();
+        const row = await connection
+            .table(this.TABLE_NAME)
+            .where({ UserId: id })
+            .first();
+
+        if (!row) {
+            throw new NotFoundException(
+                `The id '${id}' does not exist in the table.`
+            );
+        }
+        return this.toModel(row);
     }
 
     /**

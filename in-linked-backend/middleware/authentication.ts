@@ -11,9 +11,11 @@ import { IAuth } from '../utils/lib/auth';
  */
 export function authentication(auth: IAuth) {
     return async (req: Request, res: Response, next: () => Promise<any>) => {
-        const token = req.headers.authorization;
-        if (!token) {
+        let token = req.headers.authorization;
+        if (!token || token.split(' ')[0] !== 'Bearer') {
             throw new UnauthenticatedException('User is unauthenticated!');
+        } else {
+            token = token.split(' ')[1];
         }
         
         const user = await auth.validate(token);

@@ -8,6 +8,15 @@ INSERT INTO Enterprise (EnterpriseId, EnterpriseName, EnterpriseDescription, CEO
 VALUES (1, 'Google', 'Best Company Ever', 'Sundar Pichai', 'Mountain View, CA', 'Internet/Software');
 
 /*
+    TEST DATA FOR USER
+*/
+INSERT INTO User (Username, Headline, Password, Email, ProfilePicture, CoverPhoto, AccType)
+VALUES ('johndoe', 'first account', 'test', 'test@tst.com', 'img', 'img', 'USER');
+
+INSERT INTO Candidate (CandidateId, FullName, Skills, Experience, EducationLevel)
+VALUES (1, 'John Doe', 'C++, C#', 'I have lots of experience', 'bachelors');
+
+/*
     TESTING TRIGGER FOR USER/ORGANIZATION
     INVALID
 */

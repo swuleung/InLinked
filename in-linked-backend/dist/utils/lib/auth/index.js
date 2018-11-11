@@ -8,8 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const fs = require("fs");
 const jwt = require("jsonwebtoken");
-const exceptions_1 = require("../../exceptions");
+const path = require("path");
 var Role;
 (function (Role) {
     Role["USER"] = "user";
@@ -25,7 +26,9 @@ var Role;
 class JWTAuth {
     constructor(repo) {
         this.repo = repo;
-        this.secret = process.env.SECRET_KEY || 'secret';
+        const keys = path.join(__dirname, '..', '..', '..', 'config');
+        this.public = fs.readFileSync(`${keys}/public.key`, 'utf8').toString();
+        this.secret = fs.readFileSync(`${keys}/private.key`, 'utf8').toString();
     }
     /**
      * Authenticate a user by generating a token associated to it with an experiation time
@@ -41,6 +44,7 @@ class JWTAuth {
             role: user.role,
             success: 1
         }, this.secret, {
+            algorithm: 'RS256',
             expiresIn: '2 days'
         });
     }
@@ -55,18 +59,20 @@ class JWTAuth {
      */
     validate(token) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const decode = jwt.verify(token, this.secret); // Verify that the given token is a valid token
-                const user = yield this.repo.findByEmail(decode.email);
-                return {
-                    userId: user.id,
-                    email: user.email,
-                    role: user.role
-                };
-            }
-            catch (err) {
-                throw new exceptions_1.UnauthorizedException('User is unauthorized to access application data.', err);
-            }
+            // try {
+            const decode = jwt.verify(token, this.public, { algorithms: ['RS256'] }); // Verify that the given token is a valid token
+            const user = yield this.repo.findByEmail(decode.email);
+            return {
+                userId: user.id,
+                email: user.email,
+                role: user.role
+            };
+            // } catch (err) {
+            //     throw new UnauthorizedException(
+            //         'User is unauthorized to access application data.',
+            //         err
+            //     );
+            // }
         });
     }
 }

@@ -4,7 +4,7 @@
 import { Application, NextFunction, Request, Response } from 'express';
 
 import config from '../config/config';
-import { UserManager } from '../managers';
+import { UserManager, CandidateManager, EnterpriseManager } from '../managers';
 import { User } from '../models';
 import { IUser, Role } from '../utils/lib/auth';
 import { ServiceModule } from '../utils/module/service-module';
@@ -14,29 +14,44 @@ import * as middleware from '../middleware';
 
 export class UserController implements IController {
 
-    private manager: UserManager;
+    private userManager: UserManager;
+    private candidateManager: CandidateManager;
+    private enterpriseManager: EnterpriseManager;
 
-    constructor(manager: UserManager) {
-        this.manager = manager;
+    constructor(userManager: UserManager, candidateManager: CandidateManager, enterpriseManager: EnterpriseManager) {
+        this.userManager = userManager;
+        this.candidateManager = candidateManager;
+        this.enterpriseManager = enterpriseManager;
     }
 
     public async create(req: Request, res: Response, next: NextFunction) {
-        // const user: User = req.body; // Create a user from body
-        // const ret = await this.manager.create(user);
+        const user: User = req.body.user; // Create a user from body
+        const ret = await this.userManager.create(user);
 
-        // // res.json('Create hit! - ' + JSON.stringify(ret));
-        // res.status(201).send({ ret });
+        // TODO: Handle if user is candidate or enterprise
+
+        // res.json('Create hit! - ' + JSON.stringify(ret));
+        res.status(201).send({ ret });
 
         res.json('Create hit!');
     }
 
+    // Gets generic info from users for searching
     public async get(req: Request, res: Response, next: NextFunction) {
-        // const authUser: IUser = req.body; // Pass in attr for IUser in request body
-        // const user = await this.manager.findByEmail(authUser.email);
+        const user = await this.userManager.get(req.params.id);
 
-        // res.status(200).send({ user }); // Return details for user
+        // TODO: Check for account type for candidate vs enterprise
 
-        res.json('Get hit!');
+        res.status(200).send({ 
+            username: user.username,
+            headline: user.headline,
+            email: user.email,
+            profilePicture: user.profilePicture,
+            coverPhoto: user.coverPhoto,
+
+        }); // Return details for user
+
+        // res.json('Get hit!');
     }
 
     public async update(req: Request, res: Response, next: NextFunction) {
@@ -52,7 +67,7 @@ export class UserController implements IController {
     }
 
     public async delete(req: Request, res: Response, next: NextFunction) {
-        // await this.manager.delete(req.body.id);// Delete the user by ID
+        // await this.manager.delete(req.params.id);// Delete the user by ID
         // res.status(204);
 
         res.json('Delete hit!');
@@ -71,7 +86,7 @@ export class UserController implements IController {
     public async login(req: Request, res: Response, next: NextFunction) {
         const email: string = req.body.email;
         const pass: string = req.body.password;
-        const authToken: string = await this.manager.login(email, pass);
+        const authToken: string = await this.userManager.login(email, pass);
         res.send({ authToken });
     }
 
@@ -87,7 +102,7 @@ export class UserController implements IController {
         const email = req.body.email;
         const oldPass = req.body.oldPassword;
         const newPass = req.body.newPassword;
-        await this.manager.changePassword(email, newPass, oldPass);
+        await this.userManager.changePassword(email, newPass, oldPass);
         res.status(204); // Send no content
     } 
 
@@ -103,12 +118,11 @@ export class UserController implements IController {
                 middleware.authorization([Role.USER, Role.ADMIN]),
                 this.create.bind(this)
             )
+        app.route(`/${config.app.api_route}/${config.app.api_ver}/user/:id`)
             .get(
                 middleware.authentication(module.libs.auth),
-                middleware.authorization([Role.USER, Role.ADMIN]),
                 this.get.bind(this)
-            );
-        app.route(`/${config.app.api_route}/${config.app.api_ver}/:num`)
+            )
             .put(
                 middleware.authentication(module.libs.auth),
                 middleware.authorization([Role.USER, Role.ADMIN]),
@@ -124,7 +138,7 @@ export class UserController implements IController {
             .post(
                 this.login.bind(this)
             );
-        app.route(`/${config.app.api_route}/${config.app.api_ver}/changepass`)
+        app.route(`/${config.app.api_route}/${config.app.api_ver}/user/changepass`)
             .post(
                 middleware.authentication(module.libs.auth),
                 middleware.authorization([Role.USER, Role.ADMIN]),
