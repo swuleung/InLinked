@@ -8,5 +8,5 @@ export interface Enterprise {
 }
 
 export function isEnterprise(obj: any): boolean {
-    return obj.type === 'Enterprise';
+    return obj.enterpriseId !== undefined;
 }

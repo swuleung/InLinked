@@ -11,11 +11,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const path = require("path");
+const exceptions_1 = require("../../exceptions");
 var Role;
 (function (Role) {
     Role["USER"] = "user";
     Role["ADMIN"] = "admin";
 })(Role = exports.Role || (exports.Role = {}));
+var AccType;
+(function (AccType) {
+    AccType["CANDIDATE"] = "candidate";
+    AccType["ENTERPRISE"] = "enterprise";
+})(AccType = exports.AccType || (exports.AccType = {}));
 /**
  * Authentication class used for authenticating different users and assinging tokens for a certain duration
  *
@@ -59,20 +65,18 @@ class JWTAuth {
      */
     validate(token) {
         return __awaiter(this, void 0, void 0, function* () {
-            // try {
-            const decode = jwt.verify(token, this.public, { algorithms: ['RS256'] }); // Verify that the given token is a valid token
-            const user = yield this.repo.findByEmail(decode.email);
-            return {
-                userId: user.id,
-                email: user.email,
-                role: user.role
-            };
-            // } catch (err) {
-            //     throw new UnauthorizedException(
-            //         'User is unauthorized to access application data.',
-            //         err
-            //     );
-            // }
+            try {
+                const decode = jwt.verify(token, this.public, { algorithms: ['RS256'] }); // Verify that the given token is a valid token
+                const user = yield this.repo.findByEmail(decode.email);
+                return {
+                    userId: user.id,
+                    email: user.email,
+                    role: user.role
+                };
+            }
+            catch (err) {
+                throw new exceptions_1.UnauthorizedException('Given token could not be verified for authorization.', err);
+            }
         });
     }
 }

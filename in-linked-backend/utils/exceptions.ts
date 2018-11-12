@@ -12,7 +12,7 @@ export class ExceptionBase extends Error {
     public code: number;
     public error: Error;
 
-    constructor(code: number, message: string, error?: Error) {
+    constructor(code: number, message: string, error?: Error | ExceptionBase) {
         super(message);
         this.code = code;
         this.error = error;
@@ -22,7 +22,7 @@ export class ExceptionBase extends Error {
         return {
             message: this.message,
             code: this.code,
-            error: this.error
+            internalError: { ...this.error }
         };
     }
 }
@@ -70,6 +70,14 @@ export class PermissionException extends ExceptionBase {
 
 export class UnauthenticatedException extends ExceptionBase {
     constructor(msg: string) {
-        super(400, msg);
+        super(40000, msg);
     }
+}
+
+export function isError(obj: any): boolean {
+    return obj.code !== undefined;
+}
+
+export function buildErrorRes(obj: any) {
+    return { ...obj, error: 1 };
 }

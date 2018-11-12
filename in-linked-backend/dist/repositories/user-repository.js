@@ -29,17 +29,16 @@ class UserRepository {
      */
     insert(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            // TODO: Add create/update date for user?
-            const connection = yield this.db.getConnection();
+            const conn = yield this.db.getConnection();
             try {
-                const res = yield connection.table(this.TABLE_NAME).insert({
-                    UserId: user.userId,
+                const res = yield conn.table(this.TABLE_NAME).insert({
                     Username: user.username,
                     Headline: user.headline,
                     Password: user.password,
                     Email: user.email,
                     ProfilePicture: user.profilePicture,
                     CoverPhoto: user.coverPhoto,
+                    Role: user.role,
                     AccType: user.acctype
                 });
                 user.userId = res[0];
@@ -55,13 +54,13 @@ class UserRepository {
     }
     get(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const connection = yield this.db.getConnection();
-            const row = yield connection
+            const conn = yield this.db.getConnection();
+            const row = yield conn
                 .table(this.TABLE_NAME)
                 .where({ UserId: id })
                 .first();
             if (!row) {
-                throw new exceptions_1.NotFoundException(`The id '${id}' does not exist in the table.`);
+                throw new exceptions_1.NotFoundException(`The id '${id}' does not exist in the users table.`);
             }
             return this.toModel(row);
         });
@@ -75,8 +74,8 @@ class UserRepository {
      */
     findByEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            const connection = yield this.db.getConnection();
-            const row = yield connection
+            const conn = yield this.db.getConnection();
+            const row = yield conn
                 .table(this.TABLE_NAME)
                 .where({ email })
                 .first();
@@ -99,7 +98,6 @@ class UserRepository {
             const conn = yield this.db.getConnection();
             yield conn.table(this.TABLE_NAME).update({
                 Headline: user.headline,
-                Password: user.password,
                 ProfilePicture: user.profilePicture,
                 CoverPhoto: user.coverPhoto
             });
@@ -113,19 +111,19 @@ class UserRepository {
      * @returns {Promise<void>} - return a void promise :(
      * @memberof UserRepository
      */
-    delete(userId) {
+    delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const transaction = yield this.db.getTransaction();
             try {
                 yield transaction.from(this.TABLE_NAME)
                     .delete()
-                    .where({ UserId: userId });
+                    .where({ UserId: id });
                 yield transaction.commit(); // Commit transaction
             }
-            catch (error) {
+            catch (err) {
                 // Error in transaction, roll back
-                transaction.rollback(error);
-                throw error;
+                transaction.rollback(err);
+                throw err;
             }
         });
     }
@@ -145,7 +143,7 @@ class UserRepository {
             email: row.Email,
             profilePicture: row.ProfilePicture,
             coverPhoto: row.CoverPhoto,
-            role: row.User,
+            role: row.Role,
             acctype: row.AccType
         };
     }

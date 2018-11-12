@@ -13,7 +13,7 @@ class ExceptionBase extends Error {
         return {
             message: this.message,
             code: this.code,
-            error: this.error
+            internalError: Object.assign({}, this.error)
         };
     }
 }
@@ -58,8 +58,16 @@ class PermissionException extends ExceptionBase {
 exports.PermissionException = PermissionException;
 class UnauthenticatedException extends ExceptionBase {
     constructor(msg) {
-        super(400, msg);
+        super(40000, msg);
     }
 }
 exports.UnauthenticatedException = UnauthenticatedException;
+function isError(obj) {
+    return obj.code !== undefined;
+}
+exports.isError = isError;
+function buildErrorRes(obj) {
+    return Object.assign({}, obj, { error: 1 });
+}
+exports.buildErrorRes = buildErrorRes;
 //# sourceMappingURL=exceptions.js.map

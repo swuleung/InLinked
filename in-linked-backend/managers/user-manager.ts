@@ -27,17 +27,17 @@ export class UserManager {
             const hashedPass = await this.hash.hashPassword(user.password);
             user.password = hashedPass; // Update password
     
-            return this.repo.insert(user); 
+            return await this.repo.insert(user); 
         } catch (ex) {
-            return {...ex, error: 1 };
+            return ex.toObject();
         }
     }
 
     public async get(id: number): Promise<User> {
         try {
-            return this.repo.get(id);
+            return await this.repo.get(id);
         } catch (ex) {
-            return {...ex, error: 1 };
+            return ex.toObject();
         }
     }
 
@@ -45,18 +45,18 @@ export class UserManager {
         try {
             return this.repo.findByEmail(email);
         } catch (ex) {
-            return {...ex, error: 1 };
+            return ex.toObject();
         }
     }
 
     public async update(user: User): Promise<User> {
 
-        return this.repo.update(user);
+        return await this.repo.update(user);
     }
 
     public async delete(id: number): Promise<void> {
 
-        return this.repo.delete(id);
+        return await this.repo.delete(id);
     }
 
     /* Specific functionality */
@@ -102,7 +102,7 @@ export class UserManager {
             throw new ValidationException('Wrong credentials');
         } catch (ex) {
             const pass = await this.hash.hashPassword(password);
-            return {...ex, test: pass, error: 1 }; // Use success code to determine if we can read token
+            return {...ex.toObject(), test: pass, error: 1 }; // Use success code to determine if we can read token
         }
     }
 }

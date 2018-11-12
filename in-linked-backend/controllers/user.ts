@@ -8,6 +8,7 @@ import { User, isUser, isCandidate, isEnterprise, Candidate, Enterprise } from '
 import { IController } from './controller.interface';
 import { Role, AccType } from '../utils/lib/auth';
 import { ServiceModule } from '../utils/module/service-module';
+import { isError, buildErrorRes } from '../utils/exceptions';
 import { sanitizeUser } from '../utils/lib/sanitize';
 
 import config from '../config/config';
@@ -30,8 +31,8 @@ export class UserController implements IController {
         const ret = await this.userManager.create(user);
 
         // Failed create, threw error cause of duplicate user
-        if (!isUser(ret)) {
-            res.status(201).send({ ret })
+        if (isError(ret)) {
+            res.status(500).send(buildErrorRes(ret));
         }
 
         // Create entries based on account type
@@ -48,15 +49,16 @@ export class UserController implements IController {
         let user = await this.userManager.get(req.params.id);
 
         // If response was an error, return it
-        if (!isUser(user)) {
-            res.status(200).send({ ...user });
+        if (isError(user)) {
+            res.status(500).send(buildErrorRes(user));
+            return;
         }
 
         let special: any = null; // Store result for candidates/enterprise
         if (user.acctype === AccType.ENTERPRISE) {
-            special = await this.enterpriseManager.get(req.body.enterprise);
+            special = await this.enterpriseManager.get(user.userId);
         } else if (user.acctype === AccType.CANDIDATE) {
-            special = await this.candidateManager.get(req.body.candidate);
+            special = await this.candidateManager.get(user.userId);
         }
 
         // Verify that responses for special objects succeeded
@@ -130,7 +132,12 @@ export class UserController implements IController {
         const email: string = req.body.email;
         const pass: string = req.body.password;
         const authToken: string = await this.userManager.login(email, pass);
-        res.send({ authToken });
+
+        if (isError(authToken)) {
+            res.status(500).send(buildErrorRes(authToken));
+        } else {
+            res.send({ authToken });
+        }
     }
 
     /**
@@ -163,7 +170,7 @@ export class UserController implements IController {
             )
         app.route(`/${config.app.api_route}/${config.app.api_ver}/user/:id`)
             .get(
-                middleware.authentication(module.libs.auth),
+                // middleware.authentication(module.libs.auth),
                 this.get.bind(this)
             )
             .put(

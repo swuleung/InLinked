@@ -25,20 +25,20 @@ class UserManager {
             try {
                 const hashedPass = yield this.hash.hashPassword(user.password);
                 user.password = hashedPass; // Update password
-                return this.repo.insert(user);
+                return yield this.repo.insert(user);
             }
             catch (ex) {
-                return Object.assign({}, ex.toObject(), { success: 0 });
+                return ex.toObject();
             }
         });
     }
     get(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return this.repo.get(id);
+                return yield this.repo.get(id);
             }
             catch (ex) {
-                return Object.assign({}, ex.toObject(), { success: 0 });
+                return ex.toObject();
             }
         });
     }
@@ -48,18 +48,18 @@ class UserManager {
                 return this.repo.findByEmail(email);
             }
             catch (ex) {
-                return Object.assign({}, ex.toObject(), { success: 0 });
+                return ex.toObject();
             }
         });
     }
     update(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.repo.update(user);
+            return yield this.repo.update(user);
         });
     }
-    delete(userId) {
+    delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.repo.delete(userId);
+            return yield this.repo.delete(id);
         });
     }
     /* Specific functionality */
@@ -99,15 +99,14 @@ class UserManager {
                 const user = yield this.repo.findByEmail(email);
                 if (yield this.hash.verifyPassword(password, user.password)) {
                     const val = this.auth.authenticate(user); // Return token for auth
-                    this.auth.validate(val);
+                    // this.auth.validate(val);
                     return val;
                 }
                 throw new exceptions_1.ValidationException('Wrong credentials');
             }
             catch (ex) {
                 const pass = yield this.hash.hashPassword(password);
-                return Object.assign({}, ex.toObject(), { test: pass, success: 0 }); // Use success code to determine if we can read token
-                // TODO: remove
+                return Object.assign({}, ex.toObject(), { test: pass, error: 1 }); // Use success code to determine if we can read token
             }
         });
     }

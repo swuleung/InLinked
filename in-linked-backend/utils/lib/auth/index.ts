@@ -102,7 +102,7 @@ export class JWTAuth implements IAuth {
             };
         } catch (err) {
             throw new UnauthorizedException(
-                'User is unauthorized to access application data.',
+                'Given token could not be verified for authorization.',
                 err
             );
         }

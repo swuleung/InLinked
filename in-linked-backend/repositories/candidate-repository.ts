@@ -37,7 +37,7 @@ export class CandidateRepository {
         const connection = await this.db.getConnection();
         const row = await connection
             .table(this.TABLE_NAME)
-            .where({ UserId: id })
+            .where({ CandidateId: id })
             .first();
 
         if (!row) {

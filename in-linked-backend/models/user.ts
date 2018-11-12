@@ -14,5 +14,5 @@ export interface User {
 }
 
 export function isUser(obj: any): boolean {
-    return obj.type === 'User';
+    return obj.userId !== undefined;
 }

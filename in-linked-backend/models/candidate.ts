@@ -7,5 +7,5 @@ export interface Candidate {
 }
 
 export function isCandidate(obj: any): boolean {
-    return obj.type === 'Candidate';
+    return obj.candidateId !== undefined;
 }
