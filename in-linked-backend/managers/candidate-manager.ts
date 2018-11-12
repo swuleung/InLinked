@@ -21,18 +21,18 @@ export class CandidateManager {
 
     /* CRUD */
     public async create(candidate: Candidate): Promise<Candidate> {
-
+        return this.repo.insert(candidate);
     }
 
     public async get(id: number): Promise<Candidate> {
-
+        return this.repo.get(id);
     }
 
     public async update(candidate: Candidate): Promise<Candidate> {
-
+        return this.repo.update(candidate);
     }
 
     public async delete(id: number): Promise<void> {
-
+        return this.repo.delete(id);
     }
 }

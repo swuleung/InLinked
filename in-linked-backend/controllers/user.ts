@@ -8,7 +8,7 @@ import { User, isUser, isCandidate, isEnterprise, Candidate, Enterprise } from '
 import { IController } from './controller.interface';
 import { Role, AccType } from '../utils/lib/auth';
 import { ServiceModule } from '../utils/module/service-module';
-import { Sanatize } from '../utils/lib/sanitize';
+import { sanitizeUser } from '../utils/lib/sanitize';
 
 import config from '../config/config';
 import * as middleware from '../middleware';
@@ -18,13 +18,11 @@ export class UserController implements IController {
     private userManager: UserManager;
     private candidateManager: CandidateManager;
     private enterpriseManager: EnterpriseManager;
-    private module: ServiceModule;
 
-    constructor(userManager: UserManager, candidateManager: CandidateManager, enterpriseManager: EnterpriseManager, module: ServiceModule) {
+    constructor(userManager: UserManager, candidateManager: CandidateManager, enterpriseManager: EnterpriseManager) {
         this.userManager = userManager;
         this.candidateManager = candidateManager;
         this.enterpriseManager = enterpriseManager;
-        this.module = module;
     }
 
     public async create(req: Request, res: Response, next: NextFunction) {
@@ -62,7 +60,7 @@ export class UserController implements IController {
         }
 
         // Verify that responses for special objects succeeded
-        user = isCandidate(special) || isEnterprise(special) ? this.module.libs.sanatizer.sanatizeUser(user) : null
+        user = isCandidate(special) || isEnterprise(special) ? sanitizeUser(user) : null
         res.status(200).send({ 
             ...user,
             ...special
@@ -105,7 +103,7 @@ export class UserController implements IController {
 
     public async delete(req: Request, res: Response, next: NextFunction) {
         const user = await this.userManager.get(req.params.id);
-        if (isUser(user)) { // Make sure it is not a user
+        if (isUser(user)) { // Make sure it is not an error
             if (user.acctype === AccType.CANDIDATE) {
                 await this.candidateManager.delete(user.userId);
             } else if (user.acctype === AccType.ENTERPRISE) {
@@ -155,7 +153,7 @@ export class UserController implements IController {
      * Bind the different functions to routes
      * @param app Express app to bind the routes to
      */
-    public bindRoutes(app: Application): void {
+    public bindRoutes(app: Application, module: ServiceModule): void {
         // Bind with this to provide contex to this curent object (user controller)
         app.route(`/${config.app.api_route}/${config.app.api_ver}/user`)
             .post(

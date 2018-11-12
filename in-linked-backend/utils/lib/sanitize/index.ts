@@ -3,8 +3,12 @@ import { User } from '../../../models';
 /**
  * Used for sanatizing models for response
  */
-export class Sanatize {
-    public sanatizeUser(user: User): any {
-        
-    }
+export function sanitizeUser(user: User): any {
+    return {
+        username: user.username,
+        headline: user.headline,
+        email: user.email,
+        profilePicture: user.profilePicture,
+        coverPhoto: user.coverPhoto,
+    };
 }

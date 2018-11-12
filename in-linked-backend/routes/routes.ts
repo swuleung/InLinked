@@ -15,7 +15,7 @@ export class Routes {
     
     constructor(app: Application, module: ServiceModule) {
         this.testController = new Controllers.TestController();
-        this.userController = new Controllers.UserController(module.managers.user);
+        this.userController = new Controllers.UserController(module.managers.user, module.managers.candidate, module.managers.enterprise);
 
         // Bind routes
         this.testController.bindRoutes(app);

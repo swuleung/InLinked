@@ -61,7 +61,7 @@ export class UserRepository {
 
         if (!row) {
             throw new NotFoundException(
-                `The id '${id}' does not exist in the table.`
+                `The id '${id}' does not exist in the users table.`
             );
         }
         return this.toModel(row);
@@ -123,10 +123,10 @@ export class UserRepository {
                 .where({ UserId: id });
 
             await transaction.commit(); // Commit transaction
-        } catch (error) {
+        } catch (err) {
             // Error in transaction, roll back
-            transaction.rollback(error);
-            throw error;
+            transaction.rollback(err);
+            throw err;
         }
     }
 

@@ -29,7 +29,7 @@ export class UserManager {
     
             return this.repo.insert(user); 
         } catch (ex) {
-            return {...ex.toObject(), error: 1 };
+            return {...ex, error: 1 };
         }
     }
 
@@ -37,7 +37,7 @@ export class UserManager {
         try {
             return this.repo.get(id);
         } catch (ex) {
-            return {...ex.toObject(), error: 1 };
+            return {...ex, error: 1 };
         }
     }
 
@@ -45,7 +45,7 @@ export class UserManager {
         try {
             return this.repo.findByEmail(email);
         } catch (ex) {
-            return {...ex.toObject(), error: 1 };
+            return {...ex, error: 1 };
         }
     }
 
@@ -102,7 +102,7 @@ export class UserManager {
             throw new ValidationException('Wrong credentials');
         } catch (ex) {
             const pass = await this.hash.hashPassword(password);
-            return {...ex.toObject(), test: pass, error: 1 }; // Use success code to determine if we can read token
+            return {...ex, test: pass, error: 1 }; // Use success code to determine if we can read token
         }
     }
 }
