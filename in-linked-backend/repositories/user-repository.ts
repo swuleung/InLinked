@@ -24,10 +24,9 @@ export class UserRepository {
      * @memberof UserRepository
      */
     public async insert(user: User): Promise<User> {
-        // TODO: Add create/update date for user?
-        const connection = await this.db.getConnection();
+        const conn = await this.db.getConnection();
         try {
-            const res = await connection.table(this.TABLE_NAME).insert({
+            const res = await conn.table(this.TABLE_NAME).insert({
                 Username: user.username,
                 Headline: user.headline,
                 Password: user.password,
@@ -53,8 +52,8 @@ export class UserRepository {
     }
 
     public async get(id: number): Promise<User> {
-        const connection = await this.db.getConnection();
-        const row = await connection
+        const conn = await this.db.getConnection();
+        const row = await conn
             .table(this.TABLE_NAME)
             .where({ UserId: id })
             .first();
@@ -75,8 +74,8 @@ export class UserRepository {
      * @memberof UserRepository
      */
     public async findByEmail(email: string): Promise<User> {
-        const connection = await this.db.getConnection();
-        const row = await connection
+        const conn = await this.db.getConnection();
+        const row = await conn
             .table(this.TABLE_NAME)
             .where({ email })
             .first();
