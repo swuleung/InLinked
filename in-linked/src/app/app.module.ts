@@ -14,6 +14,7 @@ import { CandidateProfileComponent } from './pages/candidate-profile/candidate-p
 import { CreateAccountComponent } from './pages/create-account/create-account.component';
 import { DashboardComponent } from './layouts/dashboard/container/dashboard/dashboard.component';
 import { UserFeedComponent } from './pages/user-feed/user-feed.component';
+import { JobSearchComponent } from './pages/job-search/job-search.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { UserFeedComponent } from './pages/user-feed/user-feed.component';
     CandidateProfileComponent,
     CreateAccountComponent,
     DashboardComponent,
-    UserFeedComponent
+    UserFeedComponent,
+    JobSearchComponent
   ],
   imports: [
     BrowserModule,

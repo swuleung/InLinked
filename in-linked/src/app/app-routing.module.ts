@@ -8,6 +8,7 @@ import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { UserFeedComponent } from './pages/user-feed/user-feed.component';
 import { CreateAccountComponent } from './pages/create-account/create-account.component';
+import { JobSearchComponent } from './pages/job-search/job-search.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,14 @@ const routes: Routes = [
       {
         path: 'enterprise/:username',
         component: EnterpriseProfileComponent
+      },
+      {
+        path: 'jobs',
+        component: JobSearchComponent
+      },
+      {
+        path: 'jobs/:query',
+        component: JobSearchComponent
       },
       {
         path: 'search',
