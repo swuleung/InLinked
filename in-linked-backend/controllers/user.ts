@@ -30,9 +30,10 @@ export class UserController implements IController {
         const user: User = req.body.user; // Create a user from body
         const ret = await this.userManager.create(user);
 
-        // Failed create, threw error cause of duplicate user
+        // Failed create, throw error cause of duplicate user
         if (isError(ret)) {
             res.status(500).send(buildErrorRes(ret));
+            return;
         }
 
         // Create entries based on account type
@@ -41,7 +42,7 @@ export class UserController implements IController {
         } else if (user.acctype === AccType.CANDIDATE) {
             await this.candidateManager.create(req.body.candidate);
         }
-        res.status(201).send({ ret });
+        res.status(201).send(ret);
     }
 
     // Gets generic info for user given an id
