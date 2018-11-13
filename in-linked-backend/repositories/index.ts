@@ -1,2 +1,5 @@
 /* Export other members */
-export { UserRepository } from '../repositories/user-repository';
+export { UserRepository } from './user-repository';
+export { CandidateRepository } from  './candidate-repository';
+export { EnterpriseRepository } from './enterprise-repository';
+export { ExperienceRepository } from './experience-repository';

@@ -9,4 +9,6 @@ var candidate_manager_1 = require("./candidate-manager");
 exports.CandidateManager = candidate_manager_1.CandidateManager;
 var enterprise_manager_1 = require("./enterprise-manager");
 exports.EnterpriseManager = enterprise_manager_1.EnterpriseManager;
+var experience_manager_1 = require("./experience-manager");
+exports.ExperienceManager = experience_manager_1.ExperienceManager;
 //# sourceMappingURL=index.js.map

@@ -4,8 +4,6 @@ const managers_1 = require("../../managers");
 const repositories_1 = require("../../repositories");
 const auth_1 = require("../lib/auth");
 const hash_1 = require("../lib/hash");
-const candidate_repository_1 = require("../../repositories/candidate-repository");
-const enterprise_repository_1 = require("../../repositories/enterprise-repository");
 /**
  * Builds a module containing all the libs, managers, and services for the app
  *
@@ -15,8 +13,9 @@ const enterprise_repository_1 = require("../../repositories/enterprise-repositor
  */
 function buildModule(db) {
     const userRepo = new repositories_1.UserRepository(db);
-    const candidateRepo = new candidate_repository_1.CandidateRepository(db);
-    const enterpriseRepo = new enterprise_repository_1.EnterpriseRepository(db);
+    const candidateRepo = new repositories_1.CandidateRepository(db);
+    const enterpriseRepo = new repositories_1.EnterpriseRepository(db);
+    const experienceRepo = new repositories_1.ExperienceRepository(db);
     const auth = new auth_1.JWTAuth(userRepo);
     const hash = new hash_1.BCryptHash();
     return {
@@ -27,7 +26,8 @@ function buildModule(db) {
         managers: {
             user: new managers_1.UserManager(userRepo, auth, hash),
             candidate: new managers_1.CandidateManager(candidateRepo, auth, hash),
-            enterprise: new managers_1.EnterpriseManager(enterpriseRepo, auth, hash)
+            enterprise: new managers_1.EnterpriseManager(enterpriseRepo, auth, hash),
+            experience: new managers_1.ExperienceManager(experienceRepo)
         },
         repositories: {
             user: userRepo

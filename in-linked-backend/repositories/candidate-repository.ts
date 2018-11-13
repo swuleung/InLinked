@@ -17,7 +17,6 @@ export class CandidateRepository {
                 CandidateId: candidate.candidateId,
                 FullName: candidate.fullName,
                 Skills: candidate.skills,
-                Experience: candidate.experience,
                 EducationLevel: candidate.educationLevel
             });
             return candidate;
@@ -53,7 +52,6 @@ export class CandidateRepository {
         await conn.table(this.TABLE_NAME).update({
             FullName: candidate.fullName,
             Skills: candidate.skills,
-            Experience: candidate.experience,
             EducationLevel: candidate.educationLevel
         });
         return candidate;
@@ -78,7 +76,6 @@ export class CandidateRepository {
             candidateId: row.CandidateId,
             fullName: row.FullName,
             skills: row.Skills,
-            experience: row.Experience,
             educationLevel: row.EducationLevel
         }
     }

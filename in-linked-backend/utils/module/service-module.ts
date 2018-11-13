@@ -1,10 +1,8 @@
-import { UserManager, EnterpriseManager, CandidateManager } from '../../managers';
-import { UserRepository } from '../../repositories';
+import { UserManager, EnterpriseManager, CandidateManager, ExperienceManager } from '../../managers';
+import { UserRepository, CandidateRepository, EnterpriseRepository, ExperienceRepository } from '../../repositories';
 import { IAuth, JWTAuth } from '../lib/auth';
 import { MySql } from '../lib/database';
 import { BCryptHash, IHash } from '../lib/hash';
-import { CandidateRepository } from '../../repositories/candidate-repository';
-import { EnterpriseRepository } from '../../repositories/enterprise-repository';
 
 /**
  * A global instance that holds access to important components such as libs, managers, and repositories
@@ -18,6 +16,7 @@ export interface ServiceModule {
         user: UserManager;
         candidate: CandidateManager;
         enterprise: EnterpriseManager;
+        experience: ExperienceManager;
     };
     repositories: {
         user: UserRepository;
@@ -36,6 +35,7 @@ export function buildModule(db: MySql): ServiceModule {
     const userRepo = new UserRepository(db);
     const candidateRepo = new CandidateRepository(db);
     const enterpriseRepo = new EnterpriseRepository(db);
+    const experienceRepo = new ExperienceRepository(db);
 
     const auth = new JWTAuth(userRepo);
     const hash = new BCryptHash();
@@ -48,7 +48,8 @@ export function buildModule(db: MySql): ServiceModule {
         managers: {
             user: new UserManager(userRepo, auth, hash),
             candidate: new CandidateManager(candidateRepo, auth, hash),
-            enterprise: new EnterpriseManager(enterpriseRepo, auth, hash)
+            enterprise: new EnterpriseManager(enterpriseRepo, auth, hash),
+            experience: new ExperienceManager(experienceRepo)
         },
         repositories: {
             user: userRepo
