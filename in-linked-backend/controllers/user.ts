@@ -78,14 +78,12 @@ export class UserController implements IController {
         user.headline = newUserData.headline;
         user.profilePicture = newUserData.profilePicture;
 
-        // TODO: Update candidate and enterprise
         if (user.acctype === AccType.CANDIDATE) {
             const newCandData: Candidate = req.body.candidate;
             const cand = await this.candidateManager.get(user.userId);
 
             cand.fullName = newCandData.fullName;
             cand.skills = newCandData.skills;
-            cand.experience = newCandData.experience;
             cand.educationLevel = newCandData.educationLevel;
 
             await this.candidateManager.update(cand);
@@ -170,7 +168,7 @@ export class UserController implements IController {
             )
         app.route(`/${config.app.api_route}/${config.app.api_ver}/user/:id`)
             .get(
-                // middleware.authentication(module.libs.auth),
+                middleware.authentication(module.libs.auth),
                 this.get.bind(this)
             )
             .put(

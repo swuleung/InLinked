@@ -67,13 +67,11 @@ class UserController {
             user.coverPhoto = newUserData.coverPhoto;
             user.headline = newUserData.headline;
             user.profilePicture = newUserData.profilePicture;
-            // TODO: Update candidate and enterprise
             if (user.acctype === auth_1.AccType.CANDIDATE) {
                 const newCandData = req.body.candidate;
                 const cand = yield this.candidateManager.get(user.userId);
                 cand.fullName = newCandData.fullName;
                 cand.skills = newCandData.skills;
-                cand.experience = newCandData.experience;
                 cand.educationLevel = newCandData.educationLevel;
                 yield this.candidateManager.update(cand);
             }
@@ -152,9 +150,7 @@ class UserController {
         app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/user`)
             .post(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.create.bind(this));
         app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/user/:id`)
-            .get(
-        // middleware.authentication(module.libs.auth),
-        this.get.bind(this))
+            .get(middleware.authentication(module.libs.auth), this.get.bind(this))
             .put(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.update.bind(this))
             .delete(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.ADMIN]), this.delete.bind(this));
         app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/login`)
