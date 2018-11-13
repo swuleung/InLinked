@@ -9,6 +9,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { UserFeedComponent } from './pages/user-feed/user-feed.component';
 import { CreateAccountComponent } from './pages/create-account/create-account.component';
 import { JobSearchComponent } from './pages/job-search/job-search.component';
+import { AdminComponent } from './pages/admin/admin.component';
 
 const routes: Routes = [
   {
@@ -67,6 +68,10 @@ const routes: Routes = [
       {
         path: 'settings',
         component: SettingsComponent
+      },
+      {
+        path: 'admin',
+        component: AdminComponent
       }
     ]
   }
