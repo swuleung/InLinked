@@ -37,7 +37,6 @@ CREATE TABLE IF NOT EXISTS `Candidate` (
     CandidateId INTEGER NOT NULL,
     FullName VARCHAR(50),
     Skills TEXT,
-    Experience TEXT,
     EducationLevel VARCHAR(30),
     DisplayEmail BIT DEFAULT 0,
     PRIMARY KEY (CandidateId),
@@ -104,6 +103,16 @@ CREATE TABLE IF NOT EXISTS `Applies` (
     FOREIGN KEY (CandidateId) REFERENCES Candidate(CandidateId)
 );
 
+CREATE TABLE IF NOT EXISTS `Experience` {
+    ExperienceId INTEGER NOT NULL AUTO_INCREMENT,
+    UserId INTEGER NOT NULL,
+    EnterpriseId INTEGER NOT NULL,
+    EnterpriseName VARCHAR(255) NOT NULL,
+    PositionName VARCHAR(255) NOT NULL,
+    Description TEXT,
+    StartDate DATE,
+    Location VARCHAR(255)
+}
 
 -- Triggers
 DELIMITER //
