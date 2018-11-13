@@ -14,6 +14,8 @@ CREATE TABLE IF NOT EXISTS `User` (
     CoverPhoto TEXT,
     Role CHAR(20) NOT NULL,
     AccType CHAR(20) NOT NULL,
+    CreateDate DATE,
+    LastActiveDate DATE,
     PRIMARY KEY (UserId),
     UNIQUE (Email)
 );
@@ -37,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `Candidate` (
     Skills TEXT,
     Experience TEXT,
     EducationLevel VARCHAR(30),
+    DisplayEmail BIT DEFAULT 0,
     PRIMARY KEY (CandidateId),
     FOREIGN KEY (CandidateId) REFERENCES User(UserId)
 );
@@ -53,6 +56,8 @@ CREATE TABLE IF NOT EXISTS `Job` (
     City VARCHAR(255),
     Province VARCHAR(255),
     Country VARCHAR(255),
+    JobURL TEXT,
+    PostedDate TEXT,
     PRIMARY KEY (JobId),
     FOREIGN KEY (EnterpriseId) REFERENCES Enterprise(EnterpriseId)
 );
