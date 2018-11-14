@@ -13,8 +13,8 @@ VALUES (1, 'Google', 'Best Company Ever', 'Sundar Pichai', 'Mountain View, CA', 
 INSERT INTO User (Username, Headline, Password, Email, ProfilePicture, CoverPhoto, Role, AccType)
 VALUES ('johndoe', 'first account', 'test', 'test@tst.com', 'img', 'img', 'user', 'candidate');
 
-INSERT INTO Candidate (CandidateId, FullName, Skills, Experience, EducationLevel)
-VALUES (1, 'John Doe', 'C++, C#', 'I have lots of experience', 'bachelors');
+INSERT INTO Candidate (CandidateId, FullName, Skills, EducationLevel, DisplayEmail)
+VALUES (1, 'John Doe', 'C++, C#', 'bachelors', 1);
 
 /*
     TESTING TRIGGER FOR USER/ORGANIZATION
