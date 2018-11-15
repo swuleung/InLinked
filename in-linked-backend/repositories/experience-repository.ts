@@ -75,14 +75,16 @@ export class ExperienceRepository {
 
     public async update(experience: Experience): Promise<Experience> {
         const conn = await this.db.getConnection();
-        await conn.table(this.TABLE_NAME).update({
-            EnterpriseId: experience.enterpriseId,
-            EnterpriseName: experience.enterpriseName,
-            PositionName: experience.positionName,
-            Description: experience.description,
-            StartDate: experience.startDate,
-            Location: experience.location
-        });
+        await conn.table(this.TABLE_NAME)
+            .where({ ExperienceId: experience.experienceId })
+            .update({
+                EnterpriseId: experience.enterpriseId,
+                EnterpriseName: experience.enterpriseName,
+                PositionName: experience.positionName,
+                Description: experience.description,
+                StartDate: experience.startDate,
+                Location: experience.location
+            });
         return experience;
     }
 

@@ -1,6 +1,6 @@
 import { User } from '../models';
 import { UserRepository } from '../repositories/user-repository';
-import { ValidationException } from '../utils/exceptions';
+import { ValidationException, isError } from '../utils/exceptions';
 import { IAuth } from '../utils/lib/auth';
 import { BCryptHash } from '../utils/lib/hash';
 
@@ -29,7 +29,7 @@ export class UserManager {
     
             return await this.repo.insert(user); 
         } catch (ex) {
-            return ex.toObject();
+            return (isError(ex) ? ex.toObject() : { ...ex });
         }
     }
 
@@ -37,7 +37,7 @@ export class UserManager {
         try {
             return await this.repo.get(id);
         } catch (ex) {
-            return ex.toObject();
+            return (isError(ex) ? ex.toObject() : { ...ex });
         }
     }
 
@@ -45,18 +45,24 @@ export class UserManager {
         try {
             return this.repo.findByEmail(email);
         } catch (ex) {
-            return ex.toObject();
+            return (isError(ex) ? ex.toObject() : { ...ex });
         }
     }
 
     public async update(user: User): Promise<User> {
-
-        return await this.repo.update(user);
+        try {
+            return await this.repo.update(user);
+        } catch (ex) {
+            return (isError(ex) ? ex.toObject() : { ...ex });
+        }
     }
 
     public async delete(id: number): Promise<void> {
-
-        return await this.repo.delete(id);
+        try {
+            return await this.repo.delete(id);
+        } catch (ex) {
+            return (isError(ex) ? ex.toObject() : { ...ex });
+        }
     }
 
     /* Specific functionality */
@@ -70,15 +76,19 @@ export class UserManager {
      * @memberof UserManager
      */
     public async changePassword(email: string, newPassword: string, oldPassword: string): Promise<void> {
-        const user = await this.repo.findByEmail(email);
-        const validPassword = await this.hash.verifyPassword(oldPassword, user.password); // Check for correct password first
-        if (!validPassword) {
-            throw new ValidationException('Old password is incorrect.');
-        }
+        try {
+            const user = await this.repo.findByEmail(email);
+            const validPassword = await this.hash.verifyPassword(oldPassword, user.password); // Check for correct password first
+            if (!validPassword) {
+                throw new ValidationException('Old password is incorrect.');
+            }
 
-        // Verify the password
-        const hashedPass = await this.hash.hashPassword(newPassword);
-        return this.repo.changePassword(email, hashedPass);
+            // Verify the password
+            const hashedPass = await this.hash.hashPassword(newPassword);
+            return this.repo.changePassword(email, hashedPass);
+        } catch (ex) {
+            return (isError(ex) ? ex.toObject() : { ...ex });
+        }
     }
 
     /**
@@ -95,14 +105,13 @@ export class UserManager {
             const user = await this.repo.findByEmail(email);
 
             if (await this.hash.verifyPassword(password, user.password)) {
-                const val = this.auth.authenticate(user); // Return token for auth
-                // this.auth.validate(val);
+                const val = this.auth.authenticate(user);
                 return val;
             }
             throw new ValidationException('Wrong credentials');
         } catch (ex) {
             const pass = await this.hash.hashPassword(password);
-            return {...ex.toObject(), test: pass, error: 1 }; // Use success code to determine if we can read token
+            return {...{ ...ex }, test: pass, error: 1 }; // Use success code to determine if we can read token
         }
     }
 }

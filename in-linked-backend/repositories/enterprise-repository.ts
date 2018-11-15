@@ -53,13 +53,15 @@ export class EnterpriseRepository {
 
     public async update(enterprise: Enterprise): Promise<Enterprise> {
         const conn = await this.db.getConnection();
-        await conn.table(this.TABLE_NAME).update({
-            EnterpriseName: enterprise.enterpriseName,
-            EnterpriseDescription: enterprise.enterpriseDescription,
-            CEO: enterprise.ceo,
-            HeadQuarters: enterprise.headquarters,
-            Industry: enterprise.industry
-        });
+        await conn.table(this.TABLE_NAME)
+            .where({ EnterpriseId: enterprise.enterpriseId })
+            .update({
+                EnterpriseName: enterprise.enterpriseName,
+                EnterpriseDescription: enterprise.enterpriseDescription,
+                CEO: enterprise.ceo,
+                HeadQuarters: enterprise.headquarters,
+                Industry: enterprise.industry
+            });
         return enterprise;
     }
 

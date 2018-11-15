@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { IUser, Role } from '../utils/lib/auth';
-import { PermissionException } from '../utils/exceptions';
+import { PermissionException, buildErrorRes, ExceptionBase } from '../utils/exceptions';
 
 /**
  * Verifies that a particular user is allowed to this action based on the roles allowed for the action and user's roles
@@ -11,12 +11,22 @@ import { PermissionException } from '../utils/exceptions';
  */
 export function authorization(roles: Role[]) {
     return async (req: Request, res: Response, next: () => Promise<any>) => {
-        const user: IUser = req.body.user;
+        try {
+            if (!req.body || !req.body.user) {
+                throw new ExceptionBase(10000, 'Missing request body with user role.');
+                // res.status(500).send({ body: req.body.user, ext: req.body });
+                // return;
+            }
 
-        // Check if user is able to perform this action
-        if (roles.indexOf(user.role) < 0) {
-            throw new PermissionException();
+            const user: IUser = req.body.user;
+
+            // Check if user is able to perform this action
+            if (roles.indexOf(user.role) < 0) {
+                throw new PermissionException();
+            }
+            await next();
+        } catch (err) {
+            res.status(500).send(buildErrorRes(err.toObject()));
         }
-        await next();
     }
 }

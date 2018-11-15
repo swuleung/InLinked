@@ -28,7 +28,7 @@ class UserManager {
                 return yield this.repo.insert(user);
             }
             catch (ex) {
-                return Object.assign({}, ex);
+                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
             }
         });
     }
@@ -38,7 +38,7 @@ class UserManager {
                 return yield this.repo.get(id);
             }
             catch (ex) {
-                return Object.assign({}, ex);
+                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
             }
         });
     }
@@ -48,18 +48,28 @@ class UserManager {
                 return this.repo.findByEmail(email);
             }
             catch (ex) {
-                return Object.assign({}, ex);
+                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
             }
         });
     }
     update(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.repo.update(user);
+            try {
+                return yield this.repo.update(user);
+            }
+            catch (ex) {
+                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
+            }
         });
     }
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.repo.delete(id);
+            try {
+                return yield this.repo.delete(id);
+            }
+            catch (ex) {
+                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
+            }
         });
     }
     /* Specific functionality */
@@ -74,14 +84,19 @@ class UserManager {
      */
     changePassword(email, newPassword, oldPassword) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield this.repo.findByEmail(email);
-            const validPassword = yield this.hash.verifyPassword(oldPassword, user.password); // Check for correct password first
-            if (!validPassword) {
-                throw new exceptions_1.ValidationException('Old password is incorrect.');
+            try {
+                const user = yield this.repo.findByEmail(email);
+                const validPassword = yield this.hash.verifyPassword(oldPassword, user.password); // Check for correct password first
+                if (!validPassword) {
+                    throw new exceptions_1.ValidationException('Old password is incorrect.');
+                }
+                // Verify the password
+                const hashedPass = yield this.hash.hashPassword(newPassword);
+                return this.repo.changePassword(email, hashedPass);
             }
-            // Verify the password
-            const hashedPass = yield this.hash.hashPassword(newPassword);
-            return this.repo.changePassword(email, hashedPass);
+            catch (ex) {
+                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
+            }
         });
     }
     /**
@@ -98,8 +113,7 @@ class UserManager {
             try {
                 const user = yield this.repo.findByEmail(email);
                 if (yield this.hash.verifyPassword(password, user.password)) {
-                    const val = this.auth.authenticate(user); // Return token for auth
-                    // this.auth.validate(val);
+                    const val = this.auth.authenticate(user);
                     return val;
                 }
                 throw new exceptions_1.ValidationException('Wrong credentials');

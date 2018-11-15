@@ -75,7 +75,7 @@ export class UnauthenticatedException extends ExceptionBase {
 }
 
 export function isError(obj: any): boolean {
-    return obj.code !== undefined;
+    return obj !== undefined && (obj.code !== undefined || obj.error !== undefined);
 }
 
 export function buildErrorRes(obj: any) {

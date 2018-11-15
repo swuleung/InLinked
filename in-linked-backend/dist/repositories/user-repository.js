@@ -96,7 +96,9 @@ class UserRepository {
     update(user) {
         return __awaiter(this, void 0, void 0, function* () {
             const conn = yield this.db.getConnection();
-            yield conn.table(this.TABLE_NAME).update({
+            yield conn.table(this.TABLE_NAME)
+                .where({ UserId: user.userId })
+                .update({
                 Headline: user.headline,
                 ProfilePicture: user.profilePicture,
                 CoverPhoto: user.coverPhoto

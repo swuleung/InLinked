@@ -73,7 +73,9 @@ class ExperienceRepository {
     update(experience) {
         return __awaiter(this, void 0, void 0, function* () {
             const conn = yield this.db.getConnection();
-            yield conn.table(this.TABLE_NAME).update({
+            yield conn.table(this.TABLE_NAME)
+                .where({ ExperienceId: experience.experienceId })
+                .update({
                 EnterpriseId: experience.enterpriseId,
                 EnterpriseName: experience.enterpriseName,
                 PositionName: experience.positionName,

@@ -98,7 +98,9 @@ export class UserRepository {
      */
     public async update(user: User): Promise<User> {
         const conn = await this.db.getConnection();
-        await conn.table(this.TABLE_NAME).update({
+        await conn.table(this.TABLE_NAME)
+            .where({ UserId: user.userId })
+            .update({
             Headline: user.headline,
             ProfilePicture: user.profilePicture,
             CoverPhoto: user.coverPhoto

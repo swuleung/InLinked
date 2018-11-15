@@ -31,10 +31,14 @@ class UserController {
             }
             // Create entries based on account type
             if (user.acctype === auth_1.AccType.ENTERPRISE) {
-                yield this.enterpriseManager.create(req.body.enterprise);
+                const enterprise = req.body.enterprise;
+                enterprise.enterpriseId = user.userId; // Update the associated ID
+                yield this.enterpriseManager.create(enterprise);
             }
             else if (user.acctype === auth_1.AccType.CANDIDATE) {
-                yield this.candidateManager.create(req.body.candidate);
+                const candidate = req.body.candidate;
+                candidate.candidateId = user.userId; // Update the associated ID
+                yield this.candidateManager.create(candidate);
             }
             res.status(201).send(ret);
         });
@@ -63,17 +67,23 @@ class UserController {
     update(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const newUserData = req.body.user;
-            const user = yield this.userManager.findByEmail(req.body.user.email);
+            const user = yield this.userManager.get(req.params.id);
+            if (exceptions_1.isError(user)) {
+                res.status(500).send(exceptions_1.buildErrorRes(user));
+                return;
+            }
             // Update vars
             user.coverPhoto = newUserData.coverPhoto;
             user.headline = newUserData.headline;
             user.profilePicture = newUserData.profilePicture;
+            yield this.userManager.update(user);
             if (user.acctype === auth_1.AccType.CANDIDATE) {
                 const newCandData = req.body.candidate;
                 const cand = yield this.candidateManager.get(user.userId);
                 cand.fullName = newCandData.fullName;
                 cand.skills = newCandData.skills;
                 cand.educationLevel = newCandData.educationLevel;
+                cand.displayEmail = newCandData.displayEmail || cand.displayEmail;
                 yield this.candidateManager.update(cand);
             }
             else if (user.acctype === auth_1.AccType.ENTERPRISE) {
@@ -86,21 +96,24 @@ class UserController {
                 enterprise.industry = newEnterpriseData.industry;
                 yield this.enterpriseManager.update(enterprise);
             }
+            res.status(200).send({ success: 1, message: `User id: ${user.userId}, username: ${user.username} successfully updated.` });
         });
     }
     delete(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield this.userManager.get(req.params.id);
-            if (models_1.isUser(user)) { // Make sure it is not an error
-                if (user.acctype === auth_1.AccType.CANDIDATE) {
-                    yield this.candidateManager.delete(user.userId);
-                }
-                else if (user.acctype === auth_1.AccType.ENTERPRISE) {
-                    yield this.enterpriseManager.delete(user.userId);
-                }
-                yield this.userManager.delete(req.params.id); // Delete the user by ID
+            if (exceptions_1.isError(user)) {
+                res.status(500).send(exceptions_1.buildErrorRes(user));
+                return;
             }
-            res.status(204);
+            if (user.acctype === auth_1.AccType.CANDIDATE) {
+                yield this.candidateManager.delete(user.userId);
+            }
+            else if (user.acctype === auth_1.AccType.ENTERPRISE) {
+                yield this.enterpriseManager.delete(user.userId);
+            }
+            yield this.userManager.delete(req.params.id); // Delete the user by ID
+            res.status(204).send({ success: 1, message: `User id: ${user.userId}, username: ${user.username} successfully deleted.` });
         });
     }
     /* Specific functions */
@@ -138,8 +151,12 @@ class UserController {
             const email = req.body.email;
             const oldPass = req.body.oldPassword;
             const newPass = req.body.newPassword;
-            yield this.userManager.changePassword(email, newPass, oldPass);
-            res.status(204); // Send no content
+            const ret = yield this.userManager.changePassword(email, newPass, oldPass);
+            if (exceptions_1.isError(ret)) {
+                res.status(500).send(exceptions_1.buildErrorRes(ret));
+                return;
+            }
+            res.status(204).send({ ret }); // Send no content
         });
     }
     /**

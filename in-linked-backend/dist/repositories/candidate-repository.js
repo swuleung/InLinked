@@ -22,7 +22,8 @@ class CandidateRepository {
                     CandidateId: candidate.candidateId,
                     FullName: candidate.fullName,
                     Skills: candidate.skills,
-                    EducationLevel: candidate.educationLevel
+                    EducationLevel: candidate.educationLevel,
+                    DisplayEmail: candidate.displayEmail
                 });
                 return candidate;
             }
@@ -50,10 +51,13 @@ class CandidateRepository {
     update(candidate) {
         return __awaiter(this, void 0, void 0, function* () {
             const conn = yield this.db.getConnection();
-            yield conn.table(this.TABLE_NAME).update({
+            yield conn.table(this.TABLE_NAME)
+                .where({ CandidateId: candidate.candidateId })
+                .update({
                 FullName: candidate.fullName,
                 Skills: candidate.skills,
-                EducationLevel: candidate.educationLevel
+                EducationLevel: candidate.educationLevel,
+                DisplayEmail: candidate.displayEmail
             });
             return candidate;
         });
@@ -64,7 +68,7 @@ class CandidateRepository {
             try {
                 yield transaction.from(this.TABLE_NAME)
                     .delete()
-                    .where({ UserId: id });
+                    .where({ CandidateId: id });
             }
             catch (err) {
                 // Error in transaction, roll back
@@ -78,7 +82,8 @@ class CandidateRepository {
             candidateId: row.CandidateId,
             fullName: row.FullName,
             skills: row.Skills,
-            educationLevel: row.EducationLevel
+            educationLevel: row.EducationLevel,
+            displayEmail: row.DisplayEmail
         };
     }
 }

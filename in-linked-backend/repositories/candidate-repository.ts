@@ -17,7 +17,8 @@ export class CandidateRepository {
                 CandidateId: candidate.candidateId,
                 FullName: candidate.fullName,
                 Skills: candidate.skills,
-                EducationLevel: candidate.educationLevel
+                EducationLevel: candidate.educationLevel,
+                DisplayEmail: candidate.displayEmail
             });
             return candidate;
         } catch(err) {
@@ -49,11 +50,14 @@ export class CandidateRepository {
 
     public async update(candidate: Candidate): Promise<Candidate> {
         const conn = await this.db.getConnection();
-        await conn.table(this.TABLE_NAME).update({
-            FullName: candidate.fullName,
-            Skills: candidate.skills,
-            EducationLevel: candidate.educationLevel
-        });
+        await conn.table(this.TABLE_NAME)
+            .where({ CandidateId: candidate.candidateId })
+            .update({
+                FullName: candidate.fullName,
+                Skills: candidate.skills,
+                EducationLevel: candidate.educationLevel,
+                DisplayEmail: candidate.displayEmail
+            });
         return candidate;
     }
 
@@ -63,7 +67,7 @@ export class CandidateRepository {
         try {
             await transaction.from(this.TABLE_NAME)
                 .delete()
-                .where({ UserId: id });
+                .where({ CandidateId: id });
         } catch (err) {
             // Error in transaction, roll back
             transaction.rollback(err);
@@ -76,7 +80,8 @@ export class CandidateRepository {
             candidateId: row.CandidateId,
             fullName: row.FullName,
             skills: row.Skills,
-            educationLevel: row.EducationLevel
+            educationLevel: row.EducationLevel,
+            displayEmail: row.DisplayEmail
         }
     }
 }

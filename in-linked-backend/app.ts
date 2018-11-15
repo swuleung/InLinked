@@ -48,6 +48,12 @@ class App {
         // Initialize and bind routes
         this.routes = new Routes(this.app, module);
 
+        this.app._router.stack.forEach(function(r){
+            if (r.route && r.route.path){
+              console.log(r.route.path)
+            }
+          });
+
         /* Error middleware */
         this.app.use(ErrorMiddleware.genericErrorHandler);
         this.app.use(ErrorMiddleware.notFoundError);

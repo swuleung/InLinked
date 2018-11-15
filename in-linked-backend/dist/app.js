@@ -46,6 +46,11 @@ class App {
         const module = service_module_1.buildModule(db);
         // Initialize and bind routes
         this.routes = new routes_1.Routes(this.app, module);
+        this.app._router.stack.forEach(function (r) {
+            if (r.route && r.route.path) {
+                console.log(r.route.path);
+            }
+        });
         /* Error middleware */
         this.app.use(ErrorMiddleware.genericErrorHandler);
         this.app.use(ErrorMiddleware.notFoundError);

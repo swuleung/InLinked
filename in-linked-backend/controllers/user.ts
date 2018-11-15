@@ -38,9 +38,13 @@ export class UserController implements IController {
 
         // Create entries based on account type
         if (user.acctype === AccType.ENTERPRISE) {
-            await this.enterpriseManager.create(req.body.enterprise);
+            const enterprise: Enterprise = req.body.enterprise;
+            enterprise.enterpriseId = user.userId; // Update the associated ID
+            await this.enterpriseManager.create(enterprise);
         } else if (user.acctype === AccType.CANDIDATE) {
-            await this.candidateManager.create(req.body.candidate);
+            const candidate: Candidate = req.body.candidate;
+            candidate.candidateId = user.userId; // Update the associated ID
+            await this.candidateManager.create(candidate);
         }
         res.status(201).send(ret);
     }
@@ -72,12 +76,19 @@ export class UserController implements IController {
 
     public async update(req: Request, res: Response, next: NextFunction) {
         const newUserData: User = req.body.user;
-        const user = await this.userManager.findByEmail(req.body.user.email);
+        const user = await this.userManager.get(req.params.id);
+
+        if (isError(user)) {
+            res.status(500).send(buildErrorRes(user));
+            return;
+        }
 
         // Update vars
         user.coverPhoto = newUserData.coverPhoto;
         user.headline = newUserData.headline;
         user.profilePicture = newUserData.profilePicture;
+
+        await this.userManager.update(user);
 
         if (user.acctype === AccType.CANDIDATE) {
             const newCandData: Candidate = req.body.candidate;
@@ -86,6 +97,7 @@ export class UserController implements IController {
             cand.fullName = newCandData.fullName;
             cand.skills = newCandData.skills;
             cand.educationLevel = newCandData.educationLevel;
+            cand.displayEmail = newCandData.displayEmail || cand.displayEmail;
 
             await this.candidateManager.update(cand);
         } else if (user.acctype === AccType.ENTERPRISE) {
@@ -100,21 +112,26 @@ export class UserController implements IController {
 
             await this.enterpriseManager.update(enterprise);
         }
+
+        res.status(200).send({ success: 1, message: `User id: ${user.userId}, username: ${user.username} successfully updated.` });
     }
 
     public async delete(req: Request, res: Response, next: NextFunction) {
         const user = await this.userManager.get(req.params.id);
-        if (isUser(user)) { // Make sure it is not an error
-            if (user.acctype === AccType.CANDIDATE) {
-                await this.candidateManager.delete(user.userId);
-            } else if (user.acctype === AccType.ENTERPRISE) {
-                await this.enterpriseManager.delete(user.userId);
-            }
-    
-            await this.userManager.delete(req.params.id); // Delete the user by ID
-            
+
+        if (isError(user)) {
+            res.status(500).send(buildErrorRes(user));
+            return;
         }
-        res.status(204);
+
+        if (user.acctype === AccType.CANDIDATE) {
+            await this.candidateManager.delete(user.userId);
+        } else if (user.acctype === AccType.ENTERPRISE) {
+            await this.enterpriseManager.delete(user.userId);
+        }
+
+        await this.userManager.delete(req.params.id); // Delete the user by ID
+        res.status(204).send({ success: 1, message: `User id: ${user.userId}, username: ${user.username} successfully deleted.` });
     }
 
     /* Specific functions */
@@ -151,8 +168,12 @@ export class UserController implements IController {
         const email = req.body.email;
         const oldPass = req.body.oldPassword;
         const newPass = req.body.newPassword;
-        await this.userManager.changePassword(email, newPass, oldPass);
-        res.status(204); // Send no content
+        const ret = await this.userManager.changePassword(email, newPass, oldPass);
+        if (isError(ret)) {
+            res.status(500).send(buildErrorRes(ret));
+            return;
+        }
+        res.status(204).send({ ret }); // Send no content
     } 
 
     /**
