@@ -19,8 +19,8 @@ export class AuthenticationService {
             if (user && user.error) {
               throw new Error('Error Login');
             }
-            if (user && user.token) {
-              localStorage.setItem('user', JSON.stringify(user));
+            if (user && user.authToken) {
+              localStorage.setItem('token', JSON.stringify(user.authToken));
             }
           }
         ),
@@ -36,6 +36,6 @@ export class AuthenticationService {
   }
 
   logout() {
-    localStorage.removeItem('user');
+    localStorage.removeItem('token');
   }
 }
