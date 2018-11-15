@@ -41,14 +41,6 @@ export class UserManager {
         }
     }
 
-    public async findByEmail(email: string): Promise<User> {
-        try {
-            return this.repo.findByEmail(email);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
-    }
-
     public async update(user: User): Promise<User> {
         try {
             return await this.repo.update(user);
@@ -86,6 +78,36 @@ export class UserManager {
             // Verify the password
             const hashedPass = await this.hash.hashPassword(newPassword);
             return this.repo.changePassword(email, hashedPass);
+        } catch (ex) {
+            return (isError(ex) ? ex.toObject() : { ...ex });
+        }
+    }
+
+    /**
+     * Finds a user in the repository given an email address
+     * 
+     * @param {string} email - email address of the user to look for
+     * @returns {Promise<User>} - user object with corresponding email address
+     * @memberof UserManager
+     */
+    public async findByEmail(email: string): Promise<User> {
+        try {
+            return this.repo.findByEmail(email);
+        } catch (ex) {
+            return (isError(ex) ? ex.toObject() : { ...ex });
+        }
+    }
+
+    /**
+     * Find a user given a username along with handling exceptions
+     * 
+     * @param {string} username - username to search for
+     * @returns {Promise<User>} - user with corresponding username
+     * @memberof UserManager
+     */
+    public async findByUsername(username: string): Promise<User> {
+        try {
+            return this.repo.findByUsername(username);
         } catch (ex) {
             return (isError(ex) ? ex.toObject() : { ...ex });
         }

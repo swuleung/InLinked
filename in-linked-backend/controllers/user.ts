@@ -174,7 +174,25 @@ export class UserController implements IController {
             return;
         }
         res.status(204).send({ ret }); // Send no content
-    } 
+    }
+
+    /**
+     * Return data corresponding to a user by their username
+     * 
+     * @param {Request} req 
+     * @param {Response} res 
+     * @param {NextFunction} next
+     * @memberof UserController
+     */
+    public async findByUsername(req: Request, res: Response, next: NextFunction) {
+        const username = req.params.username;
+        const ret = await this.userManager.findByUsername(username);
+        if (isError(ret)) {
+            res.status(500).send(buildErrorRes(ret));
+            return;
+        }
+        res.status(200).send({ ret });
+    }
 
     /**
      * Bind the different functions to routes
@@ -208,11 +226,19 @@ export class UserController implements IController {
             .post(
                 this.login.bind(this)
             );
+
         app.route(`/${config.app.api_route}/${config.app.api_ver}/user/changepass`)
             .post(
                 middleware.authentication(module.libs.auth),
                 middleware.authorization([Role.USER, Role.ADMIN]),
                 this.changePassword.bind(this)
+            );
+
+        app.route(`/${config.app.api_route}/${config.app.api_ver}/user/:username`)
+            .get(
+                middleware.authentication(module.libs.auth),
+                middleware.authorization([Role.USER, Role.ADMIN]),
+                this.findByUsername.bind(this);
             );
     }
 }

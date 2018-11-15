@@ -67,28 +67,6 @@ export class UserRepository {
     }
 
     /**
-     * Queries the database to find a user by email
-     *
-     * @param {string} email - email to search in database
-     * @returns {Promise<User>} - return promise containing User object
-     * @memberof UserRepository
-     */
-    public async findByEmail(email: string): Promise<User> {
-        const conn = await this.db.getConnection();
-        const row = await conn
-            .table(this.TABLE_NAME)
-            .where({ email })
-            .first();
-
-        if (!row) {
-            throw new NotFoundException(
-                `The email '${email}' does not exist in the table.`
-            );
-        }
-        return this.toModel(row);
-    }
-
-    /**
      * Update a user with specific fields only
      * Note that we will only allow for the headline, password, profile picture, and cover photo to be updated
      *
@@ -168,5 +146,49 @@ export class UserRepository {
                 Password: newPass
             })
             .where('email', email);
+    }
+
+    /**
+     * Queries the database to find a user by email
+     *
+     * @param {string} email - email to search in database
+     * @returns {Promise<User>} - return promise containing User object
+     * @memberof UserRepository
+     */
+    public async findByEmail(email: string): Promise<User> {
+        const conn = await this.db.getConnection();
+        const row = await conn
+            .table(this.TABLE_NAME)
+            .where({ email })
+            .first();
+
+        if (!row) {
+            throw new NotFoundException(
+                `The email '${email}' does not exist in the table.`
+            );
+        }
+        return this.toModel(row);
+    }
+
+    /**
+     * Find a user given a username
+     * 
+     * @param {string} username - the username to lookup
+     * @returns {Promise<User>} - returns a user object
+     * @memberof UserRepository
+     */
+    public async findByUsername(username: string): Promise<User> {
+        const conn = await this.db.getConnection();
+        const row = await conn
+            .table(this.TABLE_NAME)
+            .where({ Username: username })
+            .first();
+
+        if (!row) {
+            throw new NotFoundException(
+                `The username '${username}' does not exist in the user table.`
+            );
+        }
+        return this.toModel(row);
     }
 }
