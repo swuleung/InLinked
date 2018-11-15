@@ -16,6 +16,8 @@ export class ExperienceRepository {
         this.db = db;
     }
 
+    /* CRUD */
+
     public async insert(experience: Experience): Promise<Experience> {
         const conn = await this.db.getConnection();
 
@@ -56,21 +58,6 @@ export class ExperienceRepository {
             );
         }
         return this.toModel(row);
-    }
-
-    // TODO: NEEDS TESTING
-    public async getByUser(userId: number): Promise<Experience[]> {
-        const conn = await this.db.getConnection();
-        const row = await conn
-            .table(this.TABLE_NAME)
-            .where({ UserId: userId });
-
-        if (!row) {
-            throw new NotFoundException(
-                `The user id ${userId} does not have any experience.`
-            );
-        }
-        return this.toModelList(row);
     }
 
     public async update(experience: Experience): Promise<Experience> {
@@ -123,5 +110,21 @@ export class ExperienceRepository {
             res.push(this.toModel(exp));
         }
         return res;
+    }
+
+    /* CUSTOM FUNCTIONS */
+    // TODO: NEEDS TESTING
+    public async getByUser(userId: number): Promise<Experience[]> {
+        const conn = await this.db.getConnection();
+        const row = await conn
+            .table(this.TABLE_NAME)
+            .where({ UserId: userId });
+
+        if (!row) {
+            throw new NotFoundException(
+                `The user id ${userId} does not have any experience.`
+            );
+        }
+        return this.toModelList(row);
     }
 }
