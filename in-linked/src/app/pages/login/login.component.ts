@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AuthenticationService } from '../../services/authentication.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private auth: AuthenticationService,
-    private router: Router) { }
+    private router: Router,
+    private user: UserService) { }
 
   ngOnInit() {
   }
@@ -24,8 +26,8 @@ export class LoginComponent implements OnInit {
     this.auth.login(email, password)
       .subscribe(
         (data) => {
-          console.log(data);
-          this.router.navigate(['/dashboard']);
+          this.user.get(data);
+          // this.router.navigate(['/dashboard']);
         },
         (err) => {
           this.errorMessage = 'Invalid email and/or password';

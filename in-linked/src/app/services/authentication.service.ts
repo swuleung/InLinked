@@ -22,6 +22,7 @@ export class AuthenticationService {
             if (user && user.authToken) {
               localStorage.setItem('token', JSON.stringify(user.authToken));
             }
+            return user.authToken;
           }
         ),
         catchError(
