@@ -48,9 +48,9 @@ export class ExperienceController implements IController {
         // Update vars
         experience.enterpriseName = newExperienceData.enterpriseName;
         experience.positionName = newExperienceData.positionName;
-        experience.description = newExperienceData.description;
-        experience.startDate = newExperienceData.startDate;
-        experience.location = newExperienceData.location;
+        experience.description = newExperienceData.description || experience.description;
+        experience.startDate = newExperienceData.startDate || experience.startDate;
+        experience.location = newExperienceData.location || experience.location;
     }
 
     public async delete(req: Request, res: Response, next: NextFunction) {

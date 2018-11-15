@@ -67,7 +67,7 @@ export class UserController implements IController {
         }
 
         // Verify that responses for special objects succeeded
-        user = isCandidate(special) || isEnterprise(special) ? sanitizeUser(user) : null
+        user = isCandidate(special) || isEnterprise(special) ? sanitizeUser(user) : null;
         res.status(200).send({ 
             ...user,
             ...special
@@ -95,8 +95,8 @@ export class UserController implements IController {
             const cand = await this.candidateManager.get(user.userId);
 
             cand.fullName = newCandData.fullName;
-            cand.skills = newCandData.skills;
-            cand.educationLevel = newCandData.educationLevel;
+            cand.skills = newCandData.skills || cand.skills;
+            cand.educationLevel = newCandData.educationLevel || cand.educationLevel;
             cand.displayEmail = newCandData.displayEmail || cand.displayEmail;
 
             await this.candidateManager.update(cand);
@@ -106,9 +106,9 @@ export class UserController implements IController {
 
             enterprise.enterpriseName = newEnterpriseData.enterpriseName;
             enterprise.enterpriseDescription = newEnterpriseData.enterpriseDescription;
-            enterprise.ceo = newEnterpriseData.ceo;
-            enterprise.headquarters = newEnterpriseData.headquarters;
-            enterprise.industry = newEnterpriseData.industry;
+            enterprise.ceo = newEnterpriseData.ceo || enterprise.ceo;
+            enterprise.headquarters = newEnterpriseData.headquarters || enterprise.headquarters;
+            enterprise.industry = newEnterpriseData.industry || enterprise.industry;
 
             await this.enterpriseManager.update(enterprise);
         }
