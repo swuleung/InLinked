@@ -1,0 +1,53 @@
+// Create
+{
+	"user": {
+		"userId": 2,
+	    "username": "test2",
+	    "headline": "second account",
+	    "password": "test",
+	    "email": "samuelstanley@stonybrook.edu",
+	    "profilePicture": "img",
+	    "coverPhoto": "img",
+	    "role": "user",
+	    "acctype": "candidate"
+	},
+	"candidate": {
+	    "candidateId": 2,
+	    "fullName": "Samuel Stanley",
+	    "skills": "Java, Python",
+	    "educationLevel": "doctorate",
+	    "displayEmail": 1
+	}
+}
+
+// Update
+{
+	"user": {
+		"userId": 0,
+	    "username": "test3",
+	    "headline": "third account",
+	    "password": "yeet",
+	    "email": "slim@slimjim.org",
+	    "profilePicture": "img",
+	    "coverPhoto": "img",
+	    "role": "user",
+	    "acctype": "enterprise"
+	},
+	"enterprise": {
+	    "enterpriseId": 0,
+	    "enterpriseName": "Slim  Jim",
+	    "enterpriseDescription": "The best meat stick to chew on",
+	    "ceo": "slim bob",
+	    "headquarters": "Slim City",
+	    "industry": "food"
+	}
+}
+
+// Delete
+{
+	"user": {
+		"userId": 2,
+	    "email": "slim@slimjim.org",
+	    "role": "admin"
+	}
+}
