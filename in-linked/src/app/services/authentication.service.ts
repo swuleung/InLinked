@@ -12,7 +12,7 @@ export class AuthenticationService {
   constructor(private http: HttpClient) { }
 
   login(email: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, { email: email, password: password})
+    return this.http.post<any>(`${this.apiUrl}/login`, { email: email, password: password })
       .pipe(
         map(
           user => {
@@ -24,15 +24,12 @@ export class AuthenticationService {
             }
           }
         ),
-        catchError(this.handleError({error: 'Invalid Login'}))
+        catchError(
+          (err, caught) => {
+            throw err;
+          }
+        )
       );
-  }
-
-  private handleError<T>(result?: T) {
-    return (error: any): Observable<T> => {
-      console.log('Error in the Login');
-      return of(result as T);
-    };
   }
 
   logout() {
