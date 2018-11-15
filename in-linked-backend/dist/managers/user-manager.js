@@ -28,7 +28,7 @@ class UserManager {
                 return yield this.repo.insert(user);
             }
             catch (ex) {
-                return ex.toObject();
+                return Object.assign({}, ex);
             }
         });
     }
@@ -38,7 +38,7 @@ class UserManager {
                 return yield this.repo.get(id);
             }
             catch (ex) {
-                return ex.toObject();
+                return Object.assign({}, ex);
             }
         });
     }
@@ -48,7 +48,7 @@ class UserManager {
                 return this.repo.findByEmail(email);
             }
             catch (ex) {
-                return ex.toObject();
+                return Object.assign({}, ex);
             }
         });
     }
@@ -106,7 +106,7 @@ class UserManager {
             }
             catch (ex) {
                 const pass = yield this.hash.hashPassword(password);
-                return Object.assign({}, ex.toObject(), { test: pass, error: 1 }); // Use success code to determine if we can read token
+                return Object.assign({}, Object.assign({}, ex), { test: pass, error: 1 }); // Use success code to determine if we can read token
             }
         });
     }

@@ -24,9 +24,10 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             const user = req.body.user; // Create a user from body
             const ret = yield this.userManager.create(user);
-            // Failed create, threw error cause of duplicate user
+            // Failed create, throw error cause of duplicate user
             if (exceptions_1.isError(ret)) {
                 res.status(500).send(exceptions_1.buildErrorRes(ret));
+                return;
             }
             // Create entries based on account type
             if (user.acctype === auth_1.AccType.ENTERPRISE) {
@@ -35,7 +36,7 @@ class UserController {
             else if (user.acctype === auth_1.AccType.CANDIDATE) {
                 yield this.candidateManager.create(req.body.candidate);
             }
-            res.status(201).send({ ret });
+            res.status(201).send(ret);
         });
     }
     // Gets generic info for user given an id
