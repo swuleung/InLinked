@@ -5,16 +5,17 @@ import { ExperienceManager } from '../managers';
 import { Role } from '../utils/lib/auth';
 import { ServiceModule } from '../utils/module/service-module';
 import { isExperience, Experience } from '../models/experience';
-import { isError, buildErrorRes } from '../utils/exceptions';
+import { isError } from '../utils/exceptions';
 
 import config from '../config/config';
 import * as middleware from '../middleware';
 
-export class ExperienceController implements IController {
+export class ExperienceController extends IController {
 
     private experienceManager: ExperienceManager;
 
     constructor(experienceManager: ExperienceManager) {
+        super();
         this.experienceManager = experienceManager;
     }
 
@@ -24,21 +25,21 @@ export class ExperienceController implements IController {
 
         // Failed to create, throw error
         if (isError(ret)) {
-            res.status(500).send(buildErrorRes(ret));
+            res.status(500).send(this.buildErrorRes(ret));
             return;
         }
-        res.status(201).send(ret);
+        res.status(201).send(this.buildSuccessRes(`Successfully created experience for user id '${experience.userId}' with experience id '${experience.experienceId}'.`, ret));
     }
 
     public async get(req: Request, res: Response, next: NextFunction) {
-        let experience = await this.experienceManager.get(req.params.id);
+        const experience = await this.experienceManager.get(req.params.id);
 
         if (isError(experience)) {
-            res.status(500).send(buildErrorRes(experience));
+            res.status(500).send(this.buildErrorRes(experience));
             return;
         }
 
-        res.status(200).send(experience);
+        res.status(200).send(this.buildSuccessRes(`Successfully fetched experience with id '${req.params.id}'.`, experience));
     }
 
     public async update(req: Request, res: Response, next: NextFunction) {
@@ -58,19 +59,19 @@ export class ExperienceController implements IController {
         if (isExperience(experience)) {
             await this.experienceManager.delete(experience.experienceId);
         }
-        res.status(204);
+        res.status(204).send(this.buildSuccessRes(`Successfully deleted experience id ${experience.experienceId} for user id ${experience.userId}.`));
     }
 
     /* Specific functions */
     public async getByUser(req: Request, res: Response, next: NextFunction) {
-        let experience = await this.experienceManager.get(req.params.id);
+        const experience = await this.experienceManager.get(req.params.id);
 
         if (isError(experience[0])) {
-            res.status(500).send(buildErrorRes(experience[0]));
+            res.status(500).send(this.buildErrorRes(experience[0]));
             return;
         }
 
-        res.status(200).send(experience);
+        res.status(200).send(this.buildSuccessRes(`Successfully fetched experiences for user id '${req.params.id}' experience`, experience));
     }
 
     public bindRoutes(app: Application, module: ServiceModule): void {

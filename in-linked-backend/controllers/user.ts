@@ -8,19 +8,20 @@ import { User, isUser, isCandidate, isEnterprise, Candidate, Enterprise } from '
 import { IController } from './controller.interface';
 import { Role, AccType } from '../utils/lib/auth';
 import { ServiceModule } from '../utils/module/service-module';
-import { isError, buildErrorRes } from '../utils/exceptions';
+import { isError } from '../utils/exceptions';
 import { sanitizeUser } from '../utils/lib/sanitize';
 
 import config from '../config/config';
 import * as middleware from '../middleware';
 
-export class UserController implements IController {
+export class UserController extends IController {
 
     private userManager: UserManager;
     private candidateManager: CandidateManager;
     private enterpriseManager: EnterpriseManager;
 
     constructor(userManager: UserManager, candidateManager: CandidateManager, enterpriseManager: EnterpriseManager) {
+        super();
         this.userManager = userManager;
         this.candidateManager = candidateManager;
         this.enterpriseManager = enterpriseManager;
@@ -32,7 +33,7 @@ export class UserController implements IController {
 
         // Failed create, throw error cause of duplicate user
         if (isError(ret)) {
-            res.status(500).send(buildErrorRes(ret));
+            res.status(500).send(this.buildErrorRes(ret));
             return;
         }
 
@@ -55,7 +56,7 @@ export class UserController implements IController {
 
         // If response was an error, return it
         if (isError(user)) {
-            res.status(500).send(buildErrorRes(user));
+            res.status(500).send(this.buildErrorRes(user));
             return;
         }
 
@@ -79,7 +80,7 @@ export class UserController implements IController {
         const user = await this.userManager.get(req.params.id);
 
         if (isError(user)) {
-            res.status(500).send(buildErrorRes(user));
+            res.status(500).send(this.buildErrorRes(user));
             return;
         }
 
@@ -113,14 +114,14 @@ export class UserController implements IController {
             await this.enterpriseManager.update(enterprise);
         }
 
-        res.status(200).send({ success: 1, message: `User id: ${user.userId}, username: ${user.username} successfully updated.` });
+        res.status(200).send(this.buildSuccessRes(`User id: ${user.userId}, username: ${user.username} successfully updated.`));
     }
 
     public async delete(req: Request, res: Response, next: NextFunction) {
         const user = await this.userManager.get(req.params.id);
 
         if (isError(user)) {
-            res.status(500).send(buildErrorRes(user));
+            res.status(500).send(this.buildErrorRes(user));
             return;
         }
 
@@ -131,7 +132,7 @@ export class UserController implements IController {
         }
 
         await this.userManager.delete(req.params.id); // Delete the user by ID
-        res.status(204).send({ success: 1, message: `User id: ${user.userId}, username: ${user.username} successfully deleted.` });
+        res.status(204).send(this.buildSuccessRes(`User id: ${user.userId}, username: ${user.username} successfully deleted.`));
     }
 
     /* Specific functions */
@@ -150,7 +151,7 @@ export class UserController implements IController {
         const authToken: string = await this.userManager.login(email, pass);
 
         if (isError(authToken)) {
-            res.status(500).send(buildErrorRes(authToken));
+            res.status(500).send(this.buildErrorRes(authToken));
         } else {
             res.send({ authToken });
         }
@@ -170,7 +171,7 @@ export class UserController implements IController {
         const newPass = req.body.newPassword;
         const ret = await this.userManager.changePassword(email, newPass, oldPass);
         if (isError(ret)) {
-            res.status(500).send(buildErrorRes(ret));
+            res.status(500).send(this.buildErrorRes(ret));
             return;
         }
         res.status(204).send({ ret }); // Send no content
@@ -188,7 +189,7 @@ export class UserController implements IController {
         const username = req.params.username;
         const ret = await this.userManager.findByUsername(username);
         if (isError(ret)) {
-            res.status(500).send(buildErrorRes(ret));
+            res.status(500).send(this.buildErrorRes(ret));
             return;
         }
         res.status(200).send({ ret });
