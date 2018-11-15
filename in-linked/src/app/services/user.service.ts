@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Candidate } from 'src/app/models/candidate';
 import { Enterprise } from '../models/enterprise';
-import * as jwt from 'jsonwebtoken';
+// import * as jwt from 'jsonwebtoken';
 
 @Injectable({
   providedIn: 'root'
