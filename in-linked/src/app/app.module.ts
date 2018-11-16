@@ -21,7 +21,7 @@ import { AdminComponent } from './pages/admin/admin.component';
 
 // Automatically attach token to each request with http module
 export function tokenGetter() {
-  return localStorage.getItem('access_token'); // TODO: Change this to what Jeffrey set it to
+  return localStorage.getItem('token');
 }
 
 @NgModule({
@@ -48,9 +48,11 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        // TODO: CHANGE THESE URLS
-        whitelistedDomains: ['localhost:3001'], // Paths we want to send the auth token with in the header
-        blacklistedRoutes: ['localhost:3001/auth/'] // Paths that we do not want to send the auth token with (typically like login and stuff)
+        whitelistedDomains: ['localhost:8080/dashboard'], // Paths we want to send the auth token with in the header
+        blacklistedRoutes: [
+          'localhost:8080/login/',
+          'localhost:8080/create-account/'
+        ] // Paths that we do not want to send the auth token with (typically like login and stuff)
       }
     })
   ],
