@@ -5,6 +5,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { JwtModule } from '@auth0/angular-jwt';
 
+/* Font Awesome */
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPenSquare } from '@fortawesome/free-solid-svg-icons';
+library.add(faPlus, faPenSquare);
+
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { EnterpriseProfileComponent } from './pages/enterprise-profile/enterprise-profile.component';
@@ -52,7 +59,8 @@ export function tokenGetter() {
           'localhost:8080/create-account/'
         ] // Paths that we do not want to send the auth token with (typically like login and stuff)
       }
-    })
+    }),
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
