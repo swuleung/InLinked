@@ -18,11 +18,7 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   get(data: string): void {
-<<<<<<< HEAD
-    // this.decoded = jwt.decode(data);
-=======
     this.decoded = helper.decodeToken(data);
->>>>>>> ba74f52252458715b234a45bf2055b9ce460aa72
     console.log(this.decoded);
   }
 }
