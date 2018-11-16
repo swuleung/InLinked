@@ -81,7 +81,7 @@ export class ExperienceRepository {
         try {
             await transaction.from(this.TABLE_NAME)
                 .delete()
-                .where({ ExperienceId: id })
+                .where({ ExperienceId: id });
 
             await transaction.commit();
         } catch (err) {

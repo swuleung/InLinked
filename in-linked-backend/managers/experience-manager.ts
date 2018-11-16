@@ -1,5 +1,5 @@
-import { ExperienceRepository } from '../repositories';
 import { Experience } from '../models/experience';
+import { ExperienceRepository } from '../repositories';
 
 export class ExperienceManager {
     private repo: ExperienceRepository;

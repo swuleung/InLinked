@@ -52,6 +52,10 @@ export class ExperienceController extends IController {
         experience.description = newExperienceData.description || experience.description;
         experience.startDate = newExperienceData.startDate || experience.startDate;
         experience.location = newExperienceData.location || experience.location;
+
+        await this.experienceManager.update(experience);
+
+        res.status(200).send(this.buildSuccessRes(`Experience id: ${experience.experienceId} successfully updated.`));
     }
 
     public async delete(req: Request, res: Response, next: NextFunction) {
