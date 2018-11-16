@@ -25,6 +25,25 @@
     z-index: 0;
 }
 
+.information-container {
+    margin-top: 10px;
+
+    .information-card {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .skill-pill {
+        background-color: $blue-dianne;
+        color: white;
+        border-radius: 15px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
 @media screen and (max-width: $small-screen) {
     .cover-photo {
         display: none;

@@ -16,7 +16,7 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   get(data: string): void {
-    this.decoded = jwt.decode(data);
+    // this.decoded = jwt.decode(data);
     console.log(this.decoded);
   }
 }
