@@ -4,7 +4,6 @@ import { AppRoutingModule } from './/app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { JwtModule } from '@auth0/angular-jwt';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
@@ -44,7 +43,6 @@ export function tokenGetter() {
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    FontAwesomeModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
