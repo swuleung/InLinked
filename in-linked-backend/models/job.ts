@@ -11,3 +11,7 @@ export interface Job {
     province?: string;
     country?: string;
 }
+
+export function isJob(obj: any): boolean {
+    return obj.jobId !== undefined;
+}
