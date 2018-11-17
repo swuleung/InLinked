@@ -17,7 +17,6 @@ export class ExperienceRepository {
     }
 
     /* CRUD */
-
     public async insert(experience: Experience): Promise<Experience> {
         const conn = await this.db.getConnection();
 
@@ -28,7 +27,10 @@ export class ExperienceRepository {
                 EnterpriseName: experience.enterpriseName,
                 PositionName: experience.positionName,
                 Description: experience.description,
-                StartDate: experience.startDate,
+                StartMonth: experience.startMonth,
+                StartYear: experience.startYear,
+                EndMonth: experience.endMonth,
+                EndYear: experience.endYear,
                 Location: experience.location
             });
             experience.experienceId = res[0];
@@ -98,7 +100,10 @@ export class ExperienceRepository {
             enterpriseName: row.EnterpriseName,
             positionName: row.PositionName,
             description: row.Description,
-            startDate: row.StartDate,
+            startMonth: row.StartMonth,
+            startYear: row.StartYear,
+            endMonth: row.EndMonth,
+            endYear: row.EndYear,
             location: row.Location
         }
     }
@@ -115,7 +120,8 @@ export class ExperienceRepository {
         const row = await conn
             .table(this.TABLE_NAME)
             .where({ UserId: userId })
-            .orderBy('StartDate', 'DESC')
+            .orderBy('StartMonth', 'desc')
+            .orderBy('StartDate', 'desc')
             .limit(limit || 30);
 
         if (!row) {

@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `Enterprise` (
     EnterpriseName VARCHAR(90) NOT NULL,
     EnterpriseDescription VARCHAR(255) NOT NULL,
     CEO VARCHAR(50),
-    HeadQuarters VARCHAR(255),
+    Headquarters VARCHAR(255),
     Industry VARCHAR(50),
     PRIMARY KEY (EnterpriseId),
     FOREIGN KEY (EnterpriseId) REFERENCES User(UserId)
@@ -56,42 +56,9 @@ CREATE TABLE IF NOT EXISTS `Job` (
     Province VARCHAR(255),
     Country VARCHAR(255),
     JobURL TEXT,
-    PostedDate TEXT,
+    PostedDate DATE,
     PRIMARY KEY (JobId),
     FOREIGN KEY (EnterpriseId) REFERENCES Enterprise(EnterpriseId)
-);
-
-CREATE TABLE IF NOT EXISTS `Employee` (
-    EmployeeId INTEGER NOT NULL AUTO_INCREMENT,
-    Role VARCHAR(50) NOT NULL,
-    DateJoined DATE NOT NULL,
-    SupervisorId INTEGER,
-    PRIMARY KEY (EmployeeId),
-    FOREIGN KEY (SupervisorId) REFERENCES Employee(EmployeeId)
-);
-
-CREATE TABLE IF NOT EXISTS `Posts` (
-    EmployerId INTEGER,
-    JobId INTEGER,
-    PostDate DATETIME,
-    FOREIGN KEY (EmployerId) REFERENCES Enterprise(EnterpriseId),
-    FOREIGN KEY (JobId) REFERENCES Job(JobId)
-);
-
-CREATE TABLE IF NOT EXISTS `ManageUsers` (
-    EmployeeId INTEGER,
-    UserId INTEGER,
-    FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId),
-    FOREIGN KEY (UserId) REFERENCES User(UserId),
-    PRIMARY KEY (EmployeeId, UserId)
-);
-
-CREATE TABLE IF NOT EXISTS `ManageJobs` (
-    EmployeeId INTEGER,
-    JobId INTEGER,
-    FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId),
-    FOREIGN KEY (JobId) REFERENCES Job(JobId),
-    PRIMARY KEY (EmployeeId, JobId)
 );
 
 CREATE TABLE IF NOT EXISTS `Applies` (
@@ -106,12 +73,18 @@ CREATE TABLE IF NOT EXISTS `Applies` (
 CREATE TABLE IF NOT EXISTS `Experience` {
     ExperienceId INTEGER NOT NULL AUTO_INCREMENT,
     UserId INTEGER NOT NULL,
-    EnterpriseId INTEGER NOT NULL,
+    EnterpriseId INTEGER,
     EnterpriseName VARCHAR(255) NOT NULL,
     PositionName VARCHAR(255) NOT NULL,
     Description TEXT,
-    StartDate DATE,
-    Location VARCHAR(255)
+    StarMonth INTEGER NOT NULL,
+    StartYear INTEGER NOT NULL,
+    EndMonth INTEGER,
+    EndYear INTEGER,
+    Location VARCHAR(255),
+    PRIMARY KEY (ExperienceId),
+    FOREIGN KEY (UserId) REFERENCES User(UserId),
+    FOREIGN KEY (EnterpriseId) REFERENCES Enterprise(EnterpriseId)
 }
 
 -- Triggers
@@ -128,7 +101,7 @@ FOR EACH ROW
 CREATE TRIGGER `EmploymentTypeCheck` BEFORE INSERT ON `Job`
 FOR EACH ROW
     BEGIN
-        IF LOWER(`NEW`.EmploymentType) NOT IN ('full time', 'part time', 'contract', 'temporary', 'volunteer', 'other') THEN
+        IF LOWER(`NEW`.EmploymentType) NOT IN ('full-time', 'part-time', 'contract', 'temporary', 'volunteer', 'other') THEN
             SIGNAL SQLSTATE '45001' SET MESSAGE_TEXT = 'Invalid Employment Type'; -- Stop insertion, throw error
         END IF;
     END//

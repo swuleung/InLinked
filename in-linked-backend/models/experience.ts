@@ -7,14 +7,14 @@
 export interface Experience {
     experienceId: number;
     userId: number;
-    enterpriseId: number;
+    enterpriseId?: number;
     enterpriseName: string;
     positionName: string;
     description?: string;
     startMonth: number;
-    startDate: number;
+    startYear: number;
     endMonth?: number;
-    endDate?: number;
+    endYear?: number;
     location?: string; 
 }
 
