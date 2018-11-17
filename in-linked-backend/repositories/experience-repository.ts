@@ -105,20 +105,18 @@ export class ExperienceRepository {
 
     public toModelList(list: any): Experience[] {
         // Assuming that the object passed in is a list
-        const res: Experience[]  = [];
-        for (let exp of list) {
-            res.push(this.toModel(exp));
-        }
-        return res;
+        return list.map((r: any) => this.toModel(r));
     }
 
     /* CUSTOM FUNCTIONS */
     // TODO: NEEDS TESTING
-    public async getByUser(userId: number): Promise<Experience[]> {
+    public async getByUser(userId: number, limit?: number): Promise<Experience[]> {
         const conn = await this.db.getConnection();
         const row = await conn
             .table(this.TABLE_NAME)
-            .where({ UserId: userId });
+            .where({ UserId: userId })
+            .orderBy('StartDate', 'DESC')
+            .limit(limit || 30);
 
         if (!row) {
             throw new NotFoundException(

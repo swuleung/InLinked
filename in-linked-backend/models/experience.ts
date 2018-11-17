@@ -11,7 +11,10 @@ export interface Experience {
     enterpriseName: string;
     positionName: string;
     description?: string;
-    startDate?: Date;
+    startMonth: number;
+    startDate: number;
+    endMonth?: number;
+    endDate?: number;
     location?: string; 
 }
 

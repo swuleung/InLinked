@@ -23,5 +23,8 @@ export class Routes {
 
         // Bind routes
         this.userController.bindRoutes(app, module);
+        this.experienceController.bindRoutes(app, module);
+        this.jobController.bindRoutes(app, module);
+        this.appliesController.bindRoutes(app, module);
     }
 }
