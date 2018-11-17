@@ -203,8 +203,6 @@ export class UserController extends IController {
         // Bind with this to provide contex to this curent object (user controller)
         app.route(`/${config.app.api_route}/${config.app.api_ver}/user`)
             .post(
-                middleware.authentication(module.libs.auth),
-                middleware.authorization([Role.USER, Role.ADMIN]),
                 this.create.bind(this)
             )
         app.route(`/${config.app.api_route}/${config.app.api_ver}/user/:id`)

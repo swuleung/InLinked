@@ -87,6 +87,20 @@ CREATE TABLE IF NOT EXISTS `Experience` {
     FOREIGN KEY (EnterpriseId) REFERENCES Enterprise(EnterpriseId)
 }
 
+CREATE TABLE IF NOT EXISTS `Education` {
+    EducationId INTEGER NOT NULL AUTO_INCREMENT,
+    CandidateId INTEGER NOT NULL,
+    SchoolName VARCHAR(255) NOT NULL,
+    StartMonth INTEGER NOT NULL,
+    StartYear INTEGER NOT NULL,
+    EndMonth INTEGER,
+    EndYear INTEGER,
+    Location VARCHAR(255)
+    Degree VARCHAR(255), -- Same as EducationLevel
+    PRIMARY KEY (EducationId),
+    FOREIGN KEY (CandidateId) REFERENCES Candidate(CandidateId)
+}
+
 -- Triggers
 DELIMITER //
 

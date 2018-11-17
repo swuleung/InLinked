@@ -71,7 +71,10 @@ export class ExperienceRepository {
                 EnterpriseName: experience.enterpriseName,
                 PositionName: experience.positionName,
                 Description: experience.description,
-                StartDate: experience.startDate,
+                StartMonth: experience.startMonth,
+                StartYear: experience.startYear,
+                EndMonth: experience.endMonth,
+                EndYear: experience.endYear,
                 Location: experience.location
             });
         return experience;
