@@ -12,3 +12,7 @@ export interface Enterprise {
     profilePicture?: string;
     coverPhoto?: string;
 }
+
+export function isEnterprise(obj: any): boolean {
+    return obj.enterpriseId !== undefined;
+}

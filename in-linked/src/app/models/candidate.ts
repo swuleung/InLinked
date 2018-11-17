@@ -12,3 +12,7 @@ export interface Candidate {
     skills: string;
     educationLevel: string;
 }
+
+export function isCandidate(obj: any): boolean {
+    return obj.candidateId !== undefined;
+}
