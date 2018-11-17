@@ -1,0 +1,100 @@
+<ng-template #content let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="candidate-title-section">Update your Educations</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="educationForm">
+      <div class="education-container" formArrayName="educations" *ngFor="let item of educationForm.get('educations').controls; let i = index;">
+        <div [formGroupName]="i">
+            <div class="form-group">
+                <label for="-{{i}}">School</label>
+                <div class="remove-education">
+                  <button type="button" class="btn btn-link btn-sm" (click)="removeEducation(i)">
+                    Remove Education
+                  </button>
+                </div>
+                <input formControlName="school" type="text" class="form-control" id="school-{{i}}" placeholder="School Name">
+              </div>
+          <div class="form-row">
+            <div class="form-group col">
+
+              <label for="degree-{{i}}">Degree</label>
+              <input formControlName="degree" type="text" class="form-control" id="degree-{{i}}" placeholder="Position Title">
+            </div>
+
+            <div class="form-group col">
+              <label for="school-location-{{i}}">School Location</label>
+              <input formControlName="schoolLocation" type="text" class="form-control" id="school-location-{{i}}"
+                placeholder="School Location">
+            </div>
+          </div>
+
+
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="start-month-{{i}}">Start Month</label>
+              <select formControlName="startMonth" class="custom-select" id="start-month-{{i}}">
+                <option disabled>Start Month</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+            </div>
+
+            <div class="form-group col">
+              <label for="start-year-{{i}}">Start Year</label>
+              <input formControlName="startYear" type="text" class="form-control" id="start-year-{{i}}" placeholder="Start Year">
+            </div>
+
+            <div class="form-group col">
+              <label for="end-month-{{i}}">End Month</label>
+              <select formControlName="endMonth" class="custom-select" id="end-month-{{i}}">
+                <option disabled>End Month</option>
+                <option value="0">Current</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+            </div>
+
+            <div class="form-group col">
+              <label for="end-year-{{i}}">End Year</label>
+              <input formControlName="endYear" type="text" class="form-control" id="end-year-{{i}}" placeholder="End Year">
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <button type="button" class="btn btn-primary" (click)="addEducation()">Add Education</button>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-link" (click)="d('Save click')">Cancel</button>
+    <button type="button" class="btn btn-success" (click)="d('Save click')">Submit Changes</button>
+  </div>
+</ng-template>
+
+<fa-icon [icon]="['far', 'edit']" size="lg" (click)="open(content)"></fa-icon>

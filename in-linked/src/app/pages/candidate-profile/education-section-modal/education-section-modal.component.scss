@@ -1,0 +1,12 @@
+.education-container {
+    border-top: 2px solid;
+    border-top-color: grey;
+    padding-top: 1rem;
+}
+.education-container:first-child {
+    border: 0;
+}
+
+.remove-education {
+    float: right;
+}
