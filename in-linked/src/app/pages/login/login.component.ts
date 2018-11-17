@@ -26,8 +26,17 @@ export class LoginComponent implements OnInit {
     this.auth.login(email, password)
       .subscribe(
         (data) => {
-          this.user.get(data);
-          // this.router.navigate(['/dashboard']);
+          this.user.get(data)
+            .subscribe(
+              (retrieved) => {
+                // Check if there is an error
+                if (!retrieved) {
+                  this.errorMessage = 'Error: please login again.'; // This should not happen
+                } else {
+                  this.router.navigate(['/dashboard']); // Reroute to dashboard
+                }
+              }
+            );
         },
         (err) => {
           this.errorMessage = 'Invalid email and/or password';
