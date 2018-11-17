@@ -1,5 +1,5 @@
-import { UserManager, EnterpriseManager, CandidateManager, ExperienceManager, JobManager } from '../../managers';
-import { UserRepository, CandidateRepository, EnterpriseRepository, ExperienceRepository, JobRepository } from '../../repositories';
+import { UserManager, EnterpriseManager, CandidateManager, ExperienceManager, JobManager, AppliesManager } from '../../managers';
+import { UserRepository, CandidateRepository, EnterpriseRepository, ExperienceRepository, JobRepository, AppliesRepository } from '../../repositories';
 import { IAuth, JWTAuth } from '../lib/auth';
 import { MySql } from '../lib/database';
 import { BCryptHash, IHash } from '../lib/hash';
@@ -18,13 +18,15 @@ export interface ServiceModule {
         enterprise: EnterpriseManager;
         experience: ExperienceManager;
         job: JobManager;
+        applies: AppliesManager;
     };
     repositories: {
         user: UserRepository;
         candidate: CandidateRepository,
         enterprise: EnterpriseRepository,
         experience: ExperienceRepository
-        job: JobRepository
+        job: JobRepository,
+        applies: AppliesRepository
     };
 }
 
@@ -42,6 +44,7 @@ export function buildModule(db: MySql): ServiceModule {
     const enterpriseRepo = new EnterpriseRepository(db);
     const experienceRepo = new ExperienceRepository(db);
     const jobRepo = new JobRepository(db);
+    const appliesRepo = new AppliesRepository(db);
 
     const auth = new JWTAuth(userRepo);
     const hash = new BCryptHash();
@@ -56,14 +59,16 @@ export function buildModule(db: MySql): ServiceModule {
             candidate: new CandidateManager(candidateRepo, auth, hash),
             enterprise: new EnterpriseManager(enterpriseRepo, auth, hash),
             experience: new ExperienceManager(experienceRepo),
-            job: new JobManager(jobRepo)
+            job: new JobManager(jobRepo),
+            applies: new AppliesManager(appliesRepo)
         },
         repositories: {
             user: userRepo,
             candidate: candidateRepo,
             enterprise: enterpriseRepo,
             experience: experienceRepo,
-            job: jobRepo
+            job: jobRepo,
+            applies: appliesRepo
         }
     }
 }

@@ -44,7 +44,7 @@ class ExperienceController extends controller_abstract_1.IController {
     update(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const newExperienceData = req.body;
-            const experience = yield this.experienceManager.get(newExperienceData.enterpriseId);
+            const experience = yield this.experienceManager.get(req.params.id);
             // Update vars
             experience.enterpriseName = newExperienceData.enterpriseName;
             experience.positionName = newExperienceData.positionName;

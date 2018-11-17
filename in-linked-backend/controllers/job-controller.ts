@@ -44,7 +44,7 @@ export class JobController extends IController {
 
     public async update(req: Request, res: Response, next: NextFunction) {
         const newJobData: Job = req.body;
-        const job: Job = await this.jobManager.get(newJobData.jobId);
+        const job: Job = await this.jobManager.get(req.params.id);
 
         job.jobTitle = newJobData.jobTitle;
         job.jobDescription = newJobData.jobDescription;

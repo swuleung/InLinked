@@ -16,9 +16,9 @@ class CandidateRepository {
     }
     insert(candidate) {
         return __awaiter(this, void 0, void 0, function* () {
-            const connection = yield this.db.getConnection();
+            const conn = yield this.db.getConnection();
             try {
-                const res = yield connection.table(this.TABLE_NAME).insert({
+                const res = yield conn.table(this.TABLE_NAME).insert({
                     CandidateId: candidate.candidateId,
                     FullName: candidate.fullName,
                     Skills: candidate.skills,
@@ -37,8 +37,8 @@ class CandidateRepository {
     }
     get(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const connection = yield this.db.getConnection();
-            const row = yield connection
+            const conn = yield this.db.getConnection();
+            const row = yield conn
                 .table(this.TABLE_NAME)
                 .where({ CandidateId: id })
                 .first();

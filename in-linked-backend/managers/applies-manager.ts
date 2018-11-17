@@ -9,7 +9,6 @@ export class AppliesManager {
     }
 
     /* CRUD */
-
     public async create(applies: Applies): Promise<Applies> {
         try {
             return await this.repo.insert(applies);

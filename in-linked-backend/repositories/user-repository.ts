@@ -126,7 +126,9 @@ export class UserRepository {
             profilePicture: row.ProfilePicture,
             coverPhoto: row.CoverPhoto,
             role: row.Role,
-            acctype: row.AccType
+            acctype: row.AccType,
+            createDate: row.CreateDate,
+            lastActiveDate: row.LastActiveDate
         };
     }
 

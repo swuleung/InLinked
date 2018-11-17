@@ -44,7 +44,7 @@ export class ExperienceController extends IController {
 
     public async update(req: Request, res: Response, next: NextFunction) {
         const newExperienceData: Experience = req.body;
-        const experience = await this.experienceManager.get(newExperienceData.enterpriseId);
+        const experience = await this.experienceManager.get(req.params.id);
 
         // Update vars
         experience.enterpriseName = newExperienceData.enterpriseName;
