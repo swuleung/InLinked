@@ -59,13 +59,13 @@ export class AppliesRepository {
         return applies;
     }
 
-    public async delete(id: number): Promise<void> {
+    public async delete(userId: number, candidateId: number): Promise<void> {
         const transaction = await this.db.getTransaction();
 
         try {
             await transaction.from(this.TABLE_NAME)
                 .delete()
-                .where({ CandidateId: id });
+                .where({ UserId: userId, CandidateId: candidateId });
         } catch (err) {
             // Error in transaction, roll back
             transaction.rollback(err);
