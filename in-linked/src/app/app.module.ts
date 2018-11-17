@@ -4,13 +4,15 @@ import { AppRoutingModule } from './/app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { JwtModule } from '@auth0/angular-jwt';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 /* Font Awesome */
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { faPenSquare } from '@fortawesome/free-solid-svg-icons';
-library.add(faPlus, faPenSquare);
+import { faEdit } from '@fortawesome/free-regular-svg-icons';
+
+library.add(faPlus, faEdit);
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
@@ -24,6 +26,7 @@ import { DashboardComponent } from './layouts/dashboard/container/dashboard/dash
 import { UserFeedComponent } from './pages/user-feed/user-feed.component';
 import { JobSearchComponent } from './pages/job-search/job-search.component';
 import { AdminComponent } from './pages/admin/admin.component';
+import { TitleSectionModalComponent } from './pages/candidate-profile/title-section-modal/title-section-modal.component';
 
 // Automatically attach token to each request with http module
 export function tokenGetter() {
@@ -43,7 +46,8 @@ export function tokenGetter() {
     DashboardComponent,
     UserFeedComponent,
     JobSearchComponent,
-    AdminComponent
+    AdminComponent,
+    TitleSectionModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,7 +64,8 @@ export function tokenGetter() {
         ] // Paths that we do not want to send the auth token with (typically like login and stuff)
       }
     }),
-    FontAwesomeModule
+    FontAwesomeModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -3,6 +3,10 @@
 .navbar {
     background-color: $nav-background;
     color: white;
+
+    .nav-item {
+        white-space: nowrap;
+    }
 }
 
 .search-form {
