@@ -2,17 +2,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './/app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 /* Font Awesome */
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faMinus } from '@fortawesome/free-solid-svg-icons';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
 
-library.add(faPlus, faEdit);
+library.add(faMinus, faEdit);
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
@@ -27,6 +27,9 @@ import { UserFeedComponent } from './pages/user-feed/user-feed.component';
 import { JobSearchComponent } from './pages/job-search/job-search.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { TitleSectionModalComponent } from './pages/candidate-profile/title-section-modal/title-section-modal.component';
+import { ExperienceSectionModalComponent } from './pages/candidate-profile/experience-section-modal/experience-section-modal.component';
+import { SkillsSectionModalComponent } from './pages/candidate-profile/skills-section-modal/skills-section-modal.component';
+import { EducationSectionModalComponent } from './pages/candidate-profile/education-section-modal/education-section-modal.component';
 
 // Automatically attach token to each request with http module
 export function tokenGetter() {
@@ -48,12 +51,16 @@ export function tokenGetter() {
     JobSearchComponent,
     AdminComponent,
     TitleSectionModalComponent,
+    ExperienceSectionModalComponent,
+    SkillsSectionModalComponent,
+    EducationSectionModalComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
