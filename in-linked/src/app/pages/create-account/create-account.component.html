@@ -1,29 +1,47 @@
 <div class="create-account-container">
-    <h1>Sign up for inLinked</h1>
+  <h1>Sign up for inLinked</h1>
+  <hr>
+  <div class="container">
     <form #create="ngForm" (ngSubmit)="onSubmit();">
       <div *ngIf="errorMessage" class="create-warning-message">{{errorMessage}}</div>
       <div class="form-group">
         <label for="user-name">Name/Enterprise</label>
-        <input name="user-name" type="text" class="form-control" id="user-name" [(ngModel)]="userName" #name="ngModel" required>
+        <div class="row justify-content-sm-center">
+          <div class="col-4">
+            <input name="user-name" type="text" class="form-control" id="user-name" [(ngModel)]="userName" #name="ngModel" required>
+          </div>
+        </div>
         <div class="create-warning-message" *ngIf="name.touched && name.errors?.required">Please enter a name.</div>
-      </div>
+      </div>  
       <div class="form-group">
         <label for="user-email">Email</label>
-        <input name="user-email" type="text" class="form-control" id="user-email" [(ngModel)]="userEmail" #email="ngModel" required>
+        <div class="row justify-content-sm-center">
+          <div class="col-4">
+            <input name="user-email" type="text" class="form-control" id="user-email" [(ngModel)]="userEmail" #email="ngModel" required>
+          </div>
+        </div>
         <div class="create-warning-message" *ngIf="email.touched && email.errors?.required">Please enter an email.</div>
       </div>
       <div class="form-group">
         <label for="user-password">Password</label>
-        <input name="user-password" type="password" class="form-control" id="user-password" [(ngModel)]="userPassword" #password="ngModel" required>
+        <div class="row justify-content-sm-center">
+          <div class="col-4">
+            <input name="user-password" type="password" class="form-control" id="user-password" [(ngModel)]="userPassword" #password="ngModel" required>
+          </div>
+        </div> 
         <div class="create-warning-message" *ngIf="password.touched && password.errors?.required">Please enter a password.</div>
       </div>
       <div class="form-group">
-        <div class="form-check">
-          <input name="enterprise-check" class="form-check-input" type="checkbox" id="enterprise-check" [(ngModel)]="enterpriseCheck">
+        <div class="row justify-content-center">
+          <div class="form-check">
+            <input name="enterprise-check" class="form-check-input" type="checkbox" id="enterprise-check" [(ngModel)]="enterpriseCheck">
+            <label class="form-check-label" for="enterprise-check">Check if enterprise.</label>
+          </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row justify-content-center">
         <button type="submit" class="btn btn-success" [disabled]="!create.form.valid">Submit</button>
       </div>
     </form> 
+  </div>
 </div>
