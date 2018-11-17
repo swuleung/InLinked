@@ -36,6 +36,8 @@ export class JobRepository {
                 Province: job.province,
                 Country: job.country
             });
+            job.jobId = res[0];
+            return job;
         } catch (err) {
             if (err.code === 'ER_DUP_ENTRY') {
                 throw new ValidationException(

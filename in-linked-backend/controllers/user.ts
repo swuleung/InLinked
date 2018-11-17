@@ -5,7 +5,7 @@ import { Application, NextFunction, Request, Response } from 'express';
 
 import { UserManager, CandidateManager, EnterpriseManager } from '../managers';
 import { User, isUser, isCandidate, isEnterprise, Candidate, Enterprise } from '../models';
-import { IController } from './controller.interface';
+import { IController } from './controller.abstract';
 import { Role, AccType } from '../utils/lib/auth';
 import { ServiceModule } from '../utils/module/service-module';
 import { isError } from '../utils/exceptions';
@@ -239,7 +239,7 @@ export class UserController extends IController {
             .get(
                 middleware.authentication(module.libs.auth),
                 middleware.authorization([Role.USER, Role.ADMIN]),
-                this.findByUsername.bind(this);
+                this.findByUsername.bind(this)
             );
     }
 }

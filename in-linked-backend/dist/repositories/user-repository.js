@@ -66,26 +66,6 @@ class UserRepository {
         });
     }
     /**
-     * Queries the database to find a user by email
-     *
-     * @param {string} email - email to search in database
-     * @returns {Promise<User>} - return promise containing User object
-     * @memberof UserRepository
-     */
-    findByEmail(email) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const conn = yield this.db.getConnection();
-            const row = yield conn
-                .table(this.TABLE_NAME)
-                .where({ email })
-                .first();
-            if (!row) {
-                throw new exceptions_1.NotFoundException(`The email '${email}' does not exist in the table.`);
-            }
-            return this.toModel(row);
-        });
-    }
-    /**
      * Update a user with specific fields only
      * Note that we will only allow for the headline, password, profile picture, and cover photo to be updated
      *
@@ -166,6 +146,46 @@ class UserRepository {
                 Password: newPass
             })
                 .where('email', email);
+        });
+    }
+    /**
+     * Queries the database to find a user by email
+     *
+     * @param {string} email - email to search in database
+     * @returns {Promise<User>} - return promise containing User object
+     * @memberof UserRepository
+     */
+    findByEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const conn = yield this.db.getConnection();
+            const row = yield conn
+                .table(this.TABLE_NAME)
+                .where({ email })
+                .first();
+            if (!row) {
+                throw new exceptions_1.NotFoundException(`The email '${email}' does not exist in the table.`);
+            }
+            return this.toModel(row);
+        });
+    }
+    /**
+     * Find a user given a username
+     *
+     * @param {string} username - the username to lookup
+     * @returns {Promise<User>} - returns a user object
+     * @memberof UserRepository
+     */
+    findByUsername(username) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const conn = yield this.db.getConnection();
+            const row = yield conn
+                .table(this.TABLE_NAME)
+                .where({ Username: username })
+                .first();
+            if (!row) {
+                throw new exceptions_1.NotFoundException(`The username '${username}' does not exist in the user table.`);
+            }
+            return this.toModel(row);
         });
     }
 }

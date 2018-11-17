@@ -17,9 +17,12 @@ export interface ServiceModule {
         candidate: CandidateManager;
         enterprise: EnterpriseManager;
         experience: ExperienceManager;
+        job: JobManager;
     };
     repositories: {
         user: UserRepository;
+        candidate: CandidateRepository,
+        enterprise: EnterpriseRepository
     };
 }
 
@@ -36,6 +39,7 @@ export function buildModule(db: MySql): ServiceModule {
     const candidateRepo = new CandidateRepository(db);
     const enterpriseRepo = new EnterpriseRepository(db);
     const experienceRepo = new ExperienceRepository(db);
+    const jobRepo = new JobRepository(db);
 
     const auth = new JWTAuth(userRepo);
     const hash = new BCryptHash();

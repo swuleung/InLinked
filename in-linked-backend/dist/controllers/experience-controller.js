@@ -8,13 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const controller_abstract_1 = require("./controller.abstract");
 const auth_1 = require("../utils/lib/auth");
 const experience_1 = require("../models/experience");
 const exceptions_1 = require("../utils/exceptions");
 const config_1 = require("../config/config");
 const middleware = require("../middleware");
-class ExperienceController {
+class ExperienceController extends controller_abstract_1.IController {
     constructor(experienceManager) {
+        super();
         this.experienceManager = experienceManager;
     }
     create(req, res, next) {
@@ -23,20 +25,20 @@ class ExperienceController {
             const ret = yield this.experienceManager.create(experience);
             // Failed to create, throw error
             if (exceptions_1.isError(ret)) {
-                res.status(500).send(exceptions_1.buildErrorRes(ret));
+                res.status(500).send(this.buildErrorRes(ret));
                 return;
             }
-            res.status(201).send(ret);
+            res.status(201).send(this.buildSuccessRes(`Successfully created experience for user id '${experience.userId}' with experience id '${experience.experienceId}'.`, ret));
         });
     }
     get(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            let experience = yield this.experienceManager.get(req.params.id);
+            const experience = yield this.experienceManager.get(req.params.id);
             if (exceptions_1.isError(experience)) {
-                res.status(500).send(exceptions_1.buildErrorRes(experience));
+                res.status(500).send(this.buildErrorRes(experience));
                 return;
             }
-            res.status(200).send(experience);
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched experience with id '${req.params.id}'.`, experience));
         });
     }
     update(req, res, next) {
@@ -46,9 +48,11 @@ class ExperienceController {
             // Update vars
             experience.enterpriseName = newExperienceData.enterpriseName;
             experience.positionName = newExperienceData.positionName;
-            experience.description = newExperienceData.description;
-            experience.startDate = newExperienceData.startDate;
-            experience.location = newExperienceData.location;
+            experience.description = newExperienceData.description || experience.description;
+            experience.startDate = newExperienceData.startDate || experience.startDate;
+            experience.location = newExperienceData.location || experience.location;
+            yield this.experienceManager.update(experience);
+            res.status(200).send(this.buildSuccessRes(`Experience id: ${experience.experienceId} successfully updated.`));
         });
     }
     delete(req, res, next) {
@@ -57,18 +61,18 @@ class ExperienceController {
             if (experience_1.isExperience(experience)) {
                 yield this.experienceManager.delete(experience.experienceId);
             }
-            res.status(204);
+            res.status(204).send(this.buildSuccessRes(`Successfully deleted experience id ${experience.experienceId} for user id ${experience.userId}.`));
         });
     }
     /* Specific functions */
     getByUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            let experience = yield this.experienceManager.get(req.params.id);
+            const experience = yield this.experienceManager.get(req.params.id);
             if (exceptions_1.isError(experience[0])) {
-                res.status(500).send(exceptions_1.buildErrorRes(experience[0]));
+                res.status(500).send(this.buildErrorRes(experience[0]));
                 return;
             }
-            res.status(200).send(experience);
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched experiences for user id '${req.params.id}' experience`, experience));
         });
     }
     bindRoutes(app, module) {

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { IUser, Role } from '../utils/lib/auth';
-import { PermissionException, buildErrorRes, ExceptionBase } from '../utils/exceptions';
+import { PermissionException, ExceptionBase } from '../utils/exceptions';
+import { buildErrorRes } from '../utils/errors';
 
 /**
  * Verifies that a particular user is allowed to this action based on the roles allowed for the action and user's roles

@@ -42,16 +42,6 @@ class UserManager {
             }
         });
     }
-    findByEmail(email) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return this.repo.findByEmail(email);
-            }
-            catch (ex) {
-                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
-            }
-        });
-    }
     update(user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -93,6 +83,40 @@ class UserManager {
                 // Verify the password
                 const hashedPass = yield this.hash.hashPassword(newPassword);
                 return this.repo.changePassword(email, hashedPass);
+            }
+            catch (ex) {
+                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
+            }
+        });
+    }
+    /**
+     * Finds a user in the repository given an email address
+     *
+     * @param {string} email - email address of the user to look for
+     * @returns {Promise<User>} - user object with corresponding email address
+     * @memberof UserManager
+     */
+    findByEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return this.repo.findByEmail(email);
+            }
+            catch (ex) {
+                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
+            }
+        });
+    }
+    /**
+     * Find a user given a username along with handling exceptions
+     *
+     * @param {string} username - username to search for
+     * @returns {Promise<User>} - user with corresponding username
+     * @memberof UserManager
+     */
+    findByUsername(username) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return this.repo.findByUsername(username);
             }
             catch (ex) {
                 return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));

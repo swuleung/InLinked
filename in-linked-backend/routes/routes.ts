@@ -10,15 +10,12 @@ import { ServiceModule } from '../utils/module/service-module';
 export class Routes {
 
     /* Controllers */
-    public testController: Controllers.TestController;
     public userController: Controllers.UserController;
     
     constructor(app: Application, module: ServiceModule) {
-        this.testController = new Controllers.TestController();
         this.userController = new Controllers.UserController(module.managers.user, module.managers.candidate, module.managers.enterprise);
 
         // Bind routes
-        this.testController.bindRoutes(app);
         this.userController.bindRoutes(app, module);
     }
 }

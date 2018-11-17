@@ -66,8 +66,4 @@ function isError(obj) {
     return obj !== undefined && (obj.code !== undefined || obj.error !== undefined);
 }
 exports.isError = isError;
-function buildErrorRes(obj) {
-    return Object.assign({}, obj, { error: 1 });
-}
-exports.buildErrorRes = buildErrorRes;
 //# sourceMappingURL=exceptions.js.map

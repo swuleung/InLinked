@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const exceptions_1 = require("../utils/exceptions");
+const errors_1 = require("../utils/errors");
 /**
  * Verifies that a particular user is allowed to this action based on the roles allowed for the action and user's roles
  *
@@ -32,7 +33,7 @@ function authorization(roles) {
             yield next();
         }
         catch (err) {
-            res.status(500).send(exceptions_1.buildErrorRes(err.toObject()));
+            res.status(500).send(errors_1.buildErrorRes(err.toObject()));
         }
     });
 }

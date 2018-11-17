@@ -3,6 +3,7 @@
  */
 import { Application } from 'express';
 import { ServiceModule } from '../utils/module/service-module';
+import { buildErrorRes } from '../utils/errors';
 export abstract class IController {
     public abstract bindRoutes(app: Application, module: ServiceModule): void;
 
@@ -26,6 +27,6 @@ export abstract class IController {
      * @memberof IController
      */
     public buildErrorRes(obj: any) {
-        return { success: 0, data: obj };
+        return buildErrorRes(obj);
     }
 }

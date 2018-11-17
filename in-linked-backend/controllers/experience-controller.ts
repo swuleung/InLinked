@@ -1,6 +1,6 @@
 import { Application, NextFunction, Request, Response } from 'express'
 
-import { IController } from './controller.interface';
+import { IController } from './controller.abstract';
 import { ExperienceManager } from '../managers';
 import { Role } from '../utils/lib/auth';
 import { ServiceModule } from '../utils/module/service-module';

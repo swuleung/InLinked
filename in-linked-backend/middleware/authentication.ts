@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-import { UnauthenticatedException, buildErrorRes } from '../utils/exceptions';
+import { UnauthenticatedException } from '../utils/exceptions';
 import { IAuth } from '../utils/lib/auth';
+import { buildErrorRes } from '../utils/errors';
 
 /**
  * Authentication middleware to verify auth token sent by user via headers

@@ -38,4 +38,15 @@ function buildError(err) {
     };
 }
 exports.buildError = buildError;
+/**
+ * Build error object for endpoints
+ *
+ * @param {*} obj - the object that we want to send back
+ * @returns - the error response that we have
+ * @memberof IController
+ */
+function buildErrorRes(obj) {
+    return { success: 0, data: obj };
+}
+exports.buildErrorRes = buildErrorRes;
 //# sourceMappingURL=errors.js.map

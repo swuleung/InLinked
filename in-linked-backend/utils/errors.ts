@@ -39,3 +39,14 @@ export function buildError(err: any) {
         message: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
     };
 }
+
+/**
+ * Build error object for endpoints
+ * 
+ * @param {*} obj - the object that we want to send back
+ * @returns - the error response that we have
+ * @memberof IController
+ */
+export function buildErrorRes(obj: any) {
+    return { success: 0, data: obj };
+}

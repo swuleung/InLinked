@@ -20,6 +20,7 @@ class ExperienceRepository {
         this.TABLE_NAME = 'experience';
         this.db = db;
     }
+    /* CRUD */
     insert(experience) {
         return __awaiter(this, void 0, void 0, function* () {
             const conn = yield this.db.getConnection();
@@ -55,19 +56,6 @@ class ExperienceRepository {
                 throw new exceptions_1.NotFoundException(`The id '${id}' does not exist in the experience table.`);
             }
             return this.toModel(row);
-        });
-    }
-    // TODO: NEEDS TESTING
-    getByUser(userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const conn = yield this.db.getConnection();
-            const row = yield conn
-                .table(this.TABLE_NAME)
-                .where({ UserId: userId });
-            if (!row) {
-                throw new exceptions_1.NotFoundException(`The user id ${userId} does not have any experience.`);
-            }
-            return this.toModelList(row);
         });
     }
     update(experience) {
@@ -120,6 +108,20 @@ class ExperienceRepository {
             res.push(this.toModel(exp));
         }
         return res;
+    }
+    /* CUSTOM FUNCTIONS */
+    // TODO: NEEDS TESTING
+    getByUser(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const conn = yield this.db.getConnection();
+            const row = yield conn
+                .table(this.TABLE_NAME)
+                .where({ UserId: userId });
+            if (!row) {
+                throw new exceptions_1.NotFoundException(`The user id ${userId} does not have any experience.`);
+            }
+            return this.toModelList(row);
+        });
     }
 }
 exports.ExperienceRepository = ExperienceRepository;

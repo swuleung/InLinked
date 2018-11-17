@@ -1,15 +1,14 @@
 import { Application, NextFunction, Request, Response } from 'express'
 
-import { JobManager } from '../managers/job-manager';
-import { Job } from '../models';
-import { isJob } from '../models/job';
+import { isJob, Job } from '../models/job';
 import { isError } from '../utils/exceptions';
 import { ServiceModule } from '../utils/module/service-module';
-import { IController } from './controller.interface';
+import { IController } from './controller.abstract';
 
 import config from '../config/config';
 import * as middleware from '../middleware';
 import { Role } from '../utils/lib/auth';
+import { JobManager } from '../managers';
 
 export class JobController extends IController {
     private jobManager: JobManager;
@@ -51,7 +50,7 @@ export class JobController extends IController {
         job.jobDescription = newJobData.jobDescription;
         job.salary = newJobData.salary || job.salary;
         job.employmentType = newJobData.employmentType || job.employmentType;
-        job.jobLevel = newJobData.jobLevel || job.jobLevel;
+        job.experienceLevel = newJobData.experienceLevel || job.experienceLevel;
         job.educationLevel = newJobData.educationLevel || job.educationLevel;
         job.city = newJobData.city || job.city;
         job.province = newJobData.province || job.province;
