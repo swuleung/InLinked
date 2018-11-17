@@ -26,6 +26,11 @@
     z-index: 0;
 }
 
+fa-icon:hover {
+    cursor: pointer;
+    color: $blue-ribbon;
+}
+
 .section-header {
     .section-title {
         float: left;
