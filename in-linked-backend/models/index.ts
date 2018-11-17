@@ -8,3 +8,5 @@ export { User } from './user';
 export { isCandidate } from './candidate';
 export { isEnterprise } from './enterprise';
 export { isUser } from './user';
+export { isExperience } from './experience';
+export { isJob } from './job';

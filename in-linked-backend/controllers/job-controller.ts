@@ -1,6 +1,5 @@
 import { Application, NextFunction, Request, Response } from 'express'
 
-import { isJob, Job } from '../models/job';
 import { isError } from '../utils/exceptions';
 import { ServiceModule } from '../utils/module/service-module';
 import { IController } from './controller.abstract';
@@ -9,6 +8,7 @@ import config from '../config/config';
 import * as middleware from '../middleware';
 import { Role } from '../utils/lib/auth';
 import { JobManager } from '../managers';
+import { Job, isJob } from '../models';
 
 export class JobController extends IController {
     private jobManager: JobManager;

@@ -1,5 +1,5 @@
-import { UserManager, EnterpriseManager, CandidateManager, ExperienceManager } from '../../managers';
-import { UserRepository, CandidateRepository, EnterpriseRepository, ExperienceRepository } from '../../repositories';
+import { UserManager, EnterpriseManager, CandidateManager, ExperienceManager, JobManager } from '../../managers';
+import { UserRepository, CandidateRepository, EnterpriseRepository, ExperienceRepository, JobRepository } from '../../repositories';
 import { IAuth, JWTAuth } from '../lib/auth';
 import { MySql } from '../lib/database';
 import { BCryptHash, IHash } from '../lib/hash';
@@ -22,7 +22,9 @@ export interface ServiceModule {
     repositories: {
         user: UserRepository;
         candidate: CandidateRepository,
-        enterprise: EnterpriseRepository
+        enterprise: EnterpriseRepository,
+        experience: ExperienceRepository
+        job: JobRepository
     };
 }
 
@@ -53,10 +55,15 @@ export function buildModule(db: MySql): ServiceModule {
             user: new UserManager(userRepo, auth, hash),
             candidate: new CandidateManager(candidateRepo, auth, hash),
             enterprise: new EnterpriseManager(enterpriseRepo, auth, hash),
-            experience: new ExperienceManager(experienceRepo)
+            experience: new ExperienceManager(experienceRepo),
+            job: new JobManager(jobRepo)
         },
         repositories: {
-            user: userRepo
+            user: userRepo,
+            candidate: candidateRepo,
+            enterprise: enterpriseRepo,
+            experience: experienceRepo,
+            job: jobRepo
         }
     }
 }
