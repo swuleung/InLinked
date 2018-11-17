@@ -1,15 +1,15 @@
 @import '../../../../global/app';
 
-.experience-container {
+.education-container {
     border-top: 2px solid;
     border-top-color: grey;
     padding-top: 1rem;
 }
-.experience-container:first-child {
+.education-container:first-child {
     border: 0;
 }
 
-.remove-experience {
+.remove-education {
     float: right;
 }
 
