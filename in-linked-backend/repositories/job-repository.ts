@@ -110,7 +110,9 @@ export class JobRepository {
             educationLevel: row.EducationLevel,
             city: row.City,
             province: row.Province,
-            country: row.Country
+            country: row.Country,
+            jobUrl: row.JobURL,
+            postedDate: row.PostedDate
         };
     }
 }
