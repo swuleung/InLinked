@@ -1,0 +1,105 @@
+<ng-template #content let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="candidate-title-section">Update your Experiences</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="experienceForm">
+      <div class="experience-container" formArrayName="experiences" *ngFor="let item of experienceForm.get('experiences').controls; let i = index;">
+        <div [formGroupName]="i">
+            <div class="form-group">
+              <label for="position-{{i}}">Position Title</label>
+              <div class="remove-experience">
+                  <button type="button" class="btn btn-link btn-sm" (click)="removeExperience(i)">
+                    Remove Experience
+                  </button>
+                </div>
+              <input formControlName="position" type="text" class="form-control" id="position-{{i}}" placeholder="Position Title">
+            </div>
+
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="enterprise-{{i}}">Enterprise</label>
+              <input formControlName="enterprise" type="text" class="form-control" id="enterprise-{{i}}" placeholder="Enterprise Name">
+            </div>
+
+            <div class="form-group col">
+              <label for="enterprise-location-{{i}}">Enterprise Location</label>
+              <input formControlName="enterpriseLocation" type="text" class="form-control" id="enterprise-location-{{i}}"
+                placeholder="Enterprise Location">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="start-month-{{i}}">Start Month</label>
+              <select formControlName="startMonth" class="custom-select" id="start-month-{{i}}">
+                <option disabled>Start Month</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+            </div>
+
+            <div class="form-group col">
+              <label for="start-year-{{i}}">Start Year</label>
+              <input formControlName="startYear" type="text" class="form-control" id="start-year-{{i}}" placeholder="Start Year">
+            </div>
+
+            <div class="form-group col">
+              <label for="end-month-{{i}}">End Month</label>
+              <select formControlName="endMonth" class="custom-select" id="end-month-{{i}}">
+                <option disabled>End Month</option>
+                <option value="0">Current</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+            </div>
+
+            <div class="form-group col">
+              <label for="end-year-{{i}}">End Year</label>
+              <input formControlName="endYear" type="text" class="form-control" id="end-year-{{i}}" placeholder="End Year">
+            </div>
+
+          </div>
+
+          <div class="form-group">
+            <label for="experience-description={{i}}">Experience Description</label>
+            <textarea formControlName="experienceDescription" class="form-control" id="experience-description={{i}}"
+              rows="5"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <button type="button" class="btn btn-primary" (click)="addExperience()">Add Experience</button>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-link" (click)="d('Save click')">Cancel</button>
+    <button type="button" class="btn btn-success" (click)="d('Save click')">Submit Changes</button>
+  </div>
+</ng-template>
+
+<fa-icon [icon]="['far', 'edit']" size="lg" (click)="open(content)"></fa-icon>

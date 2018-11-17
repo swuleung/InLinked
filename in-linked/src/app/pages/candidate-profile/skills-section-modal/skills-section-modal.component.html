@@ -14,12 +14,14 @@
           </div>
           <div class="col-1 skill-remove">
             <button type="button" class="btn btn-danger" (click)="removeSkill(i)">
-                <fa-icon [icon]="['fas', 'minus']" size="lg" (click)="open(content)"></fa-icon>
+                <fa-icon [icon]="['fas', 'minus']" size="lg"></fa-icon>
             </button>
           </div>
         </div>
       </div>
-      <button type="button" class="btn btn-success" (click)="addSkill()">Add a skill</button>
+      <div class="text-center">
+        <button type="button" class="btn btn-primary" (click)="addSkill()">Add a skill</button>
+      </div>
     </form>
   </div>
   <div class="modal-footer">
