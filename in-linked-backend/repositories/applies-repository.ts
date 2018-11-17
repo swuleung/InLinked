@@ -1,30 +1,28 @@
 import { MySql } from '../utils/lib/database';
-import { Candidate } from '../models';
+import { Applies } from '../models/applies';
 import { ValidationException, NotFoundException } from '../utils/exceptions';
 
-export class CandidateRepository {
-    private readonly TABLE_NAME: string = 'candidate';
+export class AppliesRepository {
+    private readonly TABLE_NAME: string = 'applies';
     private db: MySql;
 
     constructor(db: MySql) {
         this.db = db;
     }
 
-    public async insert(candidate: Candidate): Promise<Candidate> {
+    public async insert(applies: Applies): Promise<Applies> {
         const conn = await this.db.getConnection();
         try {
             const res = await conn.table(this.TABLE_NAME).insert({
-                CandidateId: candidate.candidateId,
-                FullName: candidate.fullName,
-                Skills: candidate.skills,
-                EducationLevel: candidate.educationLevel,
-                DisplayEmail: candidate.displayEmail
+                JobId: applies.jobId,
+                CandidateId: applies.candidateId,
+                DateApplied: applies.dateApplied
             });
-            return candidate;
-        } catch(err) {
+            return applies;
+        } catch (err) {
             if (err.code === 'ER_DUP_ENTRY') {
                 throw new ValidationException(
-                    `The user ${candidate.candidateId} already exists.`,
+                    `The application where user id ${applies.candidateId} applied to job id ${applies.jobId} already exists.`,
                     err
                 );
             }
@@ -33,32 +31,32 @@ export class CandidateRepository {
         }
     }
 
-    public async get(id: number): Promise<Candidate> {
+    public async get(jobId: number, candidateId: number): Promise<Applies> {
         const conn = await this.db.getConnection();
         const row = await conn
             .table(this.TABLE_NAME)
-            .where({ CandidateId: id })
+            .where({ JobId: jobId, CandidateId: candidateId })
             .first();
 
         if (!row) {
             throw new NotFoundException(
-                `The id '${id}' does not exist in the candidates table.`
+                `The job Id '${jobId}' and candidate id '${candidateId}' does not exist in the candidates table.`
             );
         }
+
         return this.toModel(row);
     }
 
-    public async update(candidate: Candidate): Promise<Candidate> {
+    public async update(applies: Applies): Promise<Applies> {
         const conn = await this.db.getConnection();
         await conn.table(this.TABLE_NAME)
-            .where({ CandidateId: candidate.candidateId })
+            .where({ JobId: applies.jobId, CandidateId: applies.candidateId })
             .update({
-                FullName: candidate.fullName,
-                Skills: candidate.skills,
-                EducationLevel: candidate.educationLevel,
-                DisplayEmail: candidate.displayEmail
+                jobId: applies.jobId,
+                candidateId: applies.candidateId,
+                dateApplied: applies.dateApplied
             });
-        return candidate;
+        return applies;
     }
 
     public async delete(id: number): Promise<void> {
@@ -75,13 +73,11 @@ export class CandidateRepository {
         }
     }
 
-    public toModel(row: any): Candidate {
+    public toModel(row: any): Applies {
         return {
+            jobId: row.JobId,
             candidateId: row.CandidateId,
-            fullName: row.FullName,
-            skills: row.Skills,
-            educationLevel: row.EducationLevel,
-            displayEmail: row.DisplayEmail
+            dateApplied: row.DateApplied
         }
     }
 }
