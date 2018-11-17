@@ -1,0 +1,8 @@
+@import '../../../global/app';
+
+.create-account-container {
+    text-align: center;
+    .create-warning-message {
+        color: $create-warning;
+    }
+}

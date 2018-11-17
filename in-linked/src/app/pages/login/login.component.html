@@ -17,8 +17,11 @@
           <input name="user-password" type="password" class="form-control" id="user-password" [(ngModel)]="userPassword" #password="ngModel" required>
           <div class="login-warning-message" *ngIf="password.touched && password.errors?.required">Please enter a password.</div>
         </div>
-        <button type="submit" class="btn btn-success" [disabled]="!login.form.valid">Submit</button>
+        <div class="row">
+          <button type="submit" class="btn btn-success" [disabled]="!login.form.valid">Submit</button>
+        </div> 
       </form>
+      <p>New to inLinked? <a routerLink="/create-account">Sign up now!</a></p>
     </div>
   </div>
 </div>
