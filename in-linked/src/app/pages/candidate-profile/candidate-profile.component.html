@@ -1,12 +1,11 @@
-<div class="container">
+<div class="container title-section">
   <div class="cover-photo" [style.backgroundImage]="'url(src=../../../../../assets/dog-cover-photo.jpg)'"></div>
   <img class="profile-photo" src="http://phoenixcavaliers.com/wp-content/uploads/Blenheim-puppy-Tatum-web-4.jpg">
   <div class="card card-move-up">
     <div class="section-header">
       <div class="h1 section-title">Bonnie</div>
       <div class="section-edit">
-          <fa-icon icon="plus" size="lg"></fa-icon>
-          <fa-icon icon="pen-square" size="lg"></fa-icon>
+          <app-candidate-title-section-modal></app-candidate-title-section-modal>
       </div>
     </div>
     <p>I am ready to conquer the world and make it less ruff for dogs everywhere. I believe in Dog Equality.</p>
@@ -19,7 +18,7 @@
           <div class="h2 section-title">Experience</div>
           <div class="section-edit">
               <fa-icon icon="plus" size="lg"></fa-icon>
-              <fa-icon icon="pen-square" size="lg"></fa-icon>
+              <fa-icon [icon]="['far', 'edit']" size="lg"></fa-icon>
             </div>
         </div>
     <div class="experience">
@@ -46,7 +45,7 @@
           <div class="h2 section-title">Skills</div>
           <div class="section-edit">
               <fa-icon icon="plus" size="lg"></fa-icon>
-              <fa-icon icon="pen-square" size="lg"></fa-icon>
+              <fa-icon [icon]="['far', 'edit']" size="lg"></fa-icon>
             </div>
         </div>
 
@@ -65,7 +64,7 @@
             <div class="h2 section-title">Education</div>
             <div class="section-edit">
                 <fa-icon icon="plus" size="lg"></fa-icon>
-              <fa-icon icon="pen-square" size="lg"></fa-icon>
+                <fa-icon [icon]="['far', 'edit']" size="lg"></fa-icon>
               </div>
           </div>
           <div class="experience">
