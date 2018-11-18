@@ -22,7 +22,7 @@ export class JobController extends IController {
         try {
             const job: Job = req.body.job;
             const ret = await this.jobManager.create(job);
-            res.status(201).send(this.buildSuccessRes(`Successfully created job job '${job.jobId}' for enterprise id '${job.enterpriseId}.`, ret));
+            res.status(201).send(this.buildSuccessRes(`Successfully created job id '${job.jobId}' for enterprise id '${job.enterpriseId}.'`, ret));
         } catch (ex) {
             res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
@@ -58,6 +58,7 @@ export class JobController extends IController {
             job.city = newJobData.city || job.city;
             job.province = newJobData.province || job.province;
             job.country = newJobData.country || job.country;
+            job.jobUrl = newJobData.jobUrl || job.jobUrl;
     
             await this.jobManager.update(job);
             res.status(200).send(this.buildSuccessRes(`Job id: ${job.jobId} successfully updated.`));
