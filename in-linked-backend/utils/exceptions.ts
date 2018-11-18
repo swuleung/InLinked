@@ -1,8 +1,7 @@
 /* Store basic data for parameter error */
 export interface FieldError {
-    message: string;
+    fieldName: string;
     type: string;
-    path: string[];
 }
 
 /**
@@ -47,7 +46,7 @@ export class InvalidFieldException extends ExceptionBase {
         this.fields = fields;
     }
 
-    public toModel() {
+    public toObject() {
         return {
             code: this.code,
             message: this.message,
@@ -75,5 +74,5 @@ export class UnauthenticatedException extends ExceptionBase {
 }
 
 export function isError(obj: any): boolean {
-    return obj !== undefined && (obj.code !== undefined || obj.error !== undefined);
+    return obj !== undefined && (obj.code !== undefined && obj.success !== undefined);
 }

@@ -66,3 +66,23 @@
 		"role": "user"
 	}
 }
+
+// JOB
+// createDate{
+	"job": {
+		"jobId": 0,
+		"enterpriseId": 4,
+		"jobTitle": "Slim Jim Mascot",
+		"jobDescription": "Hope you like wearing meat stick costumes.",
+		"salary": 80000,
+		"employementType": "full-time",
+		"experienceLevel": "entry level",
+		"educationLevel": "bachelors",
+		"city": "Slim City",
+		"province": "IA",
+		"country": "US"
+	},
+	"user": {
+		"role": "user"
+	}
+}

@@ -93,7 +93,6 @@ export class ExperienceController extends IController {
         app.route(`/${config.app.api_route}/${config.app.api_ver}/experience/:id`)
             .get(
                 middleware.authentication(module.libs.auth),
-                middleware.authorization([Role.USER, Role.ADMIN]),
                 this.get.bind(this)
             )
             .put(

@@ -24,7 +24,6 @@ export class JobRepository {
 
         try {
             const res = await conn.table(this.TABLE_NAME).insert({
-                JobId: job.jobId,
                 EnterpriseId: job.enterpriseId,
                 JobTitle: job.jobTitle,
                 JobDescription: job.jobDescription,
@@ -54,7 +53,7 @@ export class JobRepository {
         const conn = await this.db.getConnection();
         const row = await conn
             .table(this.TABLE_NAME)
-            .where({ ExperienceId: id })
+            .where({ JobId: id })
             .first();
 
         if (!row) {

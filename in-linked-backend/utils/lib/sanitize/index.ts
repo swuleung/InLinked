@@ -10,5 +10,6 @@ export function sanitizeUser(user: User): any {
         email: user.email,
         profilePicture: user.profilePicture,
         coverPhoto: user.coverPhoto,
+        acctype: user.acctype
     };
 }

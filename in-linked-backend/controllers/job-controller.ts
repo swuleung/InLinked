@@ -8,7 +8,7 @@ import config from '../config/config';
 import * as middleware from '../middleware';
 import { Role } from '../utils/lib/auth';
 import { JobManager } from '../managers';
-import { Job, isJob } from '../models';
+import { Job } from '../models';
 
 export class JobController extends IController {
     private jobManager: JobManager;
@@ -20,7 +20,7 @@ export class JobController extends IController {
 
     public async create(req: Request, res: Response, next: NextFunction) {
         try {
-            const job: Job = req.body;
+            const job: Job = req.body.job;
             const ret = await this.jobManager.create(job);
             res.status(201).send(this.buildSuccessRes(`Successfully created job job '${job.jobId}' for enterprise id '${job.enterpriseId}.`, ret));
         } catch (ex) {
@@ -31,23 +31,22 @@ export class JobController extends IController {
 
     public async get(req: Request, res: Response, next: NextFunction) {
         try {
-
+            const job = await this.jobManager.get(req.params.id);
+    
+            if (isError(job)) {
+                res.status(500).send(this.buildErrorRes(job));
+                return;
+            }
+    
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched job with id '${req.params.id}'.`, job));
         } catch (ex) {
             res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
-        const job = await this.jobManager.get(req.params.id);
-
-        if (isError(job)) {
-            res.status(500).send(this.buildErrorRes(job));
-            return;
-        }
-
-        res.status(200).send(this.buildSuccessRes(`Successfully fetched job with id '${req.params.id}'.`, job));
     }
 
     public async update(req: Request, res: Response, next: NextFunction) {
         try {
-            const newJobData: Job = req.body;
+            const newJobData: Job = req.body.job;
             const job: Job = await this.jobManager.get(req.params.id);
     
             job.jobTitle = newJobData.jobTitle;
@@ -89,7 +88,6 @@ export class JobController extends IController {
         app.route(`/${config.app.api_route}/${config.app.api_ver}/job/:id`)
             .get(
                 middleware.authentication(module.libs.auth),
-                middleware.authorization([Role.USER, Role.ADMIN]),
                 this.get.bind(this)
             )
             .put(

@@ -35,7 +35,7 @@ class InvalidFieldException extends ExceptionBase {
         super(30001, message, error);
         this.fields = fields;
     }
-    toModel() {
+    toObject() {
         return {
             code: this.code,
             message: this.message,
@@ -63,7 +63,7 @@ class UnauthenticatedException extends ExceptionBase {
 }
 exports.UnauthenticatedException = UnauthenticatedException;
 function isError(obj) {
-    return obj !== undefined && (obj.code !== undefined || obj.error !== undefined);
+    return obj !== undefined && (obj.code !== undefined && obj.success !== undefined);
 }
 exports.isError = isError;
 //# sourceMappingURL=exceptions.js.map

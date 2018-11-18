@@ -62,7 +62,7 @@ export function buildModule(db: MySql): ServiceModule {
             candidate: new CandidateManager(candidateRepo),
             enterprise: new EnterpriseManager(enterpriseRepo),
             experience: new ExperienceManager(experienceRepo),
-            job: new JobManager(jobRepo),
+            job: new JobManager(jobRepo, userRepo),
             applies: new AppliesManager(appliesRepo),
             education: new EducationManager(educationRepo)
         },

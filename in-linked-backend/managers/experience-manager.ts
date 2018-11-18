@@ -1,6 +1,5 @@
 import { Experience } from '../models/experience';
 import { ExperienceRepository } from '../repositories';
-import { isError } from '../utils/exceptions';
 
 export class ExperienceManager {
     private repo: ExperienceRepository;
@@ -15,27 +14,15 @@ export class ExperienceManager {
     }
 
     public async get(id: number): Promise<Experience> {
-        try {
-            return await this.repo.get(id);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+        return await this.repo.get(id);
     }
 
     public async update(experience: Experience): Promise<Experience> {
-        try {
-            return await this.repo.update(experience);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+        return await this.repo.update(experience);
     }
 
     public async delete(id: number): Promise<void> {
-        try {
-            return await this.repo.delete(id);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+        return await this.repo.delete(id);
     }
 
     /* OTHER */

@@ -1,45 +1,44 @@
 import { Job } from '../models';
 import { JobRepository } from '../repositories/job-repository';
-import { isError } from '../utils/exceptions';
+import { UserRepository } from '../repositories';
+import { AccType } from '../utils/lib/auth';
+import { InvalidFieldException } from '../utils/exceptions';
 
 export class JobManager {
-    private repo: JobRepository;
+    private jobRepo: JobRepository;
+    private userRepo: UserRepository;
 
-    constructor(repo: JobRepository) {
-        this.repo = repo;
+    constructor(jobRepo: JobRepository, userRepo: UserRepository) {
+        this.jobRepo = jobRepo;
+        this.userRepo = userRepo;
     }
 
     /* CRUD */
     public async create(job: Job): Promise<Job> {
-        try {
-            return await this.repo.insert(job);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
+        // Check if corresponding ID as an enterprise
+        const user = await this.userRepo.get(job.enterpriseId);
+        if (user.acctype !== AccType.ENTERPRISE) {
+            throw new InvalidFieldException(`The provided enterpriseId for the job does not correspond to an enterprise!`, [{
+                fieldName: 'job.enterpriseId',
+                type: 'number'
+            }]);
         }
+
+        // TODO: Check salary?
+
+        return await this.jobRepo.insert(job);
     }
 
     public async get(id: number): Promise<Job> {
-        try {
-            return await this.repo.get(id);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+        return await this.jobRepo.get(id);
     }
 
     public async update(job: Job): Promise<Job> {
-        try {
-            return await this.repo.update(job);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+        return await this.jobRepo.update(job);
     }
 
     public async delete(id: number): Promise<void> {
-        try {
-            return await this.repo.delete(id);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+        return await this.jobRepo.delete(id);
     }
 
 }
