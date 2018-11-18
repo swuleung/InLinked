@@ -1,0 +1,35 @@
+<ng-template #content let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="enterprise-fast-facts-section">Update your Company Fast Facts</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <label for="enterprise-headquarters">Headquarters</label>
+          <input name="enterprise-headquarters" type="text" class="form-control" id="enterprise-headquarters" placeholder="Enterprise Headquarters"
+            [(ngModel)]="enterpriseHeadquarters">
+        </div>
+  
+        <div class="form-group">
+          <label for="enterprise-ceo">CEO</label>
+          <input name="enterprise-ceo" type="text" class="form-control" id="enterprise-ceo" placeholder="Enterprise CEO"
+            [(ngModel)]="enterpriseCeo">
+        </div>
+  
+        <div class="form-group">
+            <label for="enterprise-industry">CEO</label>
+            <input name="enterprise-industry" type="text" class="form-control" id="enterprise-industry" placeholder="Enterprise Industry"
+              [(ngModel)]="enterpriseIndustry">
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-link" (click)="d('Save click')">Cancel</button>
+      <button type="button" class="btn btn-success" (click)="onSubmit();">Submit Changes</button>
+    </div>
+  </ng-template>
+  
+  <fa-icon class="edit" [icon]="['far', 'edit']" size="lg" (click)="open(content)"></fa-icon>
