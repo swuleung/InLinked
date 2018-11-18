@@ -1,5 +1,6 @@
 import { AppliesRepository } from '../repositories';
 import { Applies } from '../models/applies';
+import { isError } from '../utils/exceptions';
 
 export class AppliesManager {
     private repo: AppliesRepository;
@@ -13,7 +14,7 @@ export class AppliesManager {
         try {
             return await this.repo.insert(applies);
         } catch (ex) {
-            return ex.toObject();
+            return (isError(ex) ? ex.toObject() : { ...ex });
         }
     }
 
@@ -21,7 +22,7 @@ export class AppliesManager {
         try {
             return await this.repo.get(jobId, candidateId);
         } catch (ex) {
-            return ex.toObject();
+            return (isError(ex) ? ex.toObject() : { ...ex });
         }
     }
 
@@ -29,7 +30,7 @@ export class AppliesManager {
         try {
             return await this.repo.update(applies);
         } catch (ex) {
-            return ex.toObject();
+            return (isError(ex) ? ex.toObject() : { ...ex });
         }
     }
 
@@ -37,7 +38,7 @@ export class AppliesManager {
         try {
             return await this.repo.delete(jobId, candidateId);
         } catch (ex) {
-            return ex.toObject();
+            return (isError(ex) ? ex.toObject() : { ...ex });
         }
     }
 
