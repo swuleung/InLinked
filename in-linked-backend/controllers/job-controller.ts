@@ -19,19 +19,22 @@ export class JobController extends IController {
     }
 
     public async create(req: Request, res: Response, next: NextFunction) {
-        const job: Job = req.body;
-        const ret = await this.jobManager.create(job);
-
-        // Failed to create, throw error
-        if (isError(ret)) {
-            res.status(500).send(this.buildErrorRes(ret));
-            return;
+        try {
+            const job: Job = req.body;
+            const ret = await this.jobManager.create(job);
+            res.status(201).send(this.buildSuccessRes(`Successfully created job job '${job.jobId}' for enterprise id '${job.enterpriseId}.`, ret));
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
-        res.status(201).send(this.buildSuccessRes(`Successfully created job job '${job.jobId}' for enterprise id '${job.enterpriseId}.`, ret));
     }
 
 
     public async get(req: Request, res: Response, next: NextFunction) {
+        try {
+
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
+        }
         const job = await this.jobManager.get(req.params.id);
 
         if (isError(job)) {
@@ -43,30 +46,36 @@ export class JobController extends IController {
     }
 
     public async update(req: Request, res: Response, next: NextFunction) {
-        const newJobData: Job = req.body;
-        const job: Job = await this.jobManager.get(req.params.id);
-
-        job.jobTitle = newJobData.jobTitle;
-        job.jobDescription = newJobData.jobDescription;
-        job.salary = newJobData.salary || job.salary;
-        job.employmentType = newJobData.employmentType || job.employmentType;
-        job.experienceLevel = newJobData.experienceLevel || job.experienceLevel;
-        job.educationLevel = newJobData.educationLevel || job.educationLevel;
-        job.city = newJobData.city || job.city;
-        job.province = newJobData.province || job.province;
-        job.country = newJobData.country || job.country;
-
-        await this.jobManager.update(job);
-        res.status(200).send(this.buildSuccessRes(`Job id: ${job.jobId} successfully updated.`));
+        try {
+            const newJobData: Job = req.body;
+            const job: Job = await this.jobManager.get(req.params.id);
+    
+            job.jobTitle = newJobData.jobTitle;
+            job.jobDescription = newJobData.jobDescription;
+            job.salary = newJobData.salary || job.salary;
+            job.employmentType = newJobData.employmentType || job.employmentType;
+            job.experienceLevel = newJobData.experienceLevel || job.experienceLevel;
+            job.educationLevel = newJobData.educationLevel || job.educationLevel;
+            job.city = newJobData.city || job.city;
+            job.province = newJobData.province || job.province;
+            job.country = newJobData.country || job.country;
+    
+            await this.jobManager.update(job);
+            res.status(200).send(this.buildSuccessRes(`Job id: ${job.jobId} successfully updated.`));
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
+        }
     }
 
     public async delete(req: Request, res: Response, next: NextFunction) {
-        const job = await this.jobManager.get(req.params.id);
-        if (isJob(job)) {
+        try {
+            const job = await this.jobManager.get(req.params.id);
             await this.jobManager.delete(job.jobId);
-        }
 
-        res.status(204).send(this.buildSuccessRes(`Successfully deleted job id ${job.jobId} for enterprise id ${job.enterpriseId}.`));
+            res.status(204).send(this.buildSuccessRes(`Successfully deleted job id ${job.jobId} for enterprise id ${job.enterpriseId}.`));
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
+        }
     }
 
     public bindRoutes(app: Application, module: ServiceModule) {

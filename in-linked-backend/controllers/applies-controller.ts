@@ -20,44 +20,50 @@ export class AppliesController extends IController {
     }
 
     public async create(req: Request, res: Response, next: NextFunction) {
-        const applies: Applies = req.body;
-        const ret = await this.appliesManager.create(applies);
-
-        if (isError(ret)) {
-            res.status(500).send(this.buildErrorRes(ret));
-            return;
+        try {
+            const applies: Applies = req.body;
+            const ret = await this.appliesManager.create(applies);
+    
+            res.status(201).send(this.buildSuccessRes(`Successfully created job application for candidate id '${applies.candidateId}'.`, ret));
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
     }
 
     public async get(req: Request, res: Response, next: NextFunction) {
-        const applies = await this.appliesManager.get(req.params.candidateId, req.params.jobId);
-
-        if (isError(applicationCache)) {
-            res.status(500).send(this.buildErrorRes(applies));
-            return;
+        try {
+            const applies = await this.appliesManager.get(req.params.candidateId, req.params.jobId);
+    
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched job application with candidate id '${req.params.userId}' and job id '${req.params.jobId}.`, applies));
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
-
-        res.status(200).send(this.buildSuccessRes(`Successfully fetched job application with candidate id '${req.params.userId}' and job id '${req.params.jobId}.`, applies));
     }
 
     public async update(req: Request, res: Response, next: NextFunction) {
-        const newAppliesData: Applies = req.body;
-        const applies = await this.appliesManager.get(req.params.candidateId, req.params.jobId);
-
-        // Only used to update application date
-        applies.dateApplied = newAppliesData.dateApplied;
-
-        await this.appliesManager.update(applies);
-
-        res.status(200).send(this.buildSuccessRes(`Successfully updated job application with candidate id '${req.params.userId}' and job id '${req.params.jobId}.`, applies));
+        try {
+            const newAppliesData: Applies = req.body;
+            const applies = await this.appliesManager.get(req.params.candidateId, req.params.jobId);
+    
+            // Only used to update application date
+            applies.dateApplied = newAppliesData.dateApplied;
+    
+            await this.appliesManager.update(applies);
+    
+            res.status(200).send(this.buildSuccessRes(`Successfully updated job application with candidate id '${req.params.userId}' and job id '${req.params.jobId}.`, applies));
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
+        }
     }
 
     public async delete(req: Request, res: Response, next: NextFunction) {
-        const applies = await this.appliesManager.get(req.params.candidateId, req.params.jobId);
-        if (isApplies(applies)) {
+        try {
+            const applies = await this.appliesManager.get(req.params.candidateId, req.params.jobId);
             await this.appliesManager.delete(applies.candidateId, applies.jobId);
+            res.status(204).send(this.buildSuccessRes(`Successfully deleted application with candidate id ${applies.candidateId} for joib id ${applies.jobId}.`));
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
-        res.status(204).send(this.buildSuccessRes(`Successfully deleted application with candidate id ${applies.candidateId} for joib id ${applies.jobId}.`));
     }
 
     public bindRoutes(app: Application, module: ServiceModule): void {

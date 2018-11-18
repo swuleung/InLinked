@@ -11,11 +11,7 @@ export class ExperienceManager {
 
     /* CRUD */
     public async create(experience: Experience): Promise<Experience> {
-        // try {
-            return await this.repo.insert(experience);
-        // } catch (ex) {
-        //     return (isError(ex) ? ex.toObject() : { ...ex });
-        // }
+        return await this.repo.insert(experience);
     }
 
     public async get(id: number): Promise<Experience> {
@@ -44,11 +40,7 @@ export class ExperienceManager {
 
     /* OTHER */
     public async getByUser(userId: number): Promise<Experience[]> {
-        try {
-            return await this.repo.getByUser(userId);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+        return await this.repo.getByUser(userId);
     }
 
 }
