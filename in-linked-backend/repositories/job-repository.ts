@@ -33,7 +33,9 @@ export class JobRepository {
                 EducationLevel: job.educationLevel,
                 City: job.city,
                 Province: job.province,
-                Country: job.country
+                Country: job.country,
+                JobURL: job.jobUrl,
+                PostedDate: job.postedDate
             });
             job.jobId = res[0];
             return job;
@@ -77,7 +79,8 @@ export class JobRepository {
                 EducationLevel: job.educationLevel,
                 City: job.city,
                 Province: job.province,
-                Country: job.country
+                Country: job.country,
+                JobURL: job.jobUrl
             });
         return job;
     }
