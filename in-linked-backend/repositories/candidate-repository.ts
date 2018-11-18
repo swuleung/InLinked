@@ -68,6 +68,8 @@ export class CandidateRepository {
             await transaction.from(this.TABLE_NAME)
                 .delete()
                 .where({ CandidateId: id });
+
+            await transaction.commit();
         } catch (err) {
             // Error in transaction, roll back
             transaction.rollback(err);

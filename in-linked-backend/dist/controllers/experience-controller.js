@@ -46,11 +46,15 @@ class ExperienceController extends controller_abstract_1.IController {
             const newExperienceData = req.body;
             const experience = yield this.experienceManager.get(req.params.id);
             // Update vars
+            experience.enterpriseId = newExperienceData.enterpriseId; // Allow nulls
             experience.enterpriseName = newExperienceData.enterpriseName;
             experience.positionName = newExperienceData.positionName;
             experience.description = newExperienceData.description || experience.description;
-            experience.startDate = newExperienceData.startDate || experience.startDate;
-            experience.location = newExperienceData.location || experience.location;
+            experience.startMonth = newExperienceData.startMonth,
+                experience.startYear = newExperienceData.startYear,
+                experience.endMonth = newExperienceData.endMonth,
+                experience.endYear = newExperienceData.endYear,
+                experience.location = newExperienceData.location || experience.location;
             yield this.experienceManager.update(experience);
             res.status(200).send(this.buildSuccessRes(`Experience id: ${experience.experienceId} successfully updated.`));
         });

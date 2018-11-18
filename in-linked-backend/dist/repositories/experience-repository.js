@@ -31,7 +31,10 @@ class ExperienceRepository {
                     EnterpriseName: experience.enterpriseName,
                     PositionName: experience.positionName,
                     Description: experience.description,
-                    StartDate: experience.startDate,
+                    StartMonth: experience.startMonth,
+                    StartYear: experience.startYear,
+                    EndMonth: experience.endMonth,
+                    EndYear: experience.endYear,
                     Location: experience.location
                 });
                 experience.experienceId = res[0];
@@ -68,7 +71,10 @@ class ExperienceRepository {
                 EnterpriseName: experience.enterpriseName,
                 PositionName: experience.positionName,
                 Description: experience.description,
-                StartDate: experience.startDate,
+                StartMonth: experience.startMonth,
+                StartYear: experience.startYear,
+                EndMonth: experience.endMonth,
+                EndYear: experience.endYear,
                 Location: experience.location
             });
             return experience;
@@ -97,26 +103,28 @@ class ExperienceRepository {
             enterpriseName: row.EnterpriseName,
             positionName: row.PositionName,
             description: row.Description,
-            startDate: row.StartDate,
+            startMonth: row.StartMonth,
+            startYear: row.StartYear,
+            endMonth: row.EndMonth,
+            endYear: row.EndYear,
             location: row.Location
         };
     }
     toModelList(list) {
         // Assuming that the object passed in is a list
-        const res = [];
-        for (let exp of list) {
-            res.push(this.toModel(exp));
-        }
-        return res;
+        return list.map((r) => this.toModel(r));
     }
     /* CUSTOM FUNCTIONS */
     // TODO: NEEDS TESTING
-    getByUser(userId) {
+    getByUser(userId, limit) {
         return __awaiter(this, void 0, void 0, function* () {
             const conn = yield this.db.getConnection();
             const row = yield conn
                 .table(this.TABLE_NAME)
-                .where({ UserId: userId });
+                .where({ UserId: userId })
+                .orderBy('StartMonth', 'desc')
+                .orderBy('StartDate', 'desc')
+                .limit(limit || 30);
             if (!row) {
                 throw new exceptions_1.NotFoundException(`The user id ${userId} does not have any experience.`);
             }

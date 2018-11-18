@@ -22,34 +22,18 @@ export class CandidateManager {
 
     /* CRUD */
     public async create(candidate: Candidate): Promise<Candidate> {
-        try {
-            return this.repo.insert(candidate);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+            return await this.repo.insert(candidate);
     }
 
     public async get(id: number): Promise<Candidate> {
-        try {
-            return this.repo.get(id);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+            return await this.repo.get(id);
     }
 
     public async update(candidate: Candidate): Promise<Candidate> {
-        try {
-            return this.repo.update(candidate);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+            return await this.repo.update(candidate);
     }
 
     public async delete(id: number): Promise<void> {
-        try {
-            return this.repo.delete(id);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+        return await this.repo.delete(id);
     }
 }

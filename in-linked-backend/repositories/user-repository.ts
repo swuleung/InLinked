@@ -34,7 +34,9 @@ export class UserRepository {
                 ProfilePicture: user.profilePicture,
                 CoverPhoto: user.coverPhoto,
                 Role: user.role,
-                AccType: user.acctype
+                AccType: user.acctype,
+                CreateDate: user.createDate,
+                LastActiveDate: user.lastActiveDate
             });
 
             user.userId = res[0];
@@ -79,10 +81,11 @@ export class UserRepository {
         await conn.table(this.TABLE_NAME)
             .where({ UserId: user.userId })
             .update({
-            Headline: user.headline,
-            ProfilePicture: user.profilePicture,
-            CoverPhoto: user.coverPhoto
-        });
+                Headline: user.headline,
+                ProfilePicture: user.profilePicture,
+                CoverPhoto: user.coverPhoto,
+                LastActiveDate: user.lastActiveDate
+            });
         return user;
     }
 

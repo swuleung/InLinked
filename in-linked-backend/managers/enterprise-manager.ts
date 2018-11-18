@@ -2,7 +2,7 @@ import { EnterpriseRepository } from '../repositories/enterprise-repository';
 import { IAuth } from '../utils/lib/auth';
 import { BCryptHash } from '../utils/lib/hash';
 import { Enterprise } from '../models';
-import { isError } from 'util';
+import { isError } from '../utils/exceptions';
 
 export class EnterpriseManager {
     private repo: EnterpriseRepository;
@@ -43,10 +43,6 @@ export class EnterpriseManager {
     }
 
     public async delete(id: number): Promise<void> {
-        try {
-            return await this.repo.delete(id);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+        return await this.repo.delete(id);
     }
 }

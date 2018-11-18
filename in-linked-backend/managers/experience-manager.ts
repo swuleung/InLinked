@@ -11,11 +11,11 @@ export class ExperienceManager {
 
     /* CRUD */
     public async create(experience: Experience): Promise<Experience> {
-        try {
+        // try {
             return await this.repo.insert(experience);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+        // } catch (ex) {
+        //     return (isError(ex) ? ex.toObject() : { ...ex });
+        // }
     }
 
     public async get(id: number): Promise<Experience> {
