@@ -65,3 +65,4 @@ package-lock.json
 # backend build 
 in-linked-backend/dist
 
+.DS_Store
