@@ -8,14 +8,23 @@ import { Router } from '@angular/router';
   styleUrls: ['./create-account.component.scss']
 })
 export class CreateAccountComponent implements OnInit {
-  private userName = ''; // Full name of the user
+  private fullName = '';
+  private userName = '';
   private userEmail = '';
   private userPassword = '';
   private enterpriseCheck = false;
   private errorMessage = '';
+  private educationLevels = [
+    'High School',
+    'Bachelors',
+    'Masters',
+    'Doctorate',
+    'Postdoc'
+  ];
+  private educationLevel = '';
 
   constructor(
-    private user: UserService
+    private user: UserService,
     private router: Router) { }
 
   ngOnInit() {
@@ -24,7 +33,7 @@ export class CreateAccountComponent implements OnInit {
   onSubmit(): void {
     // Try to add the account to the database, error on fail
     const acctype = this.enterpriseCheck ? 'enterprise' : 'candidate';
-    this.user.create(this.userName, this.userPassword, this.userEmail, acctype)
+    this.user.create(this.fullName, this.userName, this.userPassword, this.userEmail, this.educationLevel, acctype)
       .subscribe(
         (created) => {
           if (!created) {

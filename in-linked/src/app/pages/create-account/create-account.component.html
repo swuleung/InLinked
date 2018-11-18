@@ -5,14 +5,23 @@
     <form #create="ngForm" (ngSubmit)="onSubmit();">
       <div *ngIf="errorMessage" class="create-warning-message">{{errorMessage}}</div>
       <div class="form-group">
-        <label for="user-name">Name/Enterprise</label>
         <div class="row justify-content-sm-center">
           <div class="col-4">
+            <label for="full-name">Name/Enterprise</label>
+            <input name="full-name" type="text" class="form-control" id="full-name" [(ngModel)]="fullName" #fname="ngModel" required>
+          </div>
+        </div>
+        <div class="create-warning-message" *ngIf="fname.touched && fname.errors?.required">Please enter full name.</div>
+      </div>
+      <div class="form-group">
+        <div class="row justify-content-sm-center">
+          <div class="col-4">
+            <label for="user-name">Username</label>
             <input name="user-name" type="text" class="form-control" id="user-name" [(ngModel)]="userName" #name="ngModel" required>
           </div>
         </div>
-        <div class="create-warning-message" *ngIf="name.touched && name.errors?.required">Please enter a name.</div>
-      </div>  
+        <div class="create-warning-message" *ngIf="name.touched && name.errors?.required">Please enter a username.</div>
+      </div>
       <div class="form-group">
         <label for="user-email">Email</label>
         <div class="row justify-content-sm-center">
@@ -31,11 +40,22 @@
         </div> 
         <div class="create-warning-message" *ngIf="password.touched && password.errors?.required">Please enter a password.</div>
       </div>
-      <div class="form-group">
-        <div class="row justify-content-center">
-          <div class="form-check">
-            <input name="enterprise-check" class="form-check-input" type="checkbox" id="enterprise-check" [(ngModel)]="enterpriseCheck">
-            <label class="form-check-label" for="enterprise-check">Check if enterprise.</label>
+      <div class="row justify-content-center">
+        <div class="col-3">
+          <div class="form-group">
+            <div class="form-check">
+              <label class="form-check-label" for="enterprise-check">Check if enterprise.</label><br>
+              <input name="enterprise-check" class="form-check-input" type="checkbox" id="enterprise-check" [(ngModel)]="enterpriseCheck">
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label class="education-level-label" for="education-level">Education Level (Candidates)</label>
+            <select name="education-level" class="form-control" [(ngModel)]="educationLevel" #education="ngModel">
+              <option [value]="level" *ngFor="let level of educationLevels">{{level}}</option>
+            </select>
+            <div class="create-warning-message" *ngIf="!enterpriseCheck && education.touched && !educationLevel">Please select education level.</div>
           </div>
         </div>
       </div>

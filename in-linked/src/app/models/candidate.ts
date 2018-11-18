@@ -2,7 +2,7 @@
  * Candidate model for InLinked
  */
 export interface Candidate {
-    candidateId: number;
+    candidateId: number,
     username: string;
     headline?: string;
     email: string;

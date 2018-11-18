@@ -4,7 +4,7 @@ import { Candidate, isCandidate } from 'src/app/models/candidate';
 import { Enterprise } from '../models/enterprise';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { catchError, map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 const helper = new JwtHelperService();
 
@@ -16,22 +16,26 @@ export class UserService {
   private candidateData: Candidate;
   private enterpriseData: Enterprise;
   private decoded: any;
-  private created;
 
   constructor(private http: HttpClient) { }
 
   /**
    * Create user in the database
    *
-   * @param {string} username - user's full name
+   * @param {string} fullName - user's full name
+   * @param {string} username - user's username
    * @param {string} password - user's password
    * @param {string} email - user's email
+   * @param {string} educationLevel - user's education level
    * @param {string} acctype - user's account type (either candidate or enterprise)
    * @returns {Observable<boolean>} - true on success, false otherwise
    * @memberof UserService
    */
-  create(username: string, password: string, email: string, acctype: string): Observable<boolean> {
+  create(fullName: string, username: string, password: string, email: string, educationLevel: string, acctype: string):
+    Observable<boolean> {
+
     const newUser = {
+      userId: 0, // To satisfy user model in backend
       username: username,
       headline: '',
       password: password,
@@ -41,14 +45,58 @@ export class UserService {
       role: 'user',
       acctype: acctype
     };
-    const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.g}`, 'Content-Type': 'application/x-www-form-urlencoded' });
-    this.http.post<any>(`${this.apiUrl}/user`, {user: newUser}, {headers: headers})
+    const body: any = {};
+    body.user = newUser;
+    if (acctype === 'candidate') {
+      body.candidate = {
+        candidateId: 0,
+        fullName: fullName,
+        skills: '',
+        educationLevel: educationLevel.toLocaleLowerCase(),
+        displayEmail: 1
+      };
+    } else {
+      body.enterprise = {
+        enterpriseId: 0,
+        enterpriseName: fullName,
+        enterpriseDescription: '',
+        ceo: '',
+        headquarters: '',
+        industry: ''
+      };
+    }
+    return this.http.post<any>(`${this.apiUrl}/user`, body)
       .pipe(
-        map(created => {
-          console.log(created);
-          this.created = created;
+        map(result => {
+          if (acctype === 'candidate') {
+            this.candidateData = {
+              candidateId: result.userId,
+              username: result.username,
+              headline: result.headline,
+              email: result.email,
+              profilePicture: result.profilePicture,
+              coverPhoto: result.coverPhoto,
+              fullName: fullName,
+              skills: '',
+              educationLevel: educationLevel.toLocaleLowerCase(),
+              displayEmail: 1
+            };
+          } else {
+            this.enterpriseData = {
+              enterpriseId: result.userId,
+              enterpriseName: fullName,
+              enterpriseDescription: '',
+              ceo: '',
+              headquarters: '',
+              industry: '',
+              email: result.email,
+              profilePicture: result.profilePicture,
+              coverPhoto: result.coverPhoto
+            };
+          }
           return true;
-        })
+        }),
+        catchError(err => of(false)) // If account exists, or other error
       );
   }
 
