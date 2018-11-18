@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const exceptions_1 = require("../utils/exceptions");
 class ExperienceManager {
     constructor(repo) {
         this.repo = repo;
@@ -15,12 +16,11 @@ class ExperienceManager {
     /* CRUD */
     create(experience) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.repo.insert(experience);
-            }
-            catch (ex) {
-                return ex.toObject();
-            }
+            // try {
+            return yield this.repo.insert(experience);
+            // } catch (ex) {
+            //     return (isError(ex) ? ex.toObject() : { ...ex });
+            // }
         });
     }
     get(id) {
@@ -29,7 +29,7 @@ class ExperienceManager {
                 return yield this.repo.get(id);
             }
             catch (ex) {
-                return ex.toObject();
+                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
             }
         });
     }
@@ -39,7 +39,7 @@ class ExperienceManager {
                 return yield this.repo.update(experience);
             }
             catch (ex) {
-                return ex.toObject();
+                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
             }
         });
     }
@@ -49,7 +49,7 @@ class ExperienceManager {
                 return yield this.repo.delete(id);
             }
             catch (ex) {
-                return ex.toObject();
+                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
             }
         });
     }
@@ -60,7 +60,7 @@ class ExperienceManager {
                 return yield this.repo.getByUser(userId);
             }
             catch (ex) {
-                return ex.toObject();
+                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
             }
         });
     }

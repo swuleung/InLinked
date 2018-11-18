@@ -69,6 +69,7 @@ class CandidateRepository {
                 yield transaction.from(this.TABLE_NAME)
                     .delete()
                     .where({ CandidateId: id });
+                yield transaction.commit();
             }
             catch (err) {
                 // Error in transaction, roll back

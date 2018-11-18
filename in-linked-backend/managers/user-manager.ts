@@ -23,38 +23,22 @@ export class UserManager {
     /* CRUD */
     public async create(user: User): Promise<User> {
         // Hash passwords before creating user
-        try {
-            const hashedPass = await this.hash.hashPassword(user.password);
-            user.password = hashedPass; // Update password
-    
-            return await this.repo.insert(user); 
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+        const hashedPass = await this.hash.hashPassword(user.password);
+        user.password = hashedPass; // Update password
+
+        return await this.repo.insert(user);
     }
 
     public async get(id: number): Promise<User> {
-        try {
-            return await this.repo.get(id);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+        return await this.repo.get(id);
     }
 
     public async update(user: User): Promise<User> {
-        try {
             return await this.repo.update(user);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
     }
 
     public async delete(id: number): Promise<void> {
-        try {
-            return await this.repo.delete(id);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+        return await this.repo.delete(id);
     }
 
     /* Specific functionality */

@@ -47,10 +47,14 @@ export class ExperienceController extends IController {
         const experience = await this.experienceManager.get(req.params.id);
 
         // Update vars
+        experience.enterpriseId = newExperienceData.enterpriseId; // Allow nulls
         experience.enterpriseName = newExperienceData.enterpriseName;
         experience.positionName = newExperienceData.positionName;
         experience.description = newExperienceData.description || experience.description;
-        experience.startDate = newExperienceData.startDate || experience.startDate;
+        experience.startMonth = newExperienceData.startMonth,
+        experience.startYear = newExperienceData.startYear,
+        experience.endMonth = newExperienceData.endMonth, // Allow nulls
+        experience.endYear = newExperienceData.endYear, // Allow nulls
         experience.location = newExperienceData.location || experience.location;
 
         await this.experienceManager.update(experience);

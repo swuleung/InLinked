@@ -10,7 +10,9 @@
 	    "profilePicture": "img",
 	    "coverPhoto": "img",
 	    "role": "user",
-	    "acctype": "candidate"
+	    "acctype": "candidate",
+		"createDate": "2014-04-29",
+		"lastActiveDate": "2014-04-29"
 	},
 	"candidate": {
 	    "candidateId": 2,
@@ -32,7 +34,9 @@
 	    "profilePicture": "img",
 	    "coverPhoto": "img",
 	    "role": "user",
-	    "acctype": "enterprise"
+	    "acctype": "enterprise",
+		"createDate": "2014-04-29",
+		"lastActiveDate": "2014-04-29"
 	},
 	"enterprise": {
 	    "enterpriseId": 0,

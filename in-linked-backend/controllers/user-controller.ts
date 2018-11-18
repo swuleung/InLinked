@@ -28,111 +28,110 @@ export class UserController extends IController {
     }
 
     public async create(req: Request, res: Response, next: NextFunction) {
-        const user: User = req.body.user; // Create a user from body
-        const ret = await this.userManager.create(user);
-
-        // Failed create, throw error cause of duplicate user
-        if (isError(ret)) {
-            res.status(500).send(this.buildErrorRes(ret));
-            return;
+        try {
+            const user: User = req.body.user; // Create a user from body
+            await this.userManager.create(user);
+    
+            // Create entries based on account type
+            if (user.acctype === AccType.ENTERPRISE) {
+                const enterprise: Enterprise = req.body.enterprise;
+                enterprise.enterpriseId = user.userId; // Update the associated ID
+                await this.enterpriseManager.create(enterprise);
+            } else if (user.acctype === AccType.CANDIDATE) {
+                const candidate: Candidate = req.body.candidate;
+                candidate.candidateId = user.userId; // Update the associated ID
+                await this.candidateManager.create(candidate);
+            }
+            
+            res.status(201).send(sanitizeUser(user));
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { ...ex }));
         }
-
-        // Create entries based on account type
-        if (user.acctype === AccType.ENTERPRISE) {
-            const enterprise: Enterprise = req.body.enterprise;
-            enterprise.enterpriseId = user.userId; // Update the associated ID
-            await this.enterpriseManager.create(enterprise);
-        } else if (user.acctype === AccType.CANDIDATE) {
-            const candidate: Candidate = req.body.candidate;
-            candidate.candidateId = user.userId; // Update the associated ID
-            await this.candidateManager.create(candidate);
-        }
-        res.status(201).send(ret);
     }
 
     // Gets generic info for user given an id
     public async get(req: Request, res: Response, next: NextFunction) {
-        let user = await this.userManager.get(req.params.id);
+        try {
+            let user = await this.userManager.get(req.params.id);
 
-        // If response was an error, return it
-        if (isError(user)) {
-            res.status(500).send(this.buildErrorRes(user));
-            return;
+            let special: any = null; // Store result for candidates/enterprise
+            if (user.acctype === AccType.ENTERPRISE) {
+                special = await this.enterpriseManager.get(user.userId);
+            } else if (user.acctype === AccType.CANDIDATE) {
+                special = await this.candidateManager.get(user.userId);
+            }
+
+            // Verify that responses for special objects succeeded
+            user = isCandidate(special) || isEnterprise(special) ? sanitizeUser(user) : null;
+            res.status(200).send({ 
+                ...user,
+                ...special
+            }); // Return details for user (with special data)
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { ...ex }));
         }
-
-        let special: any = null; // Store result for candidates/enterprise
-        if (user.acctype === AccType.ENTERPRISE) {
-            special = await this.enterpriseManager.get(user.userId);
-        } else if (user.acctype === AccType.CANDIDATE) {
-            special = await this.candidateManager.get(user.userId);
-        }
-
-        // Verify that responses for special objects succeeded
-        user = isCandidate(special) || isEnterprise(special) ? sanitizeUser(user) : null;
-        res.status(200).send({ 
-            ...user,
-            ...special
-        }); // Return details for user (with special data)
     }
 
     public async update(req: Request, res: Response, next: NextFunction) {
-        const newUserData: User = req.body.user;
-        const user = await this.userManager.get(req.params.id);
+        // try {
+            const newUserData: User = req.body.user;
+            const user = await this.userManager.get(req.params.id);
 
-        if (isError(user)) {
-            res.status(500).send(this.buildErrorRes(user));
-            return;
-        }
+            // Update vars
+            user.coverPhoto = newUserData.coverPhoto;
+            user.headline = newUserData.headline;
+            user.profilePicture = newUserData.profilePicture;
+            user.lastActiveDate = newUserData.lastActiveDate;
 
-        // Update vars
-        user.coverPhoto = newUserData.coverPhoto;
-        user.headline = newUserData.headline;
-        user.profilePicture = newUserData.profilePicture;
+            await this.userManager.update(user);
 
-        await this.userManager.update(user);
+            if (user.acctype === AccType.CANDIDATE) {
+                const newCandData: Candidate = req.body.candidate;
+                const cand = await this.candidateManager.get(user.userId);
 
-        if (user.acctype === AccType.CANDIDATE) {
-            const newCandData: Candidate = req.body.candidate;
-            const cand = await this.candidateManager.get(user.userId);
+                cand.fullName = newCandData.fullName;
+                cand.skills = newCandData.skills || cand.skills;
+                cand.educationLevel = newCandData.educationLevel || cand.educationLevel;
+                cand.displayEmail = newCandData.displayEmail || cand.displayEmail;
 
-            cand.fullName = newCandData.fullName;
-            cand.skills = newCandData.skills || cand.skills;
-            cand.educationLevel = newCandData.educationLevel || cand.educationLevel;
-            cand.displayEmail = newCandData.displayEmail || cand.displayEmail;
+                await this.candidateManager.update(cand);
+            } else if (user.acctype === AccType.ENTERPRISE) {
+                const newEnterpriseData: Enterprise = req.body.enterprise;
+                const enterprise: Enterprise = await this.enterpriseManager.get(user.userId);
 
-            await this.candidateManager.update(cand);
-        } else if (user.acctype === AccType.ENTERPRISE) {
-            const newEnterpriseData: Enterprise = req.body.enterprise;
-            const enterprise: Enterprise = await this.enterpriseManager.get(user.userId);
+                enterprise.enterpriseName = newEnterpriseData.enterpriseName;
+                enterprise.enterpriseDescription = newEnterpriseData.enterpriseDescription;
+                enterprise.ceo = newEnterpriseData.ceo || enterprise.ceo;
+                enterprise.headquarters = newEnterpriseData.headquarters || enterprise.headquarters;
+                enterprise.industry = newEnterpriseData.industry || enterprise.industry;
 
-            enterprise.enterpriseName = newEnterpriseData.enterpriseName;
-            enterprise.enterpriseDescription = newEnterpriseData.enterpriseDescription;
-            enterprise.ceo = newEnterpriseData.ceo || enterprise.ceo;
-            enterprise.headquarters = newEnterpriseData.headquarters || enterprise.headquarters;
-            enterprise.industry = newEnterpriseData.industry || enterprise.industry;
+                await this.enterpriseManager.update(enterprise);
+            }
 
-            await this.enterpriseManager.update(enterprise);
-        }
-
-        res.status(200).send(this.buildSuccessRes(`User id: ${user.userId}, username: ${user.username} successfully updated.`));
+            res.status(200).send(this.buildSuccessRes(`User id: ${user.userId}, username: ${user.username} successfully updated.`));
+        // } catch (ex) {
+        //     res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { ...ex }));
+        // }
+        
     }
 
     public async delete(req: Request, res: Response, next: NextFunction) {
-        const user = await this.userManager.get(req.params.id);
-
-        if (isError(user)) {
-            res.status(500).send(this.buildErrorRes(user));
-            return;
-        }
-
-        if (user.acctype === AccType.CANDIDATE) {
-            await this.candidateManager.delete(user.userId);
-        } else if (user.acctype === AccType.ENTERPRISE) {
-            await this.enterpriseManager.delete(user.userId);
-        }
-
-        await this.userManager.delete(req.params.id); // Delete the user by ID
-        res.status(204).send(this.buildSuccessRes(`User id: ${user.userId}, username: ${user.username} successfully deleted.`));
+        // try {
+            const user = await this.userManager.get(req.params.id);
+            // res.send(user);
+    
+            if (user.acctype === AccType.CANDIDATE) {
+                await this.candidateManager.delete(user.userId);
+            } else if (user.acctype === AccType.ENTERPRISE) {
+                await this.enterpriseManager.delete(user.userId);
+            }
+    
+            await this.userManager.delete(req.params.id); // Delete the user by ID
+    
+            res.status(200).send(this.buildSuccessRes(`User id: ${user.userId}, username: ${user.username} successfully deleted.`));
+        // } catch (ex) {
+        //     res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { ...ex }));
+        // }
     }
 
     /* Specific functions */
@@ -203,8 +202,6 @@ export class UserController extends IController {
         // Bind with this to provide contex to this curent object (user controller)
         app.route(`/${config.app.api_route}/${config.app.api_ver}/user`)
             .post(
-                middleware.authentication(module.libs.auth),
-                middleware.authorization([Role.USER, Role.ADMIN]),
                 this.create.bind(this)
             )
         app.route(`/${config.app.api_route}/${config.app.api_ver}/user/:id`)

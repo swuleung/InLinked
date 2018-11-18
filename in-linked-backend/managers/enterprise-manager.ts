@@ -2,6 +2,7 @@ import { EnterpriseRepository } from '../repositories/enterprise-repository';
 import { IAuth } from '../utils/lib/auth';
 import { BCryptHash } from '../utils/lib/hash';
 import { Enterprise } from '../models';
+import { isError } from '../utils/exceptions';
 
 export class EnterpriseManager {
     private repo: EnterpriseRepository;
@@ -18,15 +19,27 @@ export class EnterpriseManager {
 
     /* CRUD */
     public async create(candidate: Enterprise): Promise<Enterprise> {
-        return await this.repo.insert(candidate);
+        try {
+            return await this.repo.insert(candidate);
+        } catch (ex) {
+            return (isError(ex) ? ex.toObject() : { ...ex });
+        }
     }
 
     public async get(id: number): Promise<Enterprise> {
-        return await this.repo.get(id);
+        try {
+            return await this.repo.get(id);
+        } catch (ex) {
+            return (isError(ex) ? ex.toObject() : { ...ex });
+        }
     }
 
     public async update(candidate: Enterprise): Promise<Enterprise> {
-        return await this.repo.update(candidate);
+        try {
+            return await this.repo.update(candidate);
+        } catch (ex) {
+            return (isError(ex) ? ex.toObject() : { ...ex });
+        }
     }
 
     public async delete(id: number): Promise<void> {

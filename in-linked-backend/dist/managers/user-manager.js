@@ -22,44 +22,24 @@ class UserManager {
     create(user) {
         return __awaiter(this, void 0, void 0, function* () {
             // Hash passwords before creating user
-            try {
-                const hashedPass = yield this.hash.hashPassword(user.password);
-                user.password = hashedPass; // Update password
-                return yield this.repo.insert(user);
-            }
-            catch (ex) {
-                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
-            }
+            const hashedPass = yield this.hash.hashPassword(user.password);
+            user.password = hashedPass; // Update password
+            return yield this.repo.insert(user);
         });
     }
     get(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.repo.get(id);
-            }
-            catch (ex) {
-                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
-            }
+            return yield this.repo.get(id);
         });
     }
     update(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.repo.update(user);
-            }
-            catch (ex) {
-                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
-            }
+            return yield this.repo.update(user);
         });
     }
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.repo.delete(id);
-            }
-            catch (ex) {
-                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
-            }
+            return yield this.repo.delete(id);
         });
     }
     /* Specific functionality */
