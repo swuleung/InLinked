@@ -130,10 +130,21 @@ export class UserService {
               displayEmail: result.displayEmail.data[0]
             };
           } else {
-
+            this.enterpriseData = {
+              enterpriseId: result.enterpriseId,
+              enterpriseName: result.enterpriseName,
+              enterpriseDescription: result.enterpriseDescription,
+              ceo: result.ceo,
+              headquarters: result.headquarters,
+              industry: result.industry,
+              email: result.email,
+              profilePicture: result.profilePicture,
+              coverPhoto: result.coverPhoto
+            };
           }
           return true;
-        })
+        }),
+        catchError(err => of(false))
       );
   }
 
