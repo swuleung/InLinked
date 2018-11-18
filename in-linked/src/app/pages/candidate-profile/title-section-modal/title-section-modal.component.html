@@ -10,34 +10,35 @@
       <div class="form-row">
         <div class="form-group col">
           <label for="candidate-first-name">First Name</label>
-          <input type="text" class="form-control" id="candidate-first-name" placeholder="First Name">
+          <input name="first-name" type="text" class="form-control" id="candidate-first-name" placeholder="First Name" [(ngModel)]="firstName">
         </div>
         <div class="form-group col">
           <label for="candidate-last-name">Last Name</label>
-          <input type="text" class="form-control" id="candidate-last-name" placeholder="Last Name">
+          <input name="last-name" type="text" class="form-control" id="candidate-last-name" placeholder="Last Name" [(ngModel)]="lastName">
         </div>
       </div>
       <div class="form-group">
         <label for="candidate-headline">Headline</label>
-        <textarea class="form-control" id="candidate-headline" rows="3"></textarea>
+        <textarea name="headline" class="form-control" id="candidate-headline" rows="3" [(ngModel)]="headline"></textarea>
       </div>
       <div class="form-row">
         <div class="form-group col-9">
           <label for="candidate-email">Email Address</label>
-          <input type="text" class="form-control" id="candidate-email" placeholder="Last Name">
+          <input name="email" type="text" class="form-control" id="candidate-email" placeholder="john.smith@email.com" [(ngModel)]="email">
         </div>
         <div class="form-group col-3 text-center">
           <label for="candidate-display-email-radios">Display email?</label>
           <div id="candidate-display-email-radios">
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="display-email" id="yes-email" value="yes-email"
-                checked>
+                [(ngModel)]="displayEmail" checked>
               <label class="form-check-label" for="yes-email">
                 Yes
               </label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="display-email" id="no-email" value="no-email">
+              <input class="form-check-input" type="radio" name="display-email" id="no-email" value="no-email"
+                [(ngModel)]="displayEmail">
               <label class="form-check-label" for="no-email">
                 No
               </label>
@@ -52,15 +53,15 @@
 
           <div class="form-group col">
             <!-- <label for="candidate-old-pw">Current Password</label> -->
-            <input type="password" class="form-control" id="candidate-old-pw" placeholder="Current Password">
+            <input name="current-password" type="password" class="form-control" id="candidate-old-pw" placeholder="Current Password" [(ngModel)]="currPassword">
           </div>
           <div class="form-group col">
             <!-- <label for="candidate-new-pw">New Password</label> -->
-            <input type="password" class="form-control" id="candidate-new-pw" placeholder="New Password">
+            <input name="new-password" type="password" class="form-control" id="candidate-new-pw" placeholder="New Password" [(ngModel)]="newPassword">
           </div>
           <div class="form-group col">
             <!-- <label for="candidate-confirm-pw">Confirm New Password</label> -->
-            <input type="password" class="form-control" id="candidate-confirm-pw" placeholder="Confirm New Password">
+            <input name="confirm-password" type="password" class="form-control" id="candidate-confirm-pw" placeholder="Confirm New Password" [(ngModel)]="newConfirm">
           </div>
         </div>
       </div>
@@ -68,7 +69,7 @@
   </div>
   <div class="modal-footer">
       <button type="button" class="btn btn-link" (click)="d('Save click')">Cancel</button>
-    <button type="button" class="btn btn-success" (click)="d('Save click')">Submit Changes</button>
+    <button type="button" class="btn btn-success" (click)="onSubmit();">Submit Changes</button>
   </div>
 </ng-template>
 
