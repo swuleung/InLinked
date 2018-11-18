@@ -1,5 +1,6 @@
 import { Experience } from '../models/experience';
 import { ExperienceRepository } from '../repositories';
+import { isError } from '../utils/exceptions';
 
 export class ExperienceManager {
     private repo: ExperienceRepository;
@@ -13,7 +14,7 @@ export class ExperienceManager {
         try {
             return await this.repo.insert(experience);
         } catch (ex) {
-            return ex.toObject();
+            return (isError(ex) ? ex.toObject() : { ...ex });
         }
     }
 
@@ -21,7 +22,7 @@ export class ExperienceManager {
         try {
             return await this.repo.get(id);
         } catch (ex) {
-            return ex.toObject();
+            return (isError(ex) ? ex.toObject() : { ...ex });
         }
     }
 
@@ -29,7 +30,7 @@ export class ExperienceManager {
         try {
             return await this.repo.update(experience);
         } catch (ex) {
-            return ex.toObject();
+            return (isError(ex) ? ex.toObject() : { ...ex });
         }
     }
 
@@ -37,7 +38,7 @@ export class ExperienceManager {
         try {
             return await this.repo.delete(id);
         } catch (ex) {
-            return ex.toObject();
+            return (isError(ex) ? ex.toObject() : { ...ex });
         }
     }
 
@@ -46,7 +47,7 @@ export class ExperienceManager {
         try {
             return await this.repo.getByUser(userId);
         } catch (ex) {
-            return ex.toObject();
+            return (isError(ex) ? ex.toObject() : { ...ex });
         }
     }
 

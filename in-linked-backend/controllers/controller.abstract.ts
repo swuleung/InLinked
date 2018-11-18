@@ -26,7 +26,7 @@ export abstract class IController {
      * @returns - the error response that we have
      * @memberof IController
      */
-    public buildErrorRes(obj: any) {
+    public buildErrorRes(obj: any): any {
         return buildErrorRes(obj);
     }
 }

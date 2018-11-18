@@ -41,12 +41,21 @@ export class UserController extends IController {
         if (user.acctype === AccType.ENTERPRISE) {
             const enterprise: Enterprise = req.body.enterprise;
             enterprise.enterpriseId = user.userId; // Update the associated ID
-            await this.enterpriseManager.create(enterprise);
+            const enterpriseRet = await this.enterpriseManager.create(enterprise);
+            if (isError(enterpriseRet)) {
+                res.status(500).send(this.buildErrorRes(enterpriseRet));
+                return;
+            }
         } else if (user.acctype === AccType.CANDIDATE) {
             const candidate: Candidate = req.body.candidate;
             candidate.candidateId = user.userId; // Update the associated ID
-            await this.candidateManager.create(candidate);
+            const candidateRet = await this.candidateManager.create(candidate);
+            if (isError(candidateRet)) {
+                res.status(500).send(this.buildErrorRes(candidateRet));
+                return;
+            }
         }
+        
         res.status(201).send(ret);
     }
 
@@ -65,6 +74,11 @@ export class UserController extends IController {
             special = await this.enterpriseManager.get(user.userId);
         } else if (user.acctype === AccType.CANDIDATE) {
             special = await this.candidateManager.get(user.userId);
+        }
+
+        if (isError(special)) {
+            res.status(500).send(this.buildErrorRes(user));
+            return;
         }
 
         // Verify that responses for special objects succeeded
@@ -89,7 +103,11 @@ export class UserController extends IController {
         user.headline = newUserData.headline;
         user.profilePicture = newUserData.profilePicture;
 
-        await this.userManager.update(user);
+        const updatedRet = await this.userManager.update(user);
+        if (isError(updatedRet)) {
+            res.status(500).send(this.buildErrorRes(updatedRet));
+            return;
+        }
 
         if (user.acctype === AccType.CANDIDATE) {
             const newCandData: Candidate = req.body.candidate;
@@ -100,7 +118,11 @@ export class UserController extends IController {
             cand.educationLevel = newCandData.educationLevel || cand.educationLevel;
             cand.displayEmail = newCandData.displayEmail || cand.displayEmail;
 
-            await this.candidateManager.update(cand);
+            const candUpdateRet = await this.candidateManager.update(cand);
+            if (isError(candUpdateRet)) {
+                res.status(500).send(this.buildErrorRes(updatedRet));
+                return;
+            }
         } else if (user.acctype === AccType.ENTERPRISE) {
             const newEnterpriseData: Enterprise = req.body.enterprise;
             const enterprise: Enterprise = await this.enterpriseManager.get(user.userId);
@@ -111,7 +133,11 @@ export class UserController extends IController {
             enterprise.headquarters = newEnterpriseData.headquarters || enterprise.headquarters;
             enterprise.industry = newEnterpriseData.industry || enterprise.industry;
 
-            await this.enterpriseManager.update(enterprise);
+            const enterpriseUpdateRet = await this.enterpriseManager.update(enterprise);
+            if (isError(enterpriseUpdateRet)) {
+                res.status(500).send(this.buildErrorRes(updatedRet));
+                return;
+            }
         }
 
         res.status(200).send(this.buildSuccessRes(`User id: ${user.userId}, username: ${user.username} successfully updated.`));
@@ -131,7 +157,12 @@ export class UserController extends IController {
             await this.enterpriseManager.delete(user.userId);
         }
 
-        await this.userManager.delete(req.params.id); // Delete the user by ID
+        const deleteRet = await this.userManager.delete(req.params.id); // Delete the user by ID
+        if (isError(deleteRet)) {
+            res.status(500).send(this.buildErrorRes(deleteRet));
+            return;
+        }
+
         res.status(204).send(this.buildSuccessRes(`User id: ${user.userId}, username: ${user.username} successfully deleted.`));
     }
 
