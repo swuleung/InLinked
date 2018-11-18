@@ -45,7 +45,7 @@ export class UserController extends IController {
             
             res.status(201).send(sanitizeUser(user));
         } catch (ex) {
-            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { ...ex }));
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
     }
 
@@ -68,12 +68,12 @@ export class UserController extends IController {
                 ...special
             }); // Return details for user (with special data)
         } catch (ex) {
-            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { ...ex }));
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
     }
 
     public async update(req: Request, res: Response, next: NextFunction) {
-        // try {
+        try {
             const newUserData: User = req.body.user;
             const user = await this.userManager.get(req.params.id);
 
@@ -109,16 +109,15 @@ export class UserController extends IController {
             }
 
             res.status(200).send(this.buildSuccessRes(`User id: ${user.userId}, username: ${user.username} successfully updated.`));
-        // } catch (ex) {
-        //     res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { ...ex }));
-        // }
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
+        }
         
     }
 
     public async delete(req: Request, res: Response, next: NextFunction) {
-        // try {
+        try {
             const user = await this.userManager.get(req.params.id);
-            // res.send(user);
     
             if (user.acctype === AccType.CANDIDATE) {
                 await this.candidateManager.delete(user.userId);
@@ -129,9 +128,9 @@ export class UserController extends IController {
             await this.userManager.delete(req.params.id); // Delete the user by ID
     
             res.status(200).send(this.buildSuccessRes(`User id: ${user.userId}, username: ${user.username} successfully deleted.`));
-        // } catch (ex) {
-        //     res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { ...ex }));
-        // }
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
+        }
     }
 
     /* Specific functions */

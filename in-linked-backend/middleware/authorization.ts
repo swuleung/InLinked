@@ -15,8 +15,6 @@ export function authorization(roles: Role[]) {
         try {
             if (!req.body || !req.body.user) {
                 throw new ExceptionBase(10000, 'Missing request body with user role.');
-                // res.status(500).send({ body: req.body.user, ext: req.body });
-                // return;
             }
 
             const user: IUser = req.body.user;

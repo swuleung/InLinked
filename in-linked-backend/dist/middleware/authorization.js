@@ -22,8 +22,6 @@ function authorization(roles) {
         try {
             if (!req.body || !req.body.user) {
                 throw new exceptions_1.ExceptionBase(10000, 'Missing request body with user role.');
-                // res.status(500).send({ body: req.body.user, ext: req.body });
-                // return;
             }
             const user = req.body.user;
             // Check if user is able to perform this action

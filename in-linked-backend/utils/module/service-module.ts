@@ -1,5 +1,5 @@
-import { UserManager, EnterpriseManager, CandidateManager, ExperienceManager, JobManager, AppliesManager } from '../../managers';
-import { UserRepository, CandidateRepository, EnterpriseRepository, ExperienceRepository, JobRepository, AppliesRepository } from '../../repositories';
+import { UserManager, EnterpriseManager, CandidateManager, ExperienceManager, JobManager, AppliesManager, EducationManager } from '../../managers';
+import { UserRepository, CandidateRepository, EnterpriseRepository, ExperienceRepository, JobRepository, AppliesRepository, EducationRepository } from '../../repositories';
 import { IAuth, JWTAuth } from '../lib/auth';
 import { MySql } from '../lib/database';
 import { BCryptHash, IHash } from '../lib/hash';
@@ -19,6 +19,7 @@ export interface ServiceModule {
         experience: ExperienceManager;
         job: JobManager;
         applies: AppliesManager;
+        education: EducationManager;
     };
     repositories: {
         user: UserRepository;
@@ -26,7 +27,8 @@ export interface ServiceModule {
         enterprise: EnterpriseRepository,
         experience: ExperienceRepository
         job: JobRepository,
-        applies: AppliesRepository
+        applies: AppliesRepository,
+        education: EducationRepository
     };
 }
 
@@ -45,6 +47,7 @@ export function buildModule(db: MySql): ServiceModule {
     const experienceRepo = new ExperienceRepository(db);
     const jobRepo = new JobRepository(db);
     const appliesRepo = new AppliesRepository(db);
+    const educationRepo = new EducationRepository(db);
 
     const auth = new JWTAuth(userRepo);
     const hash = new BCryptHash();
@@ -56,11 +59,12 @@ export function buildModule(db: MySql): ServiceModule {
         },
         managers: {
             user: new UserManager(userRepo, auth, hash),
-            candidate: new CandidateManager(candidateRepo, auth, hash),
-            enterprise: new EnterpriseManager(enterpriseRepo, auth, hash),
+            candidate: new CandidateManager(candidateRepo),
+            enterprise: new EnterpriseManager(enterpriseRepo),
             experience: new ExperienceManager(experienceRepo),
             job: new JobManager(jobRepo),
-            applies: new AppliesManager(appliesRepo)
+            applies: new AppliesManager(appliesRepo),
+            education: new EducationManager(educationRepo)
         },
         repositories: {
             user: userRepo,
@@ -68,7 +72,8 @@ export function buildModule(db: MySql): ServiceModule {
             enterprise: enterpriseRepo,
             experience: experienceRepo,
             job: jobRepo,
-            applies: appliesRepo
+            applies: appliesRepo,
+            education: educationRepo
         }
     }
 }

@@ -56,3 +56,13 @@
 	    "role": "admin"
 	}
 }
+
+// Change password (minimum info needed)
+{
+	"email": "slim@slimjim.org",
+	"oldPassword": "yeet",
+	"newPassword": "test",
+	"user": {
+		"role": "user"
+	}
+}
