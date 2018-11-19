@@ -28,3 +28,8 @@ cd in-linked-backend && tsc && npm start
 * View jobs posted page
 * View applicants for a job page 
 
+## Endpoint Tasks
+* Add more endpoints for different types of data.
+* Add middleware to verify `acctype` accesses (like prevent candidates from tampering with jobs).
+* Work with services.
+* Applies perform checks based on application params (check if candidateid is candidate, etc)

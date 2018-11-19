@@ -21,9 +21,9 @@ class ExperienceController extends controller_abstract_1.IController {
     create(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const experience = req.body;
+                const experience = req.body.experience;
                 const ret = yield this.experienceManager.create(experience);
-                res.status(201).send(this.buildSuccessRes(`Successfully created experience for user id '${experience.userId}' with experience id '${experience.experienceId}'.`, ret));
+                res.status(201).send(this.buildSuccessRes(`Successfully created experience for user id '${experience.candidateId}' with experience id '${experience.experienceId}'.`, ret));
             }
             catch (ex) {
                 res.status(500).send(this.buildErrorRes(exceptions_1.isError(ex) ? ex.toObject() : { message: ex.message }));
@@ -44,7 +44,7 @@ class ExperienceController extends controller_abstract_1.IController {
     update(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const newExperienceData = req.body;
+                const newExperienceData = req.body.experience;
                 const experience = yield this.experienceManager.get(req.params.id);
                 // Update vars
                 experience.enterpriseId = newExperienceData.enterpriseId; // Allow nulls
@@ -69,7 +69,7 @@ class ExperienceController extends controller_abstract_1.IController {
             try {
                 const experience = yield this.experienceManager.get(req.params.id);
                 yield this.experienceManager.delete(experience.experienceId);
-                res.status(204).send(this.buildSuccessRes(`Successfully deleted experience id ${experience.experienceId} for user id ${experience.userId}.`));
+                res.status(204).send(this.buildSuccessRes(`Successfully deleted experience id ${experience.experienceId} for user id ${experience.candidateId}.`));
             }
             catch (ex) {
                 res.status(500).send(this.buildErrorRes(exceptions_1.isError(ex) ? ex.toObject() : { message: ex.message }));
@@ -80,8 +80,8 @@ class ExperienceController extends controller_abstract_1.IController {
     getByUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const experience = yield this.experienceManager.getByUser(req.params.id);
-                res.status(200).send(this.buildSuccessRes(`Successfully fetched experiences for user id '${req.params.id}' experience`, experience));
+                const experience = yield this.experienceManager.getByUser(req.params.userId);
+                res.status(200).send(this.buildSuccessRes(`Successfully fetched experiences for user id '${req.params.userId}' experience`, experience));
             }
             catch (ex) {
                 res.status(500).send(this.buildErrorRes(exceptions_1.isError(ex) ? ex.toObject() : { message: ex.message }));
@@ -95,6 +95,8 @@ class ExperienceController extends controller_abstract_1.IController {
             .get(middleware.authentication(module.libs.auth), this.get.bind(this))
             .put(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.update.bind(this))
             .delete(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.delete.bind(this));
+        app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/experience/user/:userId`)
+            .post(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.getByUser.bind(this));
     }
 }
 exports.ExperienceController = ExperienceController;

@@ -87,3 +87,106 @@
 		"role": "user"
 	}
 }
+
+// EXPERIENCE
+// CRUD
+{
+	"experience": {
+		"experienceId": 0,
+		"candidateId": 2,
+		"enterpriseId": 4,
+		"enterpriseName": "Slim Jim",
+		"positionName": "Meat Marketing Intern",
+		"description": "Marketed a lot of meat to people.",
+		"startMonth": 6,
+		"startYear": 2012,
+		"endMonth": 9,
+		"endYear": 2012,
+		"location": "Slim City, IA, US"
+	},
+	"user": {
+		"role": "user"
+	}
+}
+{
+	"experience": {
+		"experienceId": 0,
+		"candidateId": 2,
+		"enterpriseName": "socialmediawebsite.com",
+		"positionName": "Product Management Intern",
+		"description": "Managed some products.",
+		"startMonth": 6,
+		"startYear": 2011,
+		"endMonth": 8,
+		"endYear": 2011,
+		"location": "New York City, NY, US"
+	},
+	"user": {
+		"role": "user"
+	}
+}
+
+// getByUser
+// Sample Response
+{
+    "success": 1,
+    "message": "Successfully fetched experiences for user id 'undefined' experience",
+    "data": [
+        {
+            "experienceId": 5,
+            "candidateId": 2,
+            "enterpriseId": 4,
+            "enterpriseName": "Slim Jim",
+            "positionName": "Meat Marketing Intern",
+            "description": "Marketed a lot of meat to people.",
+            "startMonth": 6,
+            "startYear": 2012,
+            "endMonth": 9,
+            "endYear": 2012,
+            "location": "Slim City, IA, US"
+        },
+        {
+            "experienceId": 6,
+            "candidateId": 2,
+            "enterpriseId": null,
+            "enterpriseName": "socialmediawebsite.com",
+            "positionName": "Product Management Intern",
+            "description": "Managed some products.",
+            "startMonth": 6,
+            "startYear": 2011,
+            "endMonth": 8,
+            "endYear": 2011,
+            "location": "New York City, NY, US"
+        }
+    ]
+}
+
+// EDUCATION
+{
+	"education": {
+		"educationId": 0,
+		"candidateId": 2,
+		"schoolName": "NYU",
+		"startMonth": 8,
+		"startYear": 2008,
+		"endMonth": 8,
+		"endYear": 2012,
+		"location": "New York City, NY, US",
+		"degree": "bachelors"
+	},
+	"user": {
+		"role": "user"
+	}
+}
+
+// APPLIES
+{
+	"applies": {
+		"jobId": 3,
+		"candidateId": 2,
+		"dateApplies": "2018-11-19"
+	},
+	"user": {
+		"role": "user"
+	}
+}

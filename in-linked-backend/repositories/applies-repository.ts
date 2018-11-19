@@ -40,7 +40,7 @@ export class AppliesRepository {
 
         if (!row) {
             throw new NotFoundException(
-                `The job Id '${jobId}' and candidate id '${candidateId}' does not exist in the candidates table.`
+                `The job Id '${jobId}' for candidate id '${candidateId}' does not exist in the application table.`
             );
         }
 
@@ -59,13 +59,15 @@ export class AppliesRepository {
         return applies;
     }
 
-    public async delete(userId: number, candidateId: number): Promise<void> {
+    public async delete(jobId: number, candidateId: number): Promise<void> {
         const transaction = await this.db.getTransaction();
 
         try {
             await transaction.from(this.TABLE_NAME)
-                .delete()
-                .where({ UserId: userId, CandidateId: candidateId });
+                .where({ JobId: jobId, CandidateId: candidateId })
+                .delete();
+
+            await transaction.commit();
         } catch (err) {
             // Error in transaction, roll back
             transaction.rollback(err);

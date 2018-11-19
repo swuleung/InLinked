@@ -15,7 +15,7 @@ export class JobManager {
 
     /* CRUD */
     public async create(job: Job): Promise<Job> {
-        // Check if corresponding ID as an enterprise
+        // Check if corresponding ID is an enterprise
         const user = await this.userRepo.get(job.enterpriseId);
         if (user.acctype !== AccType.ENTERPRISE) {
             throw new InvalidFieldException(`The provided enterpriseId for the job does not correspond to an enterprise!`, [{

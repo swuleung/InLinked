@@ -6,7 +6,7 @@
  */
 export interface Experience {
     experienceId: number;
-    userId: number;
+    candidateId: number;
     enterpriseId?: number;
     enterpriseName: string;
     positionName: string;

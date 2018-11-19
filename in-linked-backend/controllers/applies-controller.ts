@@ -21,7 +21,7 @@ export class AppliesController extends IController {
 
     public async create(req: Request, res: Response, next: NextFunction) {
         try {
-            const applies: Applies = req.body;
+            const applies: Applies = req.body.applies;
             const ret = await this.appliesManager.create(applies);
     
             res.status(201).send(this.buildSuccessRes(`Successfully created job application for candidate id '${applies.candidateId}'.`, ret));
@@ -32,9 +32,9 @@ export class AppliesController extends IController {
 
     public async get(req: Request, res: Response, next: NextFunction) {
         try {
-            const applies = await this.appliesManager.get(req.params.candidateId, req.params.jobId);
+            const applies = await this.appliesManager.get(req.params.jobId, req.params.candidateId);
     
-            res.status(200).send(this.buildSuccessRes(`Successfully fetched job application with candidate id '${req.params.userId}' and job id '${req.params.jobId}.`, applies));
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched job application with candidate id '${req.params.candidateId}' and job id '${req.params.jobId}.`, applies));
         } catch (ex) {
             res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
@@ -42,15 +42,15 @@ export class AppliesController extends IController {
 
     public async update(req: Request, res: Response, next: NextFunction) {
         try {
-            const newAppliesData: Applies = req.body;
-            const applies = await this.appliesManager.get(req.params.candidateId, req.params.jobId);
+            const newAppliesData: Applies = req.body.applies;
+            const applies = await this.appliesManager.get(req.params.jobId, req.params.candidateId);
     
             // Only used to update application date
             applies.dateApplied = newAppliesData.dateApplied;
     
             await this.appliesManager.update(applies);
     
-            res.status(200).send(this.buildSuccessRes(`Successfully updated job application with candidate id '${req.params.userId}' and job id '${req.params.jobId}.`, applies));
+            res.status(200).send(this.buildSuccessRes(`Successfully updated job application with candidate id '${req.params.candidateId}' and job id '${req.params.jobId}.`, applies));
         } catch (ex) {
             res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
@@ -58,9 +58,9 @@ export class AppliesController extends IController {
 
     public async delete(req: Request, res: Response, next: NextFunction) {
         try {
-            const applies = await this.appliesManager.get(req.params.candidateId, req.params.jobId);
-            await this.appliesManager.delete(applies.candidateId, applies.jobId);
-            res.status(204).send(this.buildSuccessRes(`Successfully deleted application with candidate id ${applies.candidateId} for joib id ${applies.jobId}.`));
+            const applies = await this.appliesManager.get(req.params.jobId, req.params.candidateId);
+            await this.appliesManager.delete(applies.jobId, applies.candidateId);
+            res.status(204).send(this.buildSuccessRes(`Successfully deleted application with candidate id ${applies.candidateId} for job id ${applies.jobId}.`));
         } catch (ex) {
             res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
@@ -74,7 +74,7 @@ export class AppliesController extends IController {
                 this.create.bind(this)
             )
 
-        app.route(`/${config.app.api_route}/${config.app.api_ver}/applies/:candidateId/:jobId`)
+        app.route(`/${config.app.api_route}/${config.app.api_ver}/applies/:jobId/:candidateId`)
             .get(
                 middleware.authentication(module.libs.auth),
                 this.get.bind(this)

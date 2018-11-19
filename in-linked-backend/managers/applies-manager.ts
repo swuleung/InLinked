@@ -1,6 +1,5 @@
 import { AppliesRepository } from '../repositories';
 import { Applies } from '../models/applies';
-import { isError } from '../utils/exceptions';
 
 export class AppliesManager {
     private repo: AppliesRepository;

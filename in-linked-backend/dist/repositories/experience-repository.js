@@ -26,8 +26,8 @@ class ExperienceRepository {
             const conn = yield this.db.getConnection();
             try {
                 const res = yield conn.table(this.TABLE_NAME).insert({
-                    UserId: experience.userId,
-                    ExerpriseId: experience.enterpriseId,
+                    UserId: experience.candidateId,
+                    EnterpriseId: experience.enterpriseId,
                     EnterpriseName: experience.enterpriseName,
                     PositionName: experience.positionName,
                     Description: experience.description,
@@ -98,7 +98,7 @@ class ExperienceRepository {
     toModel(row) {
         return {
             experienceId: row.ExperienceId,
-            userId: row.UserId,
+            candidateId: row.UserId,
             enterpriseId: row.EnterpriseId,
             enterpriseName: row.EnterpriseName,
             positionName: row.PositionName,
@@ -123,7 +123,7 @@ class ExperienceRepository {
                 .table(this.TABLE_NAME)
                 .where({ UserId: userId })
                 .orderBy('StartMonth', 'desc')
-                .orderBy('StartDate', 'desc')
+                .orderBy('StartYear', 'desc')
                 .limit(limit || 30);
             if (!row) {
                 throw new exceptions_1.NotFoundException(`The user id ${userId} does not have any experience.`);

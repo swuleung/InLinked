@@ -64,20 +64,20 @@ CREATE TABLE IF NOT EXISTS `Job` (
 CREATE TABLE IF NOT EXISTS `Applies` (
     JobId INTEGER,
     CandidateId INTEGER,
-    DateApplied DATETIME,
+    DateApplied DATE,
     PRIMARY KEY (JobId, CandidateId),
     FOREIGN KEY (JobId) REFERENCES Job(JobId),
     FOREIGN KEY (CandidateId) REFERENCES Candidate(CandidateId)
 );
 
-CREATE TABLE IF NOT EXISTS `Experience` {
+CREATE TABLE IF NOT EXISTS `Experience` (
     ExperienceId INTEGER NOT NULL AUTO_INCREMENT,
     UserId INTEGER NOT NULL,
     EnterpriseId INTEGER,
     EnterpriseName VARCHAR(255) NOT NULL,
     PositionName VARCHAR(255) NOT NULL,
     Description TEXT,
-    StarMonth INTEGER NOT NULL,
+    StartMonth INTEGER NOT NULL,
     StartYear INTEGER NOT NULL,
     EndMonth INTEGER,
     EndYear INTEGER,
@@ -85,9 +85,9 @@ CREATE TABLE IF NOT EXISTS `Experience` {
     PRIMARY KEY (ExperienceId),
     FOREIGN KEY (UserId) REFERENCES User(UserId),
     FOREIGN KEY (EnterpriseId) REFERENCES Enterprise(EnterpriseId)
-}
+);
 
-CREATE TABLE IF NOT EXISTS `Education` {
+CREATE TABLE IF NOT EXISTS `Education` (
     EducationId INTEGER NOT NULL AUTO_INCREMENT,
     CandidateId INTEGER NOT NULL,
     SchoolName VARCHAR(255) NOT NULL,
@@ -95,11 +95,11 @@ CREATE TABLE IF NOT EXISTS `Education` {
     StartYear INTEGER NOT NULL,
     EndMonth INTEGER,
     EndYear INTEGER,
-    Location VARCHAR(255)
+    Location VARCHAR(255),
     Degree VARCHAR(255), -- Same as EducationLevel
     PRIMARY KEY (EducationId),
     FOREIGN KEY (CandidateId) REFERENCES Candidate(CandidateId)
-}
+);
 
 -- Triggers
 DELIMITER //

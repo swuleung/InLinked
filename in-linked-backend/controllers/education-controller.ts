@@ -21,7 +21,7 @@ export class EducationController extends IController {
 
     public async create(req: Request, res: Response, next: NextFunction) {
         try {
-            const education: Education = req.body;
+            const education: Education = req.body.education;
             const ret = await this.educationManger.create(education);
 
             res.status(201).send(this.buildSuccessRes(`Successfully created education entry ${education.educationId} for candidate id '${education.candidateId}'.`, ret));
@@ -42,7 +42,7 @@ export class EducationController extends IController {
 
     public async update(req: Request, res: Response, next: NextFunction) {
         try {
-            const newEducationData: Education = req.body;
+            const newEducationData: Education = req.body.education;
             const education = await this.educationManger.get(req.params.id);
 
             education.schoolName = newEducationData.schoolName;
@@ -52,6 +52,8 @@ export class EducationController extends IController {
             education.endYear = newEducationData.endYear;
             education.location = newEducationData.location || education.location;
             education.degree = newEducationData.degree || education.degree;
+
+            await this.educationManger.update(education);
 
             res.status(200).send(this.buildSuccessRes(`Education id: ${education.educationId} successfully updated.`));
         } catch (ex) {
