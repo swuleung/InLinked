@@ -178,3 +178,15 @@
 		"role": "user"
 	}
 }
+
+// APPLIES
+{
+	"applies": {
+		"jobId": 3,
+		"candidateId": 2,
+		"dateApplies": "2018-11-19"
+	},
+	"user": {
+		"role": "user"
+	}
+}
