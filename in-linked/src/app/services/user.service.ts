@@ -3,8 +3,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Candidate, isCandidate } from 'src/app/models/candidate';
 import { Enterprise } from '../models/enterprise';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { catchError, map } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { catchError, delay, map, mergeMap } from 'rxjs/operators';
+import { Observable, of, Subscription } from 'rxjs';
+
+import { AuthenticationService } from './authentication.service';
 
 const helper = new JwtHelperService();
 
@@ -17,7 +19,7 @@ export class UserService {
   private enterpriseData: Enterprise;
   private decoded: any;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthenticationService) { }
 
   /**
    * Create user in the database
@@ -32,7 +34,7 @@ export class UserService {
    * @memberof UserService
    */
   create(fullName: string, username: string, password: string, email: string, educationLevel: string, acctype: string):
-    Observable<boolean> {
+    Observable<boolean | Subscription> {
 
     const newUser = {
       userId: 0, // To satisfy user model in backend
@@ -95,6 +97,13 @@ export class UserService {
             };
           }
           return true;
+        }),
+        delay(250),
+        map(res => {
+          return this.authService.login(email, password).subscribe(val => {
+            console.log(val);
+            return val.success === 1 && res; // Only return success on creating account and logging in
+          });
         }),
         catchError(err => of(false)) // If account exists, or other error
       );

@@ -16,13 +16,13 @@ export class AuthenticationService {
       .pipe(
         map(
           user => {
-            if (user && user.error) {
+            if (user && user.success === 0) {
               throw new Error('Error Login');
             }
-            if (user && user.authToken) {
-              localStorage.setItem('token', JSON.stringify(user.authToken));
+            if (user && user.data.authToken) {
+              localStorage.setItem('token', JSON.stringify(user.data.authToken));
             }
-            return user.authToken;
+            return user.data.authToken;
           }
         ),
         catchError(
