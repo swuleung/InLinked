@@ -24,7 +24,6 @@ import { CandidateProfileComponent } from './pages/candidate-profile/candidate-p
 import { CreateAccountComponent } from './pages/create-account/create-account.component';
 import { DashboardComponent } from './layouts/dashboard/container/dashboard/dashboard.component';
 import { UserFeedComponent } from './pages/user-feed/user-feed.component';
-import { JobSearchComponent } from './pages/job-search/job-search.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { TitleSectionModalComponent } from './pages/candidate-profile/title-section-modal/title-section-modal.component';
 import { ExperienceSectionModalComponent } from './pages/candidate-profile/experience-section-modal/experience-section-modal.component';
