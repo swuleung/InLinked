@@ -22,8 +22,8 @@ export class ExperienceRepository {
 
         try {
             const res = await conn.table(this.TABLE_NAME).insert({
-                UserId: experience.userId,
-                ExerpriseId: experience.enterpriseId,
+                UserId: experience.candidateId,
+                EnterpriseId: experience.enterpriseId,
                 EnterpriseName: experience.enterpriseName,
                 PositionName: experience.positionName,
                 Description: experience.description,
@@ -98,7 +98,7 @@ export class ExperienceRepository {
     public toModel(row: any): Experience {
         return {
             experienceId: row.ExperienceId,
-            userId: row.UserId,
+            candidateId: row.UserId,
             enterpriseId: row.EnterpriseId,
             enterpriseName: row.EnterpriseName,
             positionName: row.PositionName,
@@ -124,7 +124,7 @@ export class ExperienceRepository {
             .table(this.TABLE_NAME)
             .where({ UserId: userId })
             .orderBy('StartMonth', 'desc')
-            .orderBy('StartDate', 'desc')
+            .orderBy('StartYear', 'desc')
             .limit(limit || 30);
 
         if (!row) {
