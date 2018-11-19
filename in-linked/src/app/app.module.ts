@@ -49,7 +49,6 @@ export function tokenGetter() {
     CreateAccountComponent,
     DashboardComponent,
     UserFeedComponent,
-    JobSearchComponent,
     AdminComponent,
     TitleSectionModalComponent,
     ExperienceSectionModalComponent,
