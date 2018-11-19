@@ -1,6 +1,6 @@
-import { MySql } from '../utils/lib/database';
 import { Applies } from '../models/applies';
-import { ValidationException, NotFoundException } from '../utils/exceptions';
+import { NotFoundException, ValidationException } from '../utils/exceptions';
+import { MySql } from '../utils/lib/database';
 
 export class AppliesRepository {
     private readonly TABLE_NAME: string = 'applies';
@@ -75,11 +75,46 @@ export class AppliesRepository {
         }
     }
 
+    /* Custom functions */
+    public async getByUser(candidateId: number): Promise<Applies[]> {
+        const conn = await this.db.getConnection();
+        const row = await conn
+            .table(this.TABLE_NAME)
+            .where({ CandidateId: candidateId });
+
+        if (!row) {
+            throw new NotFoundException(
+                `The candidate Id '${candidateId}' has not applied to any job or does not exist.`
+            );
+        }
+
+        return this.toModelList(row);
+    }
+
+    public async getByJob(jobId: number): Promise<Applies[]> {
+        const conn = await this.db.getConnection();
+        const row = await conn
+            .table(this.TABLE_NAME)
+            .where({ JobId: jobId })
+
+        if (!row) {
+            throw new NotFoundException(
+                `The job Id '${jobId}' has not been applied to yet.`
+            );
+        }
+
+        return this.toModelList(row)
+    }
+
     public toModel(row: any): Applies {
         return {
             jobId: row.JobId,
             candidateId: row.CandidateId,
             dateApplied: row.DateApplied
         }
+    }
+
+    public toModelList(list: any): Applies[] {
+        return list.map((r: any) => this.toModel(r));
     }
 }

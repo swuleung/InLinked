@@ -3,7 +3,7 @@ import { Application, NextFunction, Request, Response } from 'express'
 import { IController } from './controller.abstract';
 import { AppliesManager } from '../managers';
 import { ServiceModule } from '../utils/module/service-module';
-import { Applies, isApplies } from '../models/applies';
+import { Applies } from '../models/applies';
 import { isError } from '../utils/exceptions';
 import { Role } from '../utils/lib/auth';
 
@@ -66,13 +66,32 @@ export class AppliesController extends IController {
         }
     }
 
+    /* Custom functions */
+    public async getByCandidate(req: Request, res: Response, next: NextFunction) {
+        try {
+            const applications = await this.appliesManager.getByUser(req.params.candidateId);
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched applications sent by candidateId '${req.params.candidateId}' experience.`, applications));
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
+        }
+    }
+
+    public async getByJob(req: Request, res: Response, next: NextFunction) {
+        try {
+            const applications = await this.appliesManager.getByJob(req.params.jobId);
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched number of users who applied.`, applications));
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
+        }
+    }
+
     public bindRoutes(app: Application, module: ServiceModule): void {
         app.route(`/${config.app.api_route}/${config.app.api_ver}/applies`)
             .post(
                 middleware.authentication(module.libs.auth),
                 middleware.authorization([Role.USER, Role.ADMIN]),
                 this.create.bind(this)
-            )
+            );
 
         app.route(`/${config.app.api_route}/${config.app.api_ver}/applies/:jobId/:candidateId`)
             .get(
@@ -89,6 +108,23 @@ export class AppliesController extends IController {
                 middleware.authorization([Role.USER, Role.ADMIN]),
                 this.delete.bind(this)
             );
+
+        app.route(`/${config.app.api_route}/${config.app.api_ver}/applies/:candidateId`)
+            .post(
+                middleware.authentication(module.libs.auth),
+                middleware.authorization([Role.USER, Role.ADMIN]),
+                this.getByCandidate.bind(this)
+            );
+
+        app.route(`/${config.app.api_route}/${config.app.api_ver}/applies/:jobId`)
+            .post(
+                middleware.authentication(module.libs.auth),
+                middleware.authorization([Role.USER, Role.ADMIN]),
+                this.getByJob.bind(this)
+            );
+
+
+        
     }
 
 }

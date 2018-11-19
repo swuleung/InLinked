@@ -25,4 +25,13 @@ export class AppliesManager {
         return await this.repo.delete(jobId, candidateId);
     }
 
+    /* Custom functions */
+    public async getByUser(candidateId: number): Promise<Applies[]> {
+        return await this.repo.getByUser(candidateId);
+    }
+
+    public async getByJob(jobId: number): Promise<Applies[]> {
+        return await this.repo.getByJob(jobId);
+    }
+
 }

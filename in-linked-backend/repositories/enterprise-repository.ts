@@ -1,7 +1,6 @@
 import { MySql } from '../utils/lib/database';
 import { Enterprise } from '../models';
 import { ValidationException, NotFoundException } from '../utils/exceptions';
-import { connect } from 'http2';
 
 export class EnterpriseRepository {
     private readonly TABLE_NAME: string = 'enterprise';

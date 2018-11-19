@@ -95,6 +95,27 @@ export class ExperienceRepository {
         }
     }
 
+    
+
+    /* CUSTOM FUNCTIONS */
+    // TODO: NEEDS TESTING
+    public async getByUser(userId: number, limit?: number): Promise<Experience[]> {
+        const conn = await this.db.getConnection();
+        const row = await conn
+            .table(this.TABLE_NAME)
+            .where({ UserId: userId })
+            .orderBy('StartMonth', 'desc')
+            .orderBy('StartYear', 'desc')
+            .limit(limit || 30);
+
+        if (!row) {
+            throw new NotFoundException(
+                `The user id ${userId} does not have any experience.`
+            );
+        }
+        return this.toModelList(row);
+    }
+
     public toModel(row: any): Experience {
         return {
             experienceId: row.ExperienceId,
@@ -114,24 +135,5 @@ export class ExperienceRepository {
     public toModelList(list: any): Experience[] {
         // Assuming that the object passed in is a list
         return list.map((r: any) => this.toModel(r));
-    }
-
-    /* CUSTOM FUNCTIONS */
-    // TODO: NEEDS TESTING
-    public async getByUser(userId: number, limit?: number): Promise<Experience[]> {
-        const conn = await this.db.getConnection();
-        const row = await conn
-            .table(this.TABLE_NAME)
-            .where({ UserId: userId })
-            .orderBy('StartMonth', 'desc')
-            .orderBy('StartYear', 'desc')
-            .limit(limit || 30);
-
-        if (!row) {
-            throw new NotFoundException(
-                `The user id ${userId} does not have any experience.`
-            );
-        }
-        return this.toModelList(row);
     }
 }
