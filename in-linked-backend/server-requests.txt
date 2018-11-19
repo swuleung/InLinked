@@ -160,3 +160,21 @@
         }
     ]
 }
+
+// EDUCATION
+{
+	"education": {
+		"educationId": 0,
+		"candidateId": 2,
+		"schoolName": "NYU",
+		"startMonth": 8,
+		"startYear": 2008,
+		"endMonth": 8,
+		"endYear": 2012,
+		"location": "New York City, NY, US",
+		"degree": "bachelors"
+	},
+	"user": {
+		"role": "user"
+	}
+}

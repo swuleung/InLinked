@@ -22,7 +22,7 @@ class ExperienceManager {
             const user = yield this.userRepo.get(experience.candidateId);
             if (user.acctype !== auth_1.AccType.CANDIDATE) {
                 throw new exceptions_1.InvalidFieldException(`The provided candidateId for the experience does not correspond to a candidate!`, [{
-                        fieldName: 'experience.candidate',
+                        fieldName: 'experience.candidateId',
                         type: 'number'
                     }]);
             }

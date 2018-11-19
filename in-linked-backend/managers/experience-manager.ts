@@ -18,7 +18,7 @@ export class ExperienceManager {
          const user = await this.userRepo.get(experience.candidateId);
          if (user.acctype !== AccType.CANDIDATE) {
              throw new InvalidFieldException(`The provided candidateId for the experience does not correspond to a candidate!`, [{
-                 fieldName: 'experience.candidate',
+                 fieldName: 'experience.candidateId',
                  type: 'number'
              }]);
          }

@@ -62,9 +62,9 @@ export class EducationRepository {
                 SchoolName: education.schoolName,
                 StartMonth: education.startMonth,
                 StartYear: education.startYear,
-                EndMonth: education.endYear,
+                EndMonth: education.endMonth,
                 EndYear: education.endYear,
-                Location: education.endYear,
+                Location: education.location,
                 Degree: education.degree
             });
         return education;
