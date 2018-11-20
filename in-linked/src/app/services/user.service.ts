@@ -110,20 +110,21 @@ export class UserService {
   }
 
   /**
-   * Get the user information from the database and populates either candidate or enterprise
+   * Get the user information that is logged in from the database and populates either candidate or enterprise
+   * TODO: For personal data requests, retrieve unsanitized version
    *
    * @param {string} data - authentication token of the user
-   * @returns {Observable<boolean>} - true on success, false otherwise
+   * @returns {Observable<any>} - return object containing user information along with candidate/enterprise data
    * @memberof UserService
    */
-  get(data: string): Observable<boolean> {
+  get(data: string): Observable<any> {
     this.decoded = helper.decodeToken(data);
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${data}`, 'Content-Type': 'application/x-www-form-urlencoded' });
     return this.http.get<any>(`${this.apiUrl}/user/${this.decoded.id}`, {headers: headers})
       .pipe(
         map(result => {
           if (result.success && result.success === 0) {
-            return false; // If there is an error
+            return null; // If there is an error
           }
           if (isCandidate(result)) {
             this.candidateData = {
@@ -151,7 +152,9 @@ export class UserService {
               coverPhoto: result.coverPhoto
             };
           }
-          return true;
+
+          // Filter result object before returning?
+          return result;
         }),
         catchError(err => of(false))
       );
@@ -161,13 +164,14 @@ export class UserService {
    * Update a candidate's fullName, skills, educationLevel, and/or displayEmail
    * or an enterprise's enterpriseName, enterpriseDescription, ceo, headquarters, and/ or industry
    *
-   * @param {Candidate | Enterprise} user - The candidate or enterprise being updated
+   * @param {any} user - The candidate or enterprise being updated
    * @returns {Observable<boolean>} - true on success, false otherwise
    * @memberof UserService
    */
-  update(user: Candidate | Enterprise): Observable<boolean> {
-    // Might need authorization headers again?
-    return this.http.put<any>(`${this.apiUrl}/user`, user)
+  update(user: any): Observable<boolean> {
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem('Authorization')}`,
+     'Content-Type': 'application/json' });
+    return this.http.put<any>(`${this.apiUrl}/user`, {headers: headers, body: user})
       .pipe(
         map(res => {
           if (res.status === 200) {
@@ -188,7 +192,7 @@ export class UserService {
   delete(id: number): Observable<Object> {
     // Note: the authorization token is of the admin
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem('Authorization')}`,
-    'Content-Type': 'application/x-www-form-urlencoded' }); // Line break for tslint
+      'Content-Type': 'application/json' });
     return this.http.delete(`${this.apiUrl}/user/${id}`, {headers: headers});
   }
 }
