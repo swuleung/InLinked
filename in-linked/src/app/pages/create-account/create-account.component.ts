@@ -42,7 +42,7 @@ export class CreateAccountComponent implements OnInit {
             this.router.navigate(['/dashboard']);
           }
         }
-      )
+      );
   }
 
 }

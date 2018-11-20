@@ -1,8 +1,15 @@
 @import '../../../global/app';
 
 .create-account-container {
-    text-align: center;
     .create-warning-message {
         color: $create-warning;
+    }
+    .add-padding {
+        padding-right: 15px;
+    }
+
+    .card {
+        padding: 20px 20px 20px 20px;
+
     }
 }

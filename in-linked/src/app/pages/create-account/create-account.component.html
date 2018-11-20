@@ -1,67 +1,71 @@
 <div class="create-account-container">
   <h1>Sign up for inLinked</h1>
   <hr>
-  <div class="container">
+  <div class="card container">
     <form #create="ngForm" (ngSubmit)="onSubmit();">
       <div *ngIf="errorMessage" class="create-warning-message">{{errorMessage}}</div>
-      <div class="form-group">
-        <div class="row justify-content-sm-center">
-          <div class="col-4">
-            <label for="full-name">Name/Enterprise</label>
-            <input name="full-name" type="text" class="form-control" id="full-name" [(ngModel)]="fullName" #fname="ngModel" required>
-          </div>
+      <div class="form-group row">
+        <label class="col-3 col-form-label " for="full-name">Name</label>
+        <div class="col">
+          <input name="full-name" type="text" class="form-control" id="full-name" [(ngModel)]="fullName" #fname="ngModel"
+            required>
+          <div class="create-warning-message" *ngIf="fname.touched && fname.errors?.required">Please enter full name.</div>
         </div>
-        <div class="create-warning-message" *ngIf="fname.touched && fname.errors?.required">Please enter full name.</div>
       </div>
-      <div class="form-group">
-        <div class="row justify-content-sm-center">
-          <div class="col-4">
-            <label for="user-name">Username</label>
-            <input name="user-name" type="text" class="form-control" id="user-name" [(ngModel)]="userName" #name="ngModel" required>
-          </div>
+      <div class="form-group row">
+        <label class="col-3 col-form-label " for="user-name">Username</label>
+        <div class="col">
+          <input name="user-name" type="text" class="form-control" id="user-name" [(ngModel)]="userName" #name="ngModel"
+            required>
+          <div class="create-warning-message" *ngIf="name.touched && name.errors?.required">Please enter a username.</div>
         </div>
-        <div class="create-warning-message" *ngIf="name.touched && name.errors?.required">Please enter a username.</div>
       </div>
-      <div class="form-group">
-        <label for="user-email">Email</label>
-        <div class="row justify-content-sm-center">
-          <div class="col-4">
-            <input name="user-email" type="text" class="form-control" id="user-email" [(ngModel)]="userEmail" #email="ngModel" required>
-          </div>
+      <div class="form-group row">
+        <label class="col-3 col-form-label " for="user-email">Email</label>
+        <div class="col">
+          <input name="user-email" type="email" class="form-control" id="user-email" [(ngModel)]="userEmail" #email="ngModel"
+            required>
+          <div class="create-warning-message" *ngIf="email.touched && email.errors?.required">Please enter an email.</div>
         </div>
-        <div class="create-warning-message" *ngIf="email.touched && email.errors?.required">Please enter an email.</div>
       </div>
-      <div class="form-group">
-        <label for="user-password">Password</label>
-        <div class="row justify-content-sm-center">
-          <div class="col-4">
-            <input name="user-password" type="password" class="form-control" id="user-password" [(ngModel)]="userPassword" #password="ngModel" required>
-          </div>
-        </div> 
-        <div class="create-warning-message" *ngIf="password.touched && password.errors?.required">Please enter a password.</div>
+      <div class="form-group row ">
+        <label class="col-3 col-form-label" for="user-password">Password</label>
+        <div class="col">
+          <input name="user-password" type="password" class="form-control col" id="user-password" [(ngModel)]="userPassword"
+            #password="ngModel" required>
+          <div class="create-warning-message" *ngIf="password.touched && password.errors?.required">Please enter a
+            password.</div>
+        </div>
       </div>
-      <div class="row justify-content-center">
-        <div class="col-3">
-          <div class="form-group">
-            <div class="form-check">
-              <label class="form-check-label" for="enterprise-check">Check if enterprise.</label><br>
-              <input name="enterprise-check" class="form-check-input" type="checkbox" id="enterprise-check" [(ngModel)]="enterpriseCheck">
+
+      <div class="form-row">
+        <div class="form-group col-3 ">
+          <label for="enterprise-radios"> Are you an enterprise? </label>
+          <div id="enteprise-radios">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="enterprise-check" id="yes-enterprise" [value]="true"
+                [(ngModel)]="enterpriseCheck">
+              <label class="form-check-label" for="yes-enterprise"> Yes </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="enterprise-check" id="no-enterprise" [value]="false"
+                [(ngModel)]="enterpriseCheck">
+              <label class="form-check-label" for="no-enterprise"> No </label>
             </div>
           </div>
         </div>
-        <div class="col-3">
-          <div class="form-group">
-            <label class="education-level-label" for="education-level">Education Level (Candidates)</label>
-            <select name="education-level" class="form-control" [(ngModel)]="educationLevel" #education="ngModel">
-              <option [value]="level" *ngFor="let level of educationLevels">{{level}}</option>
-            </select>
-            <div class="create-warning-message" *ngIf="!enterpriseCheck && education.touched && !educationLevel">Please select education level.</div>
-          </div>
+        <div class="form-group col">
+          <label class="education-level-label" for="education-level">Education Level</label>
+          <select name="education-level" class="form-control" [(ngModel)]="educationLevel" #education="ngModel">
+            <option [value]="level" *ngFor="let level of educationLevels">{{level}}</option>
+          </select>
+          <div class="create-warning-message" *ngIf="!enterpriseCheck && education.touched && !educationLevel">Please
+            select education level.</div>
         </div>
       </div>
-      <div class="row justify-content-center">
+      <div class="text-center">
         <button type="submit" class="btn btn-success" [disabled]="!create.form.valid">Submit</button>
       </div>
-    </form> 
+    </form>
   </div>
 </div>
