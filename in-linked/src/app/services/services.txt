@@ -1,0 +1,32 @@
+User
+-Candidate/Enterprise get by username?
+Update
+    -Candidate/Enterprise profile
+    -Candidate/Enterprise password
+    -Candidate/Enterprise profile picture and cover photo?
+    -Candidate add experience
+    -Candidate add skills
+    -Candidate add education
+    -Enterprise profile
+    -Enterprise fast facts
+
+Experience
+-Create, get by user, update?, delete?
+
+Jobs
+-Create, get, update, delete
+-Post jobs
+-Candidates apply to jobs
+-Update application
+-Enterprise delete application
+-Get jobs by candidates
+-Get applicants to job
+
+Admin
+-Insert another account?
+-Ban/unban users
+-Get user stats (# of job postings?, # of users signed up?, # of users active?, ...)
+
+Search
+-Candidate/Enterprise search
+-Search by jobs + filters (title, keywords, location, type, experience level)
