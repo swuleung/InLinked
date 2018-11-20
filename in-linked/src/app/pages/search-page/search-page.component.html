@@ -1,3 +1,27 @@
-<p>
-  search-page works!
-</p>
+<div class="container">
+  <div class="card">
+    <ngb-tabset [justify]="tabJustify">
+      <ngb-tab title="All">
+        <ng-template ngbTabContent>
+          <app-search-all></app-search-all>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab>
+        <ng-template ngbTabTitle>Enterprises</ng-template>
+        <ng-template ngbTabContent>
+          <app-search-enterprises></app-search-enterprises>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Candidates">
+        <ng-template ngbTabContent>
+          <app-search-candidates></app-search-candidates>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Jobs">
+        <ng-template ngbTabContent>
+          <app-search-jobs></app-search-jobs>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</div>
