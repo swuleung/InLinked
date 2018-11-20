@@ -19,10 +19,10 @@ export class AuthenticationService {
             if (user && user.success === 0) {
               throw new Error('Error Login');
             }
-            if (user && user.data.authToken) {
-              localStorage.setItem('token', JSON.stringify(user.data.authToken));
+            if (user && user.authToken) {
+              localStorage.setItem('token', JSON.stringify(user.authToken));
             }
-            return user.data.authToken;
+            return user.authToken;
           }
         ),
         catchError(

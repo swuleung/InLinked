@@ -19,7 +19,13 @@ export class UserService {
   private enterpriseData: Enterprise;
   private decoded: any;
 
-  constructor(private http: HttpClient, private authService: AuthenticationService) { }
+  constructor(
+    private http: HttpClient,
+    private authService: AuthenticationService) { }
+
+  decode(token: string): any {
+    return helper.decodeToken(token);
+  }
 
   /**
    * Create user in the database
@@ -185,7 +191,7 @@ export class UserService {
    * @returns {Observable}
    * @memberof UserService
    */
-  delete(id: number): Observable<Object> {
+  delete(id: number): Observable<any> {
     // Note: the authorization token is of the admin
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem('Authorization')}`,
     'Content-Type': 'application/x-www-form-urlencoded' }); // Line break for tslint
