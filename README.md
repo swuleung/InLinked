@@ -11,7 +11,8 @@ $ npm start
 #### Back-end
 ```
 $ cd in-linked-backend
-$ tsc && npm start
+$ tsc
+$ npm start
 ```
 
 ## Built With
@@ -21,7 +22,7 @@ $ tsc && npm start
 * :speak_no_evil: [knex](https://knexjs.org/) - query builder for interfacing with the database.
 * :whale: [MySQL](https://www.mysql.com/) - the database management
 
-## Pages [Remove Later]
+## Pages *Remove Later*
 * Log in page (done?)
 * Sign Up page (one for both enterprises & candidates)
 * Profile page for enterprises (done - pictures)
