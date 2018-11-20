@@ -7,6 +7,8 @@ import { catchError, delay, map, mergeMap } from 'rxjs/operators';
 import { Observable, of, Subscription } from 'rxjs';
 
 import { AuthenticationService } from './authentication.service';
+import { AuthUser } from '../models/auth-user';
+import { environment } from '../../environments/environment';
 
 const helper = new JwtHelperService();
 
@@ -17,13 +19,13 @@ export class UserService {
   apiUrl = 'http://localhost:8080/api/v1';
   private candidateData: Candidate;
   private enterpriseData: Enterprise;
-  private decoded: any;
+  private decoded: AuthUser;
 
   constructor(
     private http: HttpClient,
     private authService: AuthenticationService) { }
 
-  decode(token: string): any {
+  decode(token: string): AuthUser {
     return helper.decodeToken(token);
   }
 
@@ -124,43 +126,14 @@ export class UserService {
    * @memberof UserService
    */
   getPersonal(data: string): Observable<any> {
-    this.decoded = helper.decodeToken(data);
+    this.decoded = this.decode(data);
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${data}`, 'Content-Type': 'application/x-www-form-urlencoded' });
     return this.http.get<any>(`${this.apiUrl}/user/${this.decoded.id}`, {headers: headers})
       .pipe(
         map(result => {
-          // if (result.success && result.success === 0) {
-          //   return null; // If there is an error
-          // }
-
-          // // TODO: What is this for?
-          // if (isCandidate(result)) {
-          //   this.candidateData = {
-          //     candidateId: result.candidateId,
-          //     username: result.username,
-          //     headline: result.headline,
-          //     email: result.email,
-          //     profilePicture: result.profilePicture,
-          //     coverPhoto: result.coverPhoto,
-          //     fullName: result.fullName,
-          //     skills: result.skills,
-          //     educationLevel: result.educationLevel,
-          //     displayEmail: result.displayEmail.data[0]
-          //   };
-          // } else {
-          //   this.enterpriseData = {
-          //     enterpriseId: result.enterpriseId,
-          //     enterpriseName: result.enterpriseName,
-          //     enterpriseDescription: result.enterpriseDescription,
-          //     ceo: result.ceo,
-          //     headquarters: result.headquarters,
-          //     industry: result.industry,
-          //     email: result.email,
-          //     profilePicture: result.profilePicture,
-          //     coverPhoto: result.coverPhoto
-          //   };
-          // }
-
+          if (result.success && result.success === 0) {
+            return null; // If there is an error
+          }
           // Filter result object before returning?
           return result;
         }),
@@ -176,7 +149,7 @@ export class UserService {
    * @memberof UserService
    */
   get(id: number): Observable<any> {
-    const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem('Authorization')}`,
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
     return this.http.get<any>(`${this.apiUrl}/user/${id}`, {headers: headers})
       .pipe(
@@ -199,7 +172,7 @@ export class UserService {
    * @memberof UserService
    */
   update(user: any): Observable<boolean> {
-    const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem('Authorization')}`,
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
      'Content-Type': 'application/json' });
     return this.http.put<any>(`${this.apiUrl}/user`, {headers: headers, body: user})
       .pipe(
@@ -221,7 +194,7 @@ export class UserService {
    */
   delete(id: number): Observable<any> {
     // Note: the authorization token is of the admin
-    const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem('Authorization')}`,
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
     return this.http.delete(`${this.apiUrl}/user/${id}`, {headers: headers});
   }

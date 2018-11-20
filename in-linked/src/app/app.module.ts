@@ -61,7 +61,7 @@ export function tokenGetter() {
     EducationSectionModalComponent,
     EnterpriseTitleSectionModalComponent,
     FastFactsSectionModalComponent,
-    ServiceTestComponent
+    ServiceTestComponent,
     SearchAllComponent,
     SearchEnterprisesComponent,
     SearchCandidatesComponent,

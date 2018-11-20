@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class AuthenticationService {
               throw new Error('Error Login');
             }
             if (user && user.data.authToken) {
-              localStorage.setItem('Authorization', user.data.authToken);
+              localStorage.setItem(environment.token_key, user.data.authToken);
             }
             return user.data;
           }
@@ -34,6 +35,6 @@ export class AuthenticationService {
   }
 
   logout() {
-    localStorage.removeItem('Authorization');
+    localStorage.removeItem(environment.token_key);
   }
 }
