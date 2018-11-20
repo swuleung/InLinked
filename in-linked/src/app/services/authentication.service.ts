@@ -20,7 +20,7 @@ export class AuthenticationService {
               throw new Error('Error Login');
             }
             if (user && user.data.authToken) {
-              localStorage.setItem('Authorization', JSON.stringify(user.data.authToken));
+              localStorage.setItem('Authorization', user.data.authToken);
             }
             return user.data;
           }

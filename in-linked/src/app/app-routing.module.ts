@@ -9,6 +9,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { UserFeedComponent } from './pages/user-feed/user-feed.component';
 import { CreateAccountComponent } from './pages/create-account/create-account.component';
 import { AdminComponent } from './pages/admin/admin.component';
+import { ServiceTestComponent } from './pages/service-test/service-test.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path: 'create-account',
     component: CreateAccountComponent,
+  },
+  {
+    path: 'service-test',
+    component: ServiceTestComponent
   },
   {
     path: 'dashboard',

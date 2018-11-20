@@ -129,42 +129,42 @@ export class UserService {
     return this.http.get<any>(`${this.apiUrl}/user/${this.decoded.id}`, {headers: headers})
       .pipe(
         map(result => {
-          if (result.success && result.success === 0) {
-            return null; // If there is an error
-          }
+          // if (result.success && result.success === 0) {
+          //   return null; // If there is an error
+          // }
 
-          // TODO: What is this for?
-          if (isCandidate(result)) {
-            this.candidateData = {
-              candidateId: result.candidateId,
-              username: result.username,
-              headline: result.headline,
-              email: result.email,
-              profilePicture: result.profilePicture,
-              coverPhoto: result.coverPhoto,
-              fullName: result.fullName,
-              skills: result.skills,
-              educationLevel: result.educationLevel,
-              displayEmail: result.displayEmail.data[0]
-            };
-          } else {
-            this.enterpriseData = {
-              enterpriseId: result.enterpriseId,
-              enterpriseName: result.enterpriseName,
-              enterpriseDescription: result.enterpriseDescription,
-              ceo: result.ceo,
-              headquarters: result.headquarters,
-              industry: result.industry,
-              email: result.email,
-              profilePicture: result.profilePicture,
-              coverPhoto: result.coverPhoto
-            };
-          }
+          // // TODO: What is this for?
+          // if (isCandidate(result)) {
+          //   this.candidateData = {
+          //     candidateId: result.candidateId,
+          //     username: result.username,
+          //     headline: result.headline,
+          //     email: result.email,
+          //     profilePicture: result.profilePicture,
+          //     coverPhoto: result.coverPhoto,
+          //     fullName: result.fullName,
+          //     skills: result.skills,
+          //     educationLevel: result.educationLevel,
+          //     displayEmail: result.displayEmail.data[0]
+          //   };
+          // } else {
+          //   this.enterpriseData = {
+          //     enterpriseId: result.enterpriseId,
+          //     enterpriseName: result.enterpriseName,
+          //     enterpriseDescription: result.enterpriseDescription,
+          //     ceo: result.ceo,
+          //     headquarters: result.headquarters,
+          //     industry: result.industry,
+          //     email: result.email,
+          //     profilePicture: result.profilePicture,
+          //     coverPhoto: result.coverPhoto
+          //   };
+          // }
 
           // Filter result object before returning?
           return result;
         }),
-        catchError(err => of(false))
+        catchError(err => of(null))
       );
   }
 

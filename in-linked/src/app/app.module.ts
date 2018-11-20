@@ -31,6 +31,7 @@ import { SkillsSectionModalComponent } from './pages/candidate-profile/skills-se
 import { EducationSectionModalComponent } from './pages/candidate-profile/education-section-modal/education-section-modal.component';
 import { EnterpriseTitleSectionModalComponent } from './pages/enterprise-profile/title-section-modal/title-section-modal.component';
 import { FastFactsSectionModalComponent } from './pages/enterprise-profile/fast-facts-section-modal/fast-facts-section-modal.component';
+import { ServiceTestComponent } from './pages/service-test/service-test.component';
 
 // Automatically attach token to each request with http module
 export function tokenGetter() {
@@ -55,7 +56,8 @@ export function tokenGetter() {
     SkillsSectionModalComponent,
     EducationSectionModalComponent,
     EnterpriseTitleSectionModalComponent,
-    FastFactsSectionModalComponent
+    FastFactsSectionModalComponent,
+    ServiceTestComponent
   ],
   imports: [
     BrowserModule,
