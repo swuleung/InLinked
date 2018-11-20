@@ -22,7 +22,7 @@ export class AuthenticationService {
             if (user && user.data.authToken) {
               localStorage.setItem('Authorization', JSON.stringify(user.data.authToken));
             }
-            return user.data.authToken;
+            return user.authToken;
           }
         ),
         catchError(

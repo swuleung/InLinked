@@ -3,6 +3,8 @@
  */
 export interface Employee {
     employeeId: number;
+    username: string;
+    email: string;
     role: string;
     dateJoined: string;
 }
