@@ -4,12 +4,15 @@
 ## Deployment
 #### Front-end
 ```
-cd in-linked && npm start
+$ cd in-linked 
+$ npm start
 ```
 
 #### Back-end
 ```
-cd in-linked-backend && tsc && npm start
+$ cd in-linked-backend
+$ tsc
+$ npm start
 ```
 
 ## Built With
@@ -19,14 +22,14 @@ cd in-linked-backend && tsc && npm start
 * :speak_no_evil: [knex](https://knexjs.org/) - query builder for interfacing with the database.
 * :whale: [MySQL](https://www.mysql.com/) - the database management
 
-## Pages [Remove Later]
-* Log in page
+## Pages *Remove Later*
+* Log in page (done?)
 * Sign Up page (one for both enterprises & candidates)
-* Profile page for enterprises 
-* Profile page for candidates
-* Job search page 
-* View jobs posted page
-* View applicants for a job page 
+* Profile page for enterprises (done - pictures)
+* Profile page for candidates (done - pictures)
+* Search page (ALMOST done)
+* View jobs posted page (no progress)
+* View applicants for a job page (no progress) 
 
 ## Endpoint Tasks
 * Add more endpoints for different types of data.

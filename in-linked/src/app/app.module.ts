@@ -32,6 +32,10 @@ import { EducationSectionModalComponent } from './pages/candidate-profile/educat
 import { EnterpriseTitleSectionModalComponent } from './pages/enterprise-profile/title-section-modal/title-section-modal.component';
 import { FastFactsSectionModalComponent } from './pages/enterprise-profile/fast-facts-section-modal/fast-facts-section-modal.component';
 import { ServiceTestComponent } from './pages/service-test/service-test.component';
+import { SearchAllComponent } from './pages/search-page/search-all/search-all.component';
+import { SearchEnterprisesComponent } from './pages/search-page/search-enterprises/search-enterprises.component';
+import { SearchCandidatesComponent } from './pages/search-page/search-candidates/search-candidates.component';
+import { SearchJobsComponent } from './pages/search-page/search-jobs/search-jobs.component';
 
 // Automatically attach token to each request with http module
 export function tokenGetter() {
@@ -58,6 +62,10 @@ export function tokenGetter() {
     EnterpriseTitleSectionModalComponent,
     FastFactsSectionModalComponent,
     ServiceTestComponent
+    SearchAllComponent,
+    SearchEnterprisesComponent,
+    SearchCandidatesComponent,
+    SearchJobsComponent
   ],
   imports: [
     BrowserModule,
