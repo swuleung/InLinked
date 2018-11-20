@@ -123,7 +123,7 @@ export class UserService {
    * @returns {Observable<any>} - return object containing user information along with candidate/enterprise data
    * @memberof UserService
    */
-  get(data: string): Observable<any> {
+  getPersonal(data: string): Observable<any> {
     this.decoded = helper.decodeToken(data);
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${data}`, 'Content-Type': 'application/x-www-form-urlencoded' });
     return this.http.get<any>(`${this.apiUrl}/user/${this.decoded.id}`, {headers: headers})
@@ -132,6 +132,8 @@ export class UserService {
           if (result.success && result.success === 0) {
             return null; // If there is an error
           }
+
+          // TODO: What is this for?
           if (isCandidate(result)) {
             this.candidateData = {
               candidateId: result.candidateId,
@@ -163,6 +165,28 @@ export class UserService {
           return result;
         }),
         catchError(err => of(false))
+      );
+  }
+
+  /**
+   * Returns sanitized data for every user that is not the current one logged in
+   * 
+   * @param {number} id 
+   * @returns {Observable<any>} 
+   * @memberof UserService
+   */
+  get(id: number): Observable<any> {
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem('Authorization')}`,
+      'Content-Type': 'application/json' });
+    return this.http.get<any>(`${this.apiUrl}/user/${id}`, {headers: headers})
+      .pipe(
+        map(res => {
+          if (res.success && res.success == 0) {
+            return null;
+          }
+          return res;
+        }),
+        catchError(err => of(null))
       );
   }
 
