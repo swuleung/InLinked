@@ -25,7 +25,7 @@ export class ServiceTestComponent implements OnInit {
   }
 
   testGetCurrentUser() {
-    this.userService.getPersonal(localStorage.getItem(environment.token_key)).subscribe(res => 
+    this.userService.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe(res => 
       this.apiResponseRef.nativeElement.value = JSON.stringify(res));
   }
 

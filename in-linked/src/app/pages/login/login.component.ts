@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
     this.auth.login(email, password)
       .subscribe(
         (data) => {
-          this.user.getPersonal(data.authToken)
+          this.user.loadCurrentUser(data.authToken)
             .subscribe(
               (retrieved) => {
                 // Check if there is an error

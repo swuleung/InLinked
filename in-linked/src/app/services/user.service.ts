@@ -30,6 +30,14 @@ export class UserService {
     return helper.decodeToken(token);
   }
 
+  /**
+   * Get the user information that is logged in from the database and populates either candidate or enterprise
+   * TODO: For personal data requests, retrieve unsanitized version
+   *
+   * @param {string} data - authentication token of the user
+   * @returns {Observable<any>} - return object containing user information along with candidate/enterprise data
+   * @memberof UserService
+   */
   loadCurrentUser(authToken: string): Observable<Candidate | Enterprise> {
     this.decoded = this.decode(authToken);
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${authToken}`, 'Content-Type': 'application/x-www-form-urlencoded' });
@@ -63,10 +71,10 @@ export class UserService {
               acctype: result.data.acctype,
               enterpriseId: result.data.userId,
               enterpriseName: result.data.enterpriseName,
-              enterpriseDescription: '',
-              ceo: '',
-              headquarters: '',
-              industry: '',
+              enterpriseDescription: result.data.enterpriseDescription,
+              ceo: result.data.ceo,
+              headquarters: result.data.headquarters,
+              industry: result.data.industry,
               email: result.data.email,
               profilePicture: result.data.profilePicture,
               coverPhoto: result.data.coverPhoto
@@ -169,62 +177,6 @@ export class UserService {
           });
         }),
         catchError(err => of(false)) // If account exists, or other error
-      );
-  }
-
-  /**
-   * Get the user information that is logged in from the database and populates either candidate or enterprise
-   * TODO: For personal data requests, retrieve unsanitized version
-   *
-   * @param {string} data - authentication token of the user
-   * @returns {Observable<any>} - return object containing user information along with candidate/enterprise data
-   * @memberof UserService
-   */
-  getPersonal(data: string): Observable<any> {
-    this.decoded = this.decode(data);
-    const headers = new HttpHeaders({ 'Authorization': `Bearer ${data}`, 'Content-Type': 'application/x-www-form-urlencoded' });
-    return this.http.get<any>(`${this.apiUrl}/user/${this.decoded.id}`, {headers: headers})
-      .pipe(
-        map(result => {
-          if (result.success && result.success === 0) {
-            return null; // If there is an error
-          }
-          this.currentAccountType = result.acctype;
-          // Filter result object before returning?
-          if (result.acctype === 'candidate') {
-            this.candidateData = {
-              candidateId: result.data.userId,
-              username: result.data.username,
-              headline: result.data.headline,
-              email: result.data.email,
-              profilePicture: result.data.profilePicture,
-              coverPhoto: result.data.coverPhoto,
-              acctype: result.data.acctype,
-              fullName: result.data.fullName,
-              skills: '',
-              educationLevel: result.data.educationLevel.toLocaleLowerCase(),
-              displayEmail: 1
-            };
-          } else {
-            this.enterpriseData = {
-              userId: result.data.userId,
-              username: result.data.username,
-              headline: result.data.headline,
-              acctype: result.data.acctype,
-              enterpriseId: result.data.userId,
-              enterpriseName: result.data.enterpriseName,
-              enterpriseDescription: '',
-              ceo: '',
-              headquarters: '',
-              industry: '',
-              email: result.data.email,
-              profilePicture: result.data.profilePicture,
-              coverPhoto: result.data.coverPhoto
-            };
-          }
-          return result.data;
-        }),
-        catchError(err => of(null))
       );
   }
 
