@@ -5,6 +5,7 @@ import { User } from '../../../models';
  */
 export function sanitizeUser(user: User): any {
     return {
+        userId: user.userId,
         username: user.username,
         headline: user.headline,
         email: user.email,

@@ -95,6 +95,23 @@ class ExperienceRepository {
             }
         });
     }
+    /* CUSTOM FUNCTIONS */
+    // TODO: NEEDS TESTING
+    getByUser(userId, limit) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const conn = yield this.db.getConnection();
+            const row = yield conn
+                .table(this.TABLE_NAME)
+                .where({ UserId: userId })
+                .orderBy('StartMonth', 'desc')
+                .orderBy('StartYear', 'desc')
+                .limit(limit || 30);
+            if (!row) {
+                throw new exceptions_1.NotFoundException(`The user id ${userId} does not have any experience.`);
+            }
+            return this.toModelList(row);
+        });
+    }
     toModel(row) {
         return {
             experienceId: row.ExperienceId,
@@ -113,23 +130,6 @@ class ExperienceRepository {
     toModelList(list) {
         // Assuming that the object passed in is a list
         return list.map((r) => this.toModel(r));
-    }
-    /* CUSTOM FUNCTIONS */
-    // TODO: NEEDS TESTING
-    getByUser(userId, limit) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const conn = yield this.db.getConnection();
-            const row = yield conn
-                .table(this.TABLE_NAME)
-                .where({ UserId: userId })
-                .orderBy('StartMonth', 'desc')
-                .orderBy('StartYear', 'desc')
-                .limit(limit || 30);
-            if (!row) {
-                throw new exceptions_1.NotFoundException(`The user id ${userId} does not have any experience.`);
-            }
-            return this.toModelList(row);
-        });
     }
 }
 exports.ExperienceRepository = ExperienceRepository;

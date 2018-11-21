@@ -86,6 +86,7 @@ export class UserService {
               email: result.email,
               profilePicture: result.profilePicture,
               coverPhoto: result.coverPhoto,
+              accType: result.acctype,
               fullName: fullName,
               skills: '',
               educationLevel: educationLevel.toLocaleLowerCase(),
@@ -109,7 +110,6 @@ export class UserService {
         delay(250),
         map(res => {
           return this.authService.login(email, password).subscribe(val => {
-            console.log(val);
             return val.success === 1 && res; // Only return success on creating account and logging in
           });
         }),
@@ -143,9 +143,9 @@ export class UserService {
 
   /**
    * Returns sanitized data for every user that is not the current one logged in
-   * 
-   * @param {number} id 
-   * @returns {Observable<any>} 
+   *
+   * @param {number} id
+   * @returns {Observable<any>}
    * @memberof UserService
    */
   get(id: number): Observable<any> {
@@ -154,7 +154,7 @@ export class UserService {
     return this.http.get<any>(`${this.apiUrl}/user/${id}`, {headers: headers})
       .pipe(
         map(res => {
-          if (res.success && res.success == 0) {
+          if (res.success && res.success === 0) {
             return null;
           }
           return res;
@@ -197,5 +197,33 @@ export class UserService {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
     return this.http.delete(`${this.apiUrl}/user/${id}`, {headers: headers});
+  }
+
+  getByUsername(username: string): Observable<Candidate> {
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
+      'Content-Type': 'application/json' });
+    return this.http.post<any>(`${this.apiUrl}/user/${username}`, this.buildAuthBody(),
+      { headers: headers })
+        .pipe(
+          map(userData => {
+            if (userData.success && userData.success === 0) {
+              return null;
+            }
+
+            return userData;
+          }),
+          catchError(err => of(null))
+        );
+
+  }
+
+  buildAuthBody(): any {
+    const curUser: AuthUser = this.decode(localStorage.getItem(environment.token_key));
+    return {
+      user: {
+        userId: curUser.id,
+        role: curUser.role
+      }
+    };
   }
 }

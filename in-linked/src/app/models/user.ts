@@ -13,7 +13,6 @@ export interface User {
   acctype: string;
   createDate: string;
   lastActiveDate: string;
-  special: Candidate | Enterprise;
 }
 
 export function isUser(obj: any): boolean {

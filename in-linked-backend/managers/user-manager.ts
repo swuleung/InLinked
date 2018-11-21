@@ -107,7 +107,7 @@ export class UserManager {
      * @memberof UserManager
      */
     public async login(email: string, password: string): Promise<string> {
-        try {
+        // try {
             const user = await this.repo.findByEmail(email);
 
             if (await this.hash.verifyPassword(password, user.password)) {
@@ -115,9 +115,9 @@ export class UserManager {
                 return val;
             }
             throw new ValidationException('Wrong credentials');
-        } catch (ex) {
-            const pass = await this.hash.hashPassword(password);
-            return {...{ ...ex }, test: pass, error: 1 }; // Use success code to determine if we can read token
-        }
+        // } catch (ex) {
+        //     const pass = await this.hash.hashPassword(password);
+        //     return {...{ ...ex }, test: pass, success: 0 }; // Use success code to determine if we can read token
+        // }
     }
 }

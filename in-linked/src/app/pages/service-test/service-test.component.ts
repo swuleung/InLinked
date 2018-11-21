@@ -31,7 +31,12 @@ export class ServiceTestComponent implements OnInit {
 
   testGetUserById() {
     const id = prompt('Enter a user ID to fetch');
-    this.userService.get(Number(id)).subscribe(res => this.apiResponseRef.nativeElement.value = JSON.stringify(res));
+    this.userService.get(Number(id)).subscribe(res => this.apiResponseRef.nativeElement.value = JSON.stringify(res, null, 4));
+  }
+
+  testGetUserByName() {
+    const username = prompt('Enter a username to fetch');
+    this.userService.getByUsername(username).subscribe(res => this.apiResponseRef.nativeElement.value = JSON.stringify(res, null, 4));
   }
 
   testUpdateUser() {

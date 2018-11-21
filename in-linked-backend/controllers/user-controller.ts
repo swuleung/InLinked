@@ -42,8 +42,7 @@ export class UserController extends IController {
                 candidate.candidateId = user.userId; // Update the associated ID
                 await this.candidateManager.create(candidate);
             }
-            
-            res.status(201).send(sanitizeUser(user));
+            res.status(201).send(this.buildSuccessRes(`Successfully created account for ${user.email}.`, { ...sanitizeUser(user) })); // Return details for user (with special data)
         } catch (ex) {
             res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
@@ -63,10 +62,10 @@ export class UserController extends IController {
 
             // Verify that responses for special objects succeeded
             user = isCandidate(special) || isEnterprise(special) ? sanitizeUser(user) : null;
-            res.status(200).send({ 
-                ...user,
-                ...special
-            }); // Return details for user (with special data)
+
+            // Automatically login 
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched account for ${user.email}.`, { ...sanitizeUser(user), ...special })); // Return details for user (with special data)
+            
         } catch (ex) {
             res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
@@ -151,7 +150,7 @@ export class UserController extends IController {
         if (isError(authToken)) {
             res.status(500).send(this.buildErrorRes(authToken));
         } else {
-            res.send({ authToken });
+            res.send(this.buildSuccessRes(`Successfully logged in for user id ${email}.`, { authToken }));
         }
     }
 
@@ -185,12 +184,23 @@ export class UserController extends IController {
      */
     public async findByUsername(req: Request, res: Response, next: NextFunction) {
         const username = req.params.username;
-        const ret = await this.userManager.findByUsername(username);
+        let ret = await this.userManager.findByUsername(username);
         if (isError(ret)) {
             res.status(500).send(this.buildErrorRes(ret));
             return;
         }
-        res.status(200).send({ ret });
+
+        let special: any = null;
+        if (ret.acctype === AccType.ENTERPRISE) {
+            special = await this.enterpriseManager.get(ret.userId);
+        } else if (ret.acctype === AccType.CANDIDATE) {
+            special = await this.candidateManager.get(ret.userId);
+        }
+
+        // Verify that responses for special objects succeeded
+        ret = isCandidate(special) || isEnterprise(special) ? sanitizeUser(ret) : null;
+
+        res.status(200).send({ ...sanitizeUser(ret), ...special });
     }
 
     /**
@@ -232,7 +242,7 @@ export class UserController extends IController {
             );
 
         app.route(`/${config.app.api_route}/${config.app.api_ver}/user/:username`)
-            .get(
+            .post(
                 middleware.authentication(module.libs.auth),
                 middleware.authorization([Role.USER, Role.ADMIN]),
                 this.findByUsername.bind(this)

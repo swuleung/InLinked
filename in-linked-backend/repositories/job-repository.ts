@@ -1,6 +1,5 @@
 import { Job } from '../models';
 import { MySql } from '../utils/lib/database';
-import { connect } from 'http2';
 import { ValidationException, NotFoundException } from '../utils/exceptions';
 
 /**

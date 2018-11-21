@@ -8,6 +8,7 @@ export interface Candidate {
     email: string;
     profilePicture?: string;
     coverPhoto?: string;
+    accType: string;
     fullName: string;
     skills: string;
     educationLevel: string;
