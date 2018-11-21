@@ -32,7 +32,7 @@ export class CandidateProfileComponent implements OnInit {
     ).subscribe(({ userResponse }) => {
       this.user = userResponse;
       // Check if we are loading current user's profile
-      console.log(this.user.candidateId, this.authUser.id);
+      console.log(this.user, this.authUser.id);
       this.isCurrentUser = this.user.candidateId === this.authUser.id;
       console.log('isCurrentUser', this.isCurrentUser);
     });

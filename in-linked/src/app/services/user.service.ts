@@ -17,8 +17,9 @@ const helper = new JwtHelperService();
 })
 export class UserService {
   apiUrl = 'http://localhost:8080/api/v1';
-  private candidateData: Candidate;
-  private enterpriseData: Enterprise;
+  public candidateData: Candidate;
+  public enterpriseData: Enterprise;
+  private currentAccountType: string; // Candidate or enterprise
   private decoded: AuthUser;
 
   constructor(
@@ -27,6 +28,54 @@ export class UserService {
 
   decode(token: string): AuthUser {
     return helper.decodeToken(token);
+  }
+
+  loadCurrentUser(authToken: string): Observable<Candidate | Enterprise> {
+    this.decoded = this.decode(authToken);
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${authToken}`, 'Content-Type': 'application/x-www-form-urlencoded' });
+    return this.http.get<any>(`${this.apiUrl}/user/${this.decoded.id}`, {headers: headers})
+      .pipe(
+        map(result => {
+          if (result.success && result.success === 0) {
+            return null; // If there is an error
+          }
+          this.currentAccountType = result.acctype;
+          // Filter result object before returning?
+          if (result.data.acctype === 'candidate') {
+            this.candidateData = {
+              candidateId: result.data.userId,
+              username: result.data.username,
+              headline: result.data.headline,
+              email: result.data.email,
+              profilePicture: result.data.profilePicture,
+              coverPhoto: result.data.coverPhoto,
+              acctype: result.data.acctype,
+              fullName: result.data.fullName,
+              skills: '',
+              educationLevel: result.data.educationLevel.toLocaleLowerCase(),
+              displayEmail: 1
+            };
+          } else {
+            this.enterpriseData = {
+              userId: result.data.userId,
+              username: result.data.username,
+              headline: result.data.headline,
+              acctype: result.data.acctype,
+              enterpriseId: result.data.userId,
+              enterpriseName: result.data.enterpriseName,
+              enterpriseDescription: '',
+              ceo: '',
+              headquarters: '',
+              industry: '',
+              email: result.data.email,
+              profilePicture: result.data.profilePicture,
+              coverPhoto: result.data.coverPhoto
+            };
+          }
+          return result.data;
+        }),
+        catchError(err => of(null))
+      );
   }
 
   /**
@@ -86,7 +135,7 @@ export class UserService {
               email: result.email,
               profilePicture: result.profilePicture,
               coverPhoto: result.coverPhoto,
-              accType: result.acctype,
+              acctype: result.acctype,
               fullName: fullName,
               skills: '',
               educationLevel: educationLevel.toLocaleLowerCase(),
@@ -94,6 +143,10 @@ export class UserService {
             };
           } else {
             this.enterpriseData = {
+              userId: result.userId,
+              username: result.username,
+              headline: '',
+              acctype: result.data.acctype,
               enterpriseId: result.userId,
               enterpriseName: fullName,
               enterpriseDescription: '',
@@ -134,8 +187,40 @@ export class UserService {
           if (result.success && result.success === 0) {
             return null; // If there is an error
           }
+          this.currentAccountType = result.acctype;
           // Filter result object before returning?
-          return result;
+          if (result.acctype === 'candidate') {
+            this.candidateData = {
+              candidateId: result.data.userId,
+              username: result.data.username,
+              headline: result.data.headline,
+              email: result.data.email,
+              profilePicture: result.data.profilePicture,
+              coverPhoto: result.data.coverPhoto,
+              acctype: result.data.acctype,
+              fullName: result.data.fullName,
+              skills: '',
+              educationLevel: result.data.educationLevel.toLocaleLowerCase(),
+              displayEmail: 1
+            };
+          } else {
+            this.enterpriseData = {
+              userId: result.data.userId,
+              username: result.data.username,
+              headline: result.data.headline,
+              acctype: result.data.acctype,
+              enterpriseId: result.data.userId,
+              enterpriseName: result.data.enterpriseName,
+              enterpriseDescription: '',
+              ceo: '',
+              headquarters: '',
+              industry: '',
+              email: result.data.email,
+              profilePicture: result.data.profilePicture,
+              coverPhoto: result.data.coverPhoto
+            };
+          }
+          return result.data;
         }),
         catchError(err => of(null))
       );
@@ -154,7 +239,7 @@ export class UserService {
     return this.http.get<any>(`${this.apiUrl}/user/${id}`, {headers: headers})
       .pipe(
         map(res => {
-          if (res.success && res.success === 0) {
+          if (!res.success || res.success === 0) {
             return null;
           }
           return res;
@@ -210,11 +295,20 @@ export class UserService {
               return null;
             }
 
-            return userData;
+            return userData.data;
           }),
           catchError(err => of(null))
         );
 
+  }
+
+  /* HELPERS */
+  getCorrespondingUserData(): Candidate | Enterprise {
+    if (this.currentAccountType === 'candidate') {
+      return this.candidateData;
+    } else {
+      return this.enterpriseData;
+    }
   }
 
   buildAuthBody(): any {

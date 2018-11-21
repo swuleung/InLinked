@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-nav',
@@ -7,15 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
   brandTitle = 'InLinked';
+  status: boolean;
 
-  constructor() { }
+  @Input()
+  profileName: string;
+  @Input()
+  profileType: string;
+
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
+    this.status = false;
+    // this.profileName = this.userService.getCorrespondingUserData().username;
   }
 
-  status: boolean = false;
-
-  toggleNavbar(){
+  toggleNavbar() {
     this.status = !this.status;
   }
 }

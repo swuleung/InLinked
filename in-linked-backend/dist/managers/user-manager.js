@@ -54,19 +54,14 @@ class UserManager {
      */
     changePassword(email, newPassword, oldPassword) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const user = yield this.repo.findByEmail(email);
-                const validPassword = yield this.hash.verifyPassword(oldPassword, user.password); // Check for correct password first
-                if (!validPassword) {
-                    throw new exceptions_1.ValidationException('Old password is incorrect.');
-                }
-                // Verify the password
-                const hashedPass = yield this.hash.hashPassword(newPassword);
-                return this.repo.changePassword(email, hashedPass);
+            const user = yield this.repo.findByEmail(email);
+            const validPassword = yield this.hash.verifyPassword(oldPassword, user.password); // Check for correct password first
+            if (!validPassword) {
+                throw new exceptions_1.ValidationException('Old password is incorrect.');
             }
-            catch (ex) {
-                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
-            }
+            // Verify the password
+            const hashedPass = yield this.hash.hashPassword(newPassword);
+            return this.repo.changePassword(email, hashedPass);
         });
     }
     /**
@@ -78,12 +73,7 @@ class UserManager {
      */
     findByEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return this.repo.findByEmail(email);
-            }
-            catch (ex) {
-                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
-            }
+            return this.repo.findByEmail(email);
         });
     }
     /**
@@ -95,12 +85,7 @@ class UserManager {
      */
     findByUsername(username) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return this.repo.findByUsername(username);
-            }
-            catch (ex) {
-                return (exceptions_1.isError(ex) ? ex.toObject() : Object.assign({}, ex));
-            }
+            return this.repo.findByUsername(username);
         });
     }
     /**
@@ -114,17 +99,12 @@ class UserManager {
      */
     login(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            // try {
             const user = yield this.repo.findByEmail(email);
             if (yield this.hash.verifyPassword(password, user.password)) {
                 const val = this.auth.authenticate(user);
                 return val;
             }
             throw new exceptions_1.ValidationException('Wrong credentials');
-            // } catch (ex) {
-            //     const pass = await this.hash.hashPassword(password);
-            //     return {...{ ...ex }, test: pass, success: 0 }; // Use success code to determine if we can read token
-            // }
         });
     }
 }

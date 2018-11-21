@@ -197,7 +197,7 @@ export class UserController extends IController {
             // Verify that responses for special objects succeeded
             ret = isCandidate(special) || isEnterprise(special) ? sanitizeUser(ret) : null;
 
-            res.status(200).send({ ...sanitizeUser(ret), ...special });
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched username ${username}.`, { ...sanitizeUser(ret), ...special }));
         } catch (ex) {
             res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }

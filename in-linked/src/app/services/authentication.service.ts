@@ -17,7 +17,7 @@ export class AuthenticationService {
       .pipe(
         map(
           user => {
-            if (user && user.success === 0) {
+            if (!user || user.success === 0) {
               throw new Error('Error Login');
             }
             if (user && user.data.authToken) {

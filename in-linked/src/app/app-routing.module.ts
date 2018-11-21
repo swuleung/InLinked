@@ -14,7 +14,7 @@ import { ServiceTestComponent } from './pages/service-test/service-test.componen
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/login',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -70,7 +70,12 @@ const routes: Routes = [
         component: AdminComponent
       }
     ]
-  }
+  },
+  // 404
+  // {
+  //   path: '**',
+  //   component: PageNotFoundComponent
+  // }
 ];
 
 @NgModule({

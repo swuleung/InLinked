@@ -1,5 +1,5 @@
 <nav class="navbar fixed-top navbar-expand-sm navbar-dark">
-  <a class="navbar-brand" href="./dashboard">{{ brandTitle }}</a>
+  <a class="navbar-brand" routerLink="./">{{ brandTitle }}</a>
   <button class="navbar-toggler" (click)="toggleNavbar()" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -14,7 +14,7 @@
     <div class="navbar-right">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" routerLink="./candidate">My Profile</a>
+          <a class="nav-link" routerLink="./{{ profileType }}/{{ profileName }}" #profileLinkRef>My Profile</a>
         </li>
       </ul>
     </div>

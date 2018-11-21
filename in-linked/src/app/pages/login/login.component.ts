@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
                 } else {
                   this.router.navigate(['/dashboard']); // Reroute to dashboard
                 }
+                console.log(this.user.candidateData, retrieved);
               }
             );
         },

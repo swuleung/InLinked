@@ -1,4 +1,4 @@
 <div class="dashboard-container" >
-  <app-nav></app-nav>
+  <app-nav [profileType]="acctype || ''" [profileName]="username || ''"></app-nav>
   <router-outlet></router-outlet>
 </div>

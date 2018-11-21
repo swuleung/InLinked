@@ -71,11 +71,7 @@ export class UserManager {
      * @memberof UserManager
      */
     public async findByEmail(email: string): Promise<User> {
-        try {
-            return this.repo.findByEmail(email);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+        return this.repo.findByEmail(email);
     }
 
     /**
@@ -85,7 +81,7 @@ export class UserManager {
      * @returns {Promise<User>} - user with corresponding username
      * @memberof UserManager
      */
-    public async findByUsername(username: string): Promise<User> {]
+    public async findByUsername(username: string): Promise<User> {
         return this.repo.findByUsername(username);
     }
 

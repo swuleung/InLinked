@@ -2,6 +2,10 @@
  * Enterprise model for InLinked
  */
 export interface Enterprise {
+    userId: number;
+    username: string;
+    headline: string;
+    acctype: string;
     enterpriseId: number;
     enterpriseName: string;
     enterpriseDescription: string;
