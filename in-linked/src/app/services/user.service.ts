@@ -302,7 +302,7 @@ export class UserService {
       };
     }
 
-    return this.http.put<any>(`${this.apiUrl}/user`, {headers: headers, body})
+    return this.http.put<any>(`${this.apiUrl}/user`, body, {headers: headers})
       .pipe(
         map(res => {
           if (res.status === 200) {
