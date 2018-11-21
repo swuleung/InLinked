@@ -143,14 +143,14 @@ export class UserController extends IController {
      * @memberof UserController
      */
     public async login(req: Request, res: Response, next: NextFunction) {
-        const email: string = req.body.email;
-        const pass: string = req.body.password;
-        const authToken: string = await this.userManager.login(email, pass);
+        try {
+            const email: string = req.body.email;
+            const pass: string = req.body.password;
+            const authToken: string = await this.userManager.login(email, pass);
 
-        if (isError(authToken)) {
-            res.status(500).send(this.buildErrorRes(authToken));
-        } else {
             res.send(this.buildSuccessRes(`Successfully logged in for user id ${email}.`, { authToken }));
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
     }
 
@@ -163,15 +163,15 @@ export class UserController extends IController {
      * @memberof UserController
      */
     public async changePassword(req: Request, res: Response, next: NextFunction) {
-        const email = req.body.email;
-        const oldPass = req.body.oldPassword;
-        const newPass = req.body.newPassword;
-        const ret = await this.userManager.changePassword(email, newPass, oldPass);
-        if (isError(ret)) {
-            res.status(500).send(this.buildErrorRes(ret));
-            return;
+        try {
+            const email = req.body.email;
+            const oldPass = req.body.oldPassword;
+            const newPass = req.body.newPassword;
+            await this.userManager.changePassword(email, newPass, oldPass);
+            res.status(204).send({ }); // Send no content
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
-        res.status(204).send({ ret }); // Send no content
     }
 
     /**
@@ -183,24 +183,24 @@ export class UserController extends IController {
      * @memberof UserController
      */
     public async findByUsername(req: Request, res: Response, next: NextFunction) {
-        const username = req.params.username;
-        let ret = await this.userManager.findByUsername(username);
-        if (isError(ret)) {
-            res.status(500).send(this.buildErrorRes(ret));
-            return;
+        try {
+            const username = req.params.username;
+            let ret = await this.userManager.findByUsername(username);
+
+            let special: any = null;
+            if (ret.acctype === AccType.ENTERPRISE) {
+                special = await this.enterpriseManager.get(ret.userId);
+            } else if (ret.acctype === AccType.CANDIDATE) {
+                special = await this.candidateManager.get(ret.userId);
+            }
+
+            // Verify that responses for special objects succeeded
+            ret = isCandidate(special) || isEnterprise(special) ? sanitizeUser(ret) : null;
+
+            res.status(200).send({ ...sanitizeUser(ret), ...special });
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
-
-        let special: any = null;
-        if (ret.acctype === AccType.ENTERPRISE) {
-            special = await this.enterpriseManager.get(ret.userId);
-        } else if (ret.acctype === AccType.CANDIDATE) {
-            special = await this.candidateManager.get(ret.userId);
-        }
-
-        // Verify that responses for special objects succeeded
-        ret = isCandidate(special) || isEnterprise(special) ? sanitizeUser(ret) : null;
-
-        res.status(200).send({ ...sanitizeUser(ret), ...special });
     }
 
     /**

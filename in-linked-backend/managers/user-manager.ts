@@ -52,19 +52,15 @@ export class UserManager {
      * @memberof UserManager
      */
     public async changePassword(email: string, newPassword: string, oldPassword: string): Promise<void> {
-        try {
-            const user = await this.repo.findByEmail(email);
-            const validPassword = await this.hash.verifyPassword(oldPassword, user.password); // Check for correct password first
-            if (!validPassword) {
-                throw new ValidationException('Old password is incorrect.');
-            }
-
-            // Verify the password
-            const hashedPass = await this.hash.hashPassword(newPassword);
-            return this.repo.changePassword(email, hashedPass);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
+        const user = await this.repo.findByEmail(email);
+        const validPassword = await this.hash.verifyPassword(oldPassword, user.password); // Check for correct password first
+        if (!validPassword) {
+            throw new ValidationException('Old password is incorrect.');
         }
+
+        // Verify the password
+        const hashedPass = await this.hash.hashPassword(newPassword);
+        return this.repo.changePassword(email, hashedPass);
     }
 
     /**
@@ -89,12 +85,8 @@ export class UserManager {
      * @returns {Promise<User>} - user with corresponding username
      * @memberof UserManager
      */
-    public async findByUsername(username: string): Promise<User> {
-        try {
-            return this.repo.findByUsername(username);
-        } catch (ex) {
-            return (isError(ex) ? ex.toObject() : { ...ex });
-        }
+    public async findByUsername(username: string): Promise<User> {]
+        return this.repo.findByUsername(username);
     }
 
     /**
@@ -107,17 +99,12 @@ export class UserManager {
      * @memberof UserManager
      */
     public async login(email: string, password: string): Promise<string> {
-        // try {
-            const user = await this.repo.findByEmail(email);
+        const user = await this.repo.findByEmail(email);
 
-            if (await this.hash.verifyPassword(password, user.password)) {
-                const val = this.auth.authenticate(user);
-                return val;
-            }
-            throw new ValidationException('Wrong credentials');
-        // } catch (ex) {
-        //     const pass = await this.hash.hashPassword(password);
-        //     return {...{ ...ex }, test: pass, success: 0 }; // Use success code to determine if we can read token
-        // }
+        if (await this.hash.verifyPassword(password, user.password)) {
+            const val = this.auth.authenticate(user);
+            return val;
+        }
+        throw new ValidationException('Wrong credentials');
     }
 }
