@@ -51,6 +51,7 @@ export class UserService {
           // Filter result object before returning?
           if (result.data.acctype === 'candidate') {
             this.candidateData = {
+              userId: result.data.userId,
               candidateId: result.data.userId,
               username: result.data.username,
               headline: result.data.headline,
@@ -139,6 +140,7 @@ export class UserService {
         map(result => {
           if (acctype === 'candidate') {
             this.candidateData = {
+              userId: result.userId,
               candidateId: result.userId,
               username: result.username,
               headline: result.headline,
@@ -279,7 +281,7 @@ export class UserService {
     return this.http.delete(`${this.apiUrl}/user/${id}`, {headers: headers});
   }
 
-  getByUsername(username: string): Observable<Candidate> {
+  getByUsername(username: string): Observable<Candidate | Enterprise> {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
     return this.http.post<any>(`${this.apiUrl}/user/${username}`, this.buildAuthBody(),

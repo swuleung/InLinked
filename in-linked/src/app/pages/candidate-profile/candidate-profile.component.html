@@ -3,12 +3,12 @@
   <img class="profile-photo" src="http://phoenixcavaliers.com/wp-content/uploads/Blenheim-puppy-Tatum-web-4.jpg">
   <div class="card card-move-up title-section">
     <div class="section-header">
-      <div class="h1 section-title">Bonnie</div>
-      <div class="section-edit">
+      <div class="h1 section-title">{{ (candidate)?.fullName }}</div>
+      <div *ngIf="isCurrentUser" class="section-edit">
         <app-candidate-title-section-modal></app-candidate-title-section-modal>
       </div>
     </div>
-    <p>I am ready to conquer the world and make it less ruff for dogs everywhere. I believe in Dog Equality.</p>
+    <p>{{ (candidate)?.headline }}</p>
   </div>
 </div>
 
@@ -16,7 +16,7 @@
   <div class="card information-card">
     <div class="section-header">
       <div class="h2 section-title">Experience</div>
-      <div class="section-edit">
+      <div *ngIf="isCurrentUser" class="section-edit">
         <app-candidate-experience-section-modal></app-candidate-experience-section-modal>
       </div>
     </div>
@@ -53,16 +53,13 @@
   <div class="card information-card">
     <div class="section-header">
       <div class="h2 section-title">Skills</div>
-      <div class="section-edit">
+      <div *ngIf="isCurrentUser" class="section-edit">
         <app-candidate-skills-section-modal></app-candidate-skills-section-modal>
       </div>
     </div>
 
     <ul class="list-inline">
-      <li class="list-inline-item skill-pill">Roll over</li>
-      <li class="list-inline-item skill-pill">Jump</li>
-      <li class="list-inline-item skill-pill">Run</li>
-      <li class="list-inline-item skill-pill">Play dead</li>
+      <li *ngFor="let skill of skills" class="list-inline-item skill-pill">{{ skill }}</li>
     </ul>
   </div>
 </div>
@@ -71,7 +68,7 @@
   <div class="card information-card">
     <div class="section-header">
       <div class="h2 section-title">Education</div>
-      <div class="section-edit">
+      <div *ngIf="isCurrentUser" class="section-edit">
           <app-candidate-education-section-modal></app-candidate-education-section-modal>
       </div>
     </div>

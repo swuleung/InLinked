@@ -7,4 +7,5 @@ export interface AuthUser {
     iat: number;
     id: number;
     role: string;
+    username: string;
 }

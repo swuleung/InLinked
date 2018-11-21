@@ -4,7 +4,6 @@ import { AuthUser } from '../../models/auth-user';
 
 import { environment } from '../../../environments/environment';
 import { ActivatedRoute } from '@angular/router';
-import { map, switchMap } from 'rxjs/operators';
 import { Candidate } from '../../models/candidate';
 
 @Component({
@@ -15,31 +14,46 @@ import { Candidate } from '../../models/candidate';
 export class CandidateProfileComponent implements OnInit {
 
   private authUser: AuthUser; // Get user identify from stored token
-  private user: Candidate;
+  isCurrentUser: boolean; // Used to check if we should enable edit options
+  skills: string[];
 
-  private isCurrentUser: boolean; // Used to check if we should enable edit options
+  candidate: Candidate;
 
   constructor(private route: ActivatedRoute, private userService: UserService) { }
 
   ngOnInit() {
     this.authUser = this.userService.decode(localStorage.getItem(environment.token_key)); // Get the current user
+    this.loadUser();
+  }
 
-    // Get account that we are loading
-    this.route.params.pipe(
-      switchMap(params => this.userService.getByUsername(params['username']).pipe(
-        map(userResponse => ({ userResponse }))
-      ))
-    ).subscribe(({ userResponse }) => {
-      this.user = userResponse;
-      // Check if we are loading current user's profile
-      console.log(this.user, this.authUser.id);
-      this.isCurrentUser = this.user.candidateId === this.authUser.id;
-      console.log('isCurrentUser', this.isCurrentUser);
+  loadUser(): void {
+    const authUser = this.userService.decode(localStorage.getItem(environment.token_key)); // Get the current user
+    console.log(authUser);
+    this.route.params.subscribe(params => {
+      this.isCurrentUser = authUser.username === params['username'];
+      console.log(authUser.username, params['username']);
+      this.initCandidate(this.isCurrentUser, params['username']);
     });
   }
 
-  test() {
-    console.log(this.user);
+  initCandidate(isCurrentUser: boolean, username: string): void {
+    if (isCurrentUser) {
+      this.candidate = this.userService.getCorrespondingUserData() as Candidate;
+
+      // Check if it was loaded before
+      if (!this.candidate) {
+        this.userService.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe((res: Candidate) => {
+          this.candidate = res;
+          this.skills = res.skills.split(',');
+        });
+      }
+    } else {
+      console.log('other account');
+      this.userService.getByUsername(username).subscribe((res: Candidate) => {
+        this.candidate = res;
+        this.skills = res.skills.split(',');
+      });
+    }
   }
 
 }

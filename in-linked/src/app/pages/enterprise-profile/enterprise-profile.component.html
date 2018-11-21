@@ -6,7 +6,7 @@
       <div class="section-title h1">
         {{ (enterprise)?.enterpriseName || 'test' }}
       </div>
-      <div class="section-edit">
+      <div *ngIf="isCurrentUser" class="section-edit">
         <app-enterprise-title-section-modal></app-enterprise-title-section-modal>
       </div>
     </div>
@@ -18,7 +18,7 @@
   <div class="card information-card">
     <div class="section-header">
       <div class="h4 section-title pb-3">About Us</div>
-      <div class="section-edit">
+      <div *ngIf="isCurrentUser" class="section-edit">
         <app-enterprise-fast-facts-section-modal></app-enterprise-fast-facts-section-modal>
       </div>
     </div>
