@@ -17,13 +17,13 @@
 <div class="container information-container">
   <div class="card information-card">
     <div class="section-header">
-      <div class="h2 section-title">Fast Facts</div>
+      <div class="h2 section-title">About Us</div>
       <div class="section-edit">
         <app-enterprise-fast-facts-section-modal></app-enterprise-fast-facts-section-modal>
       </div>
     </div>
-    <h3> Headquarters: Petland </h3>
-    <h3> CEO: Pupper Doggo </h3>
-    <h3> Industry: Food & Drugs </h3>
+    <h5> Headquarters: {{ enterprise.headquarters }} </h5>
+    <h5> CEO: {{ enterprise.ceo }} </h5>
+    <h5> Industry: {{ enterprise.industry }} </h5>
   </div> 
 </div>

@@ -19,10 +19,8 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.userService.getCorrespondingUserData();
-    // console.log(this.user);
     if (!this.user) {
       this.userService.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe(res => {
-        console.log('test');
         console.log(res);
         this.user = res;
         this.username = res.username;
@@ -31,6 +29,9 @@ export class DashboardComponent implements OnInit {
       return;
     }
 
+    
+    this.username = this.user.username;
+    this.acctype = this.user.acctype;
     console.log(this.user);
   }
 

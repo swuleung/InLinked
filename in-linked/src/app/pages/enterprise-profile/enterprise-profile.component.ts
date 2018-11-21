@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Enterprise } from '../../models/enterprise';
 
 @Component({
   selector: 'app-enterprise-profile',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./enterprise-profile.component.scss']
 })
 export class EnterpriseProfileComponent implements OnInit {
+
+  @Input()
+  enterprise: Enterprise;
 
   constructor() { }
 

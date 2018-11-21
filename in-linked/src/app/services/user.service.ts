@@ -102,7 +102,9 @@ export class UserService {
       profilePicture: '',
       coverPhoto: '',
       role: 'user',
-      acctype: acctype
+      acctype: acctype,
+      createDate: new Date().toISOString().slice(0,10),
+      lastActiveDate: new Date().toISOString().slice(0,10)
     };
     const body: any = {};
     body.user = newUser;
@@ -259,7 +261,48 @@ export class UserService {
   update(user: any): Observable<boolean> {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
      'Content-Type': 'application/json' });
-    return this.http.put<any>(`${this.apiUrl}/user`, {headers: headers, body: user})
+    
+    const userBody = {
+      userId: 0,
+      username: user.username,
+      headline: user.headline,
+      email: user.email,
+      profilePicture: user.profilePicture,
+      coverPhoto: user.coverPhoto,
+      acctype: user.acctype,
+      lastActiveDate: new Date().toISOString().slice(0,10)
+    };
+
+    // Build the response
+    let body = null;
+    if (user.acctype === 'enterprise') {
+      const enterprise = {
+        enterpriseId: user.enterpriseId,
+        enterpriseName: user.enterpriseName,
+        enterpriseDescription: user.enterpriseDescription,
+        ceo: user.ceo,
+        headquarters: user.headquarters,
+        industry: user.industry
+      }
+      body = {
+        user: userBody,
+        enterprise
+      };
+    } else {
+      const candidate = {
+        candidateId: user.candidateId,
+        fullName: user.fullName,
+        skills: user.skills,
+        educationLevel: user.educationLevel,
+        displayEmail: user.displayEmail
+      };
+      body = {
+        user: userBody,
+        candidate
+      };
+    }
+
+    return this.http.put<any>(`${this.apiUrl}/user`, {headers: headers, body})
       .pipe(
         map(res => {
           if (res.status === 200) {
