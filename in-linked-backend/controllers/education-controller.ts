@@ -55,7 +55,7 @@ export class EducationController extends IController {
 
             await this.educationManger.update(education);
 
-            res.status(200).send(this.buildSuccessRes(`Education id: ${education.educationId} successfully updated.`));
+            res.status(200).send(this.buildSuccessRes(`Education id: ${education.educationId} successfully updated.`, education));
         } catch (ex) {
             res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
@@ -67,6 +67,16 @@ export class EducationController extends IController {
 
             await this.educationManger.delete(education.educationId);
             res.status(204).send(this.buildSuccessRes(`Successfully deleted education id ${education.educationId} for candidate id ${education.candidateId}.`));
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
+        }
+    }
+
+    /* SPECIAL FUNCTIONS */
+    public async getByUserId(req: Request, res: Response, next: NextFunction) {
+        try {
+            const education = await this.educationManger.getByUserId(req.params.candidateId);
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched education entries for candidate id ${req.params.candidateId}.`, education));
         } catch (ex) {
             res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
@@ -95,6 +105,12 @@ export class EducationController extends IController {
             middleware.authorization([Role.USER, Role.ADMIN]),
             this.delete.bind(this)
         );
-    }
 
+    app.route(`/${config.app.api_route}/${config.app.api_ver}/job/education/:candidateId`)
+        .post(
+            middleware.authentication(module.libs.auth),
+            middleware.authorization([Role.USER, Role.ADMIN]),
+            this.getByUserId.bind(this)
+        );
+    }
 }

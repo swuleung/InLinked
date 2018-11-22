@@ -42,7 +42,7 @@ export class JobManager {
     }
 
     public async getByEnterpriseId(enterpriseId: number): Promise<Job[]> {
-        return await this.jobRepo.getByEnterprise(enterpriseId);
+        return await this.jobRepo.getByEnterpriseId(enterpriseId);
     }
 
 }

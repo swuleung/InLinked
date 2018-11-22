@@ -100,7 +100,15 @@ export class JobRepository {
     }
 
     /* SPECIAL FUNCTIONS */
-    public async getByEnterprise(enterpriseId: number, limit?: number): Promise<Job[]> {
+    /**
+     * Get all the jobs posted by an enterprise
+     *
+     * @param {number} enterpriseId
+     * @param {number} [limit]
+     * @returns {Promise<Job[]>}
+     * @memberof JobRepository
+     */
+    public async getByEnterpriseId(enterpriseId: number, limit?: number): Promise<Job[]> {
         const conn = await this.db.getConnection();
         const rows = await conn
             .table(this.TABLE_NAME)

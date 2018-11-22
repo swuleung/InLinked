@@ -44,4 +44,9 @@ export class EducationManager {
     public async delete(id: number): Promise<void> {
         return await this.educationRepo.delete(id);
     }
+
+    /* SPECIAL FUNCTIONS */
+    public async getByUserId(candidateId: number): Promise<Education[]> {
+        return await this.educationRepo.getByUserId(candidateId);
+    }
 }

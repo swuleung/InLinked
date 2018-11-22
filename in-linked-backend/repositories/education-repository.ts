@@ -85,6 +85,26 @@ export class EducationRepository {
         }
     }
 
+    /**
+     * Get all the places that a user studied with a given user id
+     *
+     * @param {number} candidateId
+     * @returns {Promise<Education[]>}
+     * @memberof EducationRepository
+     */
+    public async getByUserId(candidateId: number): Promise<Education[]> {
+        const conn = await this.db.getConnection();
+        const row = await conn.table(this.TABLE_NAME)
+            .where({ CandidateId: candidateId });
+
+        if (!row) {
+            throw new NotFoundException(
+                `User id '${candidateId}' did not provide any education data.`
+            );
+        }
+        return this.toModelList(row);
+    }
+
     public toModel(row: any): Education {
         return {
             educationId: row.EducationId,
@@ -97,5 +117,9 @@ export class EducationRepository {
             location: row.Location,
             degree: row.Degree
         };
+    }
+
+    public toModelList(row: any): Education[] {
+        return row.map((education: any) => this.toModel(education));
     }
 }

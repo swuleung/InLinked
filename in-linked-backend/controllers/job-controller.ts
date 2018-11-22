@@ -83,7 +83,7 @@ export class JobController extends IController {
         try {
             const jobs = await this.jobManager.getByEnterpriseId(req.params.enterpriseId);
 
-            res.status(200).send(this.buildSuccessRes(`Successfully fetched jobs posted by enterprise id '${req.params.id}'.`, jobs));
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched jobs posted by enterprise id '${req.params.enterpriseId}'.`, jobs));
         } catch (ex) {
             res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
@@ -111,6 +111,13 @@ export class JobController extends IController {
                 middleware.authentication(module.libs.auth),
                 middleware.authorization([Role.USER, Role.ADMIN]),
                 this.delete.bind(this)
+            );
+
+        app.route(`/${config.app.api_route}/${config.app.api_ver}/job/enterprise/:enterpriseId`)
+            .post(
+                middleware.authentication(module.libs.auth),
+                middleware.authorization([Role.USER, Role.ADMIN]),
+                this.getByEnterpriseId.bind(this)
             );
     }
 }
