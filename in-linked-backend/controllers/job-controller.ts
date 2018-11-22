@@ -78,6 +78,17 @@ export class JobController extends IController {
         }
     }
 
+    /* SPECIAL FUNCTIONS */
+    public async getByEnterpriseId(req: Request, res: Response, next: NextFunction) {
+        try {
+            const jobs = await this.jobManager.getByEnterpriseId(req.params.enterpriseId);
+
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched jobs posted by enterprise id '${req.params.id}'.`, jobs));
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
+        }
+    }
+
     public bindRoutes(app: Application, module: ServiceModule) {
         app.route(`/${config.app.api_route}/${config.app.api_ver}/job`)
             .post(

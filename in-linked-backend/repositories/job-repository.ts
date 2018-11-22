@@ -99,6 +99,23 @@ export class JobRepository {
         }
     }
 
+    /* SPECIAL FUNCTIONS */
+    public async getByEnterprise(enterpriseId: number, limit?: number): Promise<Job[]> {
+        const conn = await this.db.getConnection();
+        const rows = await conn
+            .table(this.TABLE_NAME)
+            .where({ EnterpriseId: enterpriseId })
+            .orderBy('JobId', 'desc') // Get most recently posted jobs
+            .limit(limit || 50);
+
+        if (!rows) {
+            throw new NotFoundException(
+                `The enterprise id ${enterpriseId} did not post any jobs.`
+            );
+        }
+        return this.toModelList(rows);
+    }
+
     public toModel(row: any): Job {
         return {
             jobId: row.JobId,
@@ -115,5 +132,9 @@ export class JobRepository {
             jobUrl: row.JobURL,
             postedDate: row.PostedDate
         };
+    }
+
+    public toModelList(list: any): Job[] {
+        return list.map((job: any) => this.toModel(job));
     }
 }

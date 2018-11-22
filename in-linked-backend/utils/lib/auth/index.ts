@@ -71,6 +71,7 @@ export class JWTAuth implements IAuth {
                 id: user.userId,
                 email: user.email,
                 role: user.role as Role,
+                username: user.username,
                 success: 1
             },
             this.secret,

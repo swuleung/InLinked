@@ -41,4 +41,8 @@ export class JobManager {
         return await this.jobRepo.delete(id);
     }
 
+    public async getByEnterpriseId(enterpriseId: number): Promise<Job[]> {
+        return await this.jobRepo.getByEnterprise(enterpriseId);
+    }
+
 }
