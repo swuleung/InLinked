@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Enterprise } from '../../models/enterprise';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../services/user/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { switchMap, map } from 'rxjs/operators';

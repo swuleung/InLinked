@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Candidate, isCandidate } from 'src/app/models/candidate';
-import { Enterprise } from '../models/enterprise';
+import { Enterprise } from '../../models/enterprise';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { catchError, delay, map, mergeMap } from 'rxjs/operators';
 import { Observable, of, Subscription } from 'rxjs';
 
-import { AuthenticationService } from './authentication.service';
-import { AuthUser } from '../models/auth-user';
-import { environment } from '../../environments/environment';
+import { AuthenticationService } from '../authentication/authentication.service';
+import { AuthUser } from '../../models/auth-user';
+import { environment } from '../../../environments/environment';
 
 const helper = new JwtHelperService();
 

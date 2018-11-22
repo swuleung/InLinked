@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
-import { UserService } from './user.service';
+import { UserService } from '../user/user.service';
 import { catchError, map } from 'rxjs/operators';
-import { Employee } from '../models/employee';
+import { Employee } from '../../models/employee';
 import { HttpClient } from '@angular/common/http';
-import { AuthenticationService } from './authentication.service';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 @Injectable({
   providedIn: 'root'

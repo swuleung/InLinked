@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../../../services/user.service';
+import { UserService } from '../../../../services/user/user.service';
 import { environment } from '../../../../../environments/environment';
 import { Enterprise } from '../../../../models/enterprise';
 import { Candidate } from '../../../../models/candidate';
