@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../services/user/user.service';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { environment } from '../../../environments/environment';
 
