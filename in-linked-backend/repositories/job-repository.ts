@@ -124,6 +124,37 @@ export class JobRepository {
         return this.toModelList(rows);
     }
 
+    /**
+     * Employ a fuzzy search mechanism to look a job up with matching names, qualifications, employment types and locations
+     *
+     * @param {string} query
+     * @returns {Promise<Job[]>}
+     * @memberof JobRepository
+     */
+    public async fuzzySearchHelper(query: string, columnNames: string[]): Promise<Job[]> {
+        const jobs = new Map<number, Job>();
+        const conn = await this.db.getConnection();
+
+        // Iterate over all column names we want to check with given strings
+        for (const column of columnNames) {
+            const rows = await conn.table(this.TABLE_NAME)
+                .where({ column: `%${query}%` })
+                .orderByRaw(`
+                    ${column} LIKE '${query}%' DESC,
+                    IFNULL(NULLIF(INSTR(${column}, ' ${query}), 0), 99999),
+                    IFNULL(NULLIF(INSTR(${column}, '${query}'), 0), 99999),
+                    ${column}
+                `);
+            let jobsArr: Job[] = this.toModelList(rows);
+            for (let job of jobsArr) {
+                if (!(job.jobId in jobs.keys())) {
+                    // Insert
+                }
+            }
+        }
+
+    }
+
     public toModel(row: any): Job {
         return {
             jobId: row.JobId,
