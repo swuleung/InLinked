@@ -40,7 +40,6 @@ export class ServiceTestComponent implements OnInit {
   }
 
   testUpdateUser() {
-    
   }
 
   //#endregion
