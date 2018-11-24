@@ -173,33 +173,6 @@ export class UserRepository {
         }
         return this.toModel(row);
     }
-
-    public async fuzzySearchHelper(query: string, columnNames: string[], limit?: number): Promise<User[]> {
-        const users = new Map<number, User>();
-        const conn = await this.db.getConnection();
-
-        for (const column of columnNames) {
-            for (const str of query.split(' ')) {
-                const rows = await conn.table(this.TABLE_NAME)
-                    .whereRaw(`${column} LIKE '%${str}%'`)
-                    .orderByRaw(`
-                        ${column} LIKE '${str}%' DESC,
-                        IFNULL(NULLIF(INSTR(${column}, ' ${str}'), 0), 99999),
-                        IFNULL(NULLIF(INSTR(${column}, '${str}'), 0), 99999),
-                        ${column}
-                    `)
-                    .limit(30);
-                const userByColArr: User[] = this.toModelList(rows);
-                for (const user of userByColArr) {
-                    if (!(user.userId in [...users.keys()])) {
-                        users.set(user.userId, user);
-                    }
-                }
-            }
-        }
-
-        return [...users.values()];
-    }
     
     /**
      * Transforms a given row into a User model

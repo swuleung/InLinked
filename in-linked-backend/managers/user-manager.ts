@@ -103,8 +103,4 @@ export class UserManager {
         }
         throw new ValidationException('Wrong credentials');
     }
-
-    public async fuzzySearch(query: string, columns: Job[]): Promise<Job[]> {
-        return this.repo.fuzzySearchHelper(query, columns);
-    }
 }

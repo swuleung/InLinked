@@ -118,21 +118,21 @@ export class CandidateRepository {
 
     public toModelUser(row: any): CandidateExt {
         return {
-            userId: row.UserId;
-            username: row.Username;
-            headline: row.Headline;
-            email: row.Email;
-            profilePicture: row.ProfilePicture;
-            coverPhoto: row.CoverPhoto;
-            role: row.Role;
-            acctype: row.AccType;
-            createDate: row.CreateDate;
-            lastActiveDate: row.LastActiveDate;
-            candidateId: row.CandidateId;
-            fullName: row.FullName;
-            skills: row.Skills;
-            educationLevel: row.EducationLevel;
-            displayEmail: row.DisplayEmail;
+            userId: row.UserId,
+            username: row.Username,
+            headline: row.Headline,
+            email: row.Email,
+            profilePicture: row.ProfilePicture,
+            coverPhoto: row.CoverPhoto,
+            role: row.Role,
+            acctype: row.AccType,
+            createDate: row.CreateDate,
+            lastActiveDate: row.LastActiveDate,
+            candidateId: row.CandidateId,
+            fullName: row.FullName,
+            skills: row.Skills,
+            educationLevel: row.EducationLevel,
+            displayEmail: row.DisplayEmail,
         };
     }
 

@@ -7,10 +7,10 @@ export interface Enterprise {
     industry?: string;
 }
 
-export interface EnterpriseEx {
+export interface EnterpriseExt {
+    userId: number;
     username: string;
     headline?: string;
-    password: string;
     email: string;
     profilePicture?: string;
     coverPhoto?: string;

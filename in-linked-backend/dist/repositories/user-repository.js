@@ -112,28 +112,6 @@ class UserRepository {
             }
         });
     }
-    /**
-     * Transforms a given row into a User model
-     *
-     * @param {*} row - row that we are converting
-     * @returns {User} - returns a User model that was recently converted
-     * @memberof UserRepository
-     */
-    toModel(row) {
-        return {
-            userId: row.UserId,
-            username: row.Username,
-            headline: row.Headline,
-            password: row.Password,
-            email: row.Email,
-            profilePicture: row.ProfilePicture,
-            coverPhoto: row.CoverPhoto,
-            role: row.Role,
-            acctype: row.AccType,
-            createDate: row.CreateDate,
-            lastActiveDate: row.LastActiveDate
-        };
-    }
     /* MORE SPECIFIC CASES */
     /**
      * Update a password by the email
@@ -192,6 +170,31 @@ class UserRepository {
             }
             return this.toModel(row);
         });
+    }
+    /**
+     * Transforms a given row into a User model
+     *
+     * @param {*} row - row that we are converting
+     * @returns {User} - returns a User model that was recently converted
+     * @memberof UserRepository
+     */
+    toModel(row) {
+        return {
+            userId: row.UserId,
+            username: row.Username,
+            headline: row.Headline,
+            password: row.Password,
+            email: row.Email,
+            profilePicture: row.ProfilePicture,
+            coverPhoto: row.CoverPhoto,
+            role: row.Role,
+            acctype: row.AccType,
+            createDate: row.CreateDate,
+            lastActiveDate: row.LastActiveDate
+        };
+    }
+    toModelList(list) {
+        return list.map((user) => this.toModel(user));
     }
 }
 exports.UserRepository = UserRepository;

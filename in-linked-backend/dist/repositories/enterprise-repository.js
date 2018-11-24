@@ -79,6 +79,34 @@ class EnterpriseRepository {
             }
         });
     }
+    /* SPECIAL FUNCTION */
+    fuzzySearchHelper(query, columnNames, limit) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const enterprises = new Map();
+            const conn = yield this.db.getConnection();
+            for (const column of columnNames) {
+                for (const str of query.split(' ')) {
+                    const rows = yield conn.table(this.TABLE_NAME)
+                        .innerJoin('User', 'User.UserId', `${this.TABLE_NAME}.EnterpriseId`)
+                        .whereRaw(`${column} LIKE '%${str}%'`)
+                        .orderByRaw(`
+                        ${column} LIKE '${str}%' DESC,
+                        IFNULL(NULLIF(INSTR(${column}, ' ${str}'), 0), 99999),
+                        IFNULL(NULLIF(INSTR(${column}, '${str}'), 0), 99999),
+                        ${column}
+                    `)
+                        .limit(limit || 30);
+                    const enterpriseByColArr = this.toModelListUser(rows);
+                    for (const enterprise of enterpriseByColArr) {
+                        if (!(enterprise.enterpriseId in [...enterprises.keys()])) {
+                            enterprises.set(enterprise.enterpriseId, enterprise);
+                        }
+                    }
+                }
+            }
+            return [...enterprises.values()];
+        });
+    }
     toModel(row) {
         return {
             enterpriseId: row.EnterpriseId,
@@ -88,6 +116,32 @@ class EnterpriseRepository {
             headquarters: row.Headquarters,
             industry: row.Industry
         };
+    }
+    toModelUser(row) {
+        return {
+            userId: row.UserId,
+            username: row.Username,
+            headline: row.Headline,
+            email: row.Email,
+            profilePicture: row.ProfilePicture,
+            coverPhoto: row.CoverPhoto,
+            role: row.Role,
+            acctype: row.AccType,
+            createDate: row.CreateDate,
+            lastActiveDate: row.LastActiveUser,
+            enterpriseId: row.EnterpriseId,
+            enterpriseName: row.EnterpriseName,
+            enterpriseDescription: row.EnterpriseDescription,
+            ceo: row.CEO,
+            headquarters: row.Headquarters,
+            industry: row.Industry,
+        };
+    }
+    toModelList(list) {
+        return list.map(enterprise => this.toModel(enterprise));
+    }
+    toModelListUser(list) {
+        return list.map(enterpriseExt => this.toModelUser(enterpriseExt));
     }
 }
 exports.EnterpriseRepository = EnterpriseRepository;

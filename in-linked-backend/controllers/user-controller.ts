@@ -203,14 +203,13 @@ export class UserController extends IController {
         }
     }
 
-    // TODO: ADD THESE TO CONTROLLER
     public async searchCandidate(req: Request, res: Response, next: NextFunction) {
         try {
-            const candidateCategories = req.query.candidateCategories.split(',') || ['Headline', 'Email', 'FullName', 'Skills', 'EducationLevel'];
+            const candidateCategories = (req.query.categories &&req.query.categories.split(',')) || ['Username', 'Headline', 'Email', 'FullName', 'Skills', 'EducationLevel'];
 
             // Check for matching user columns and candidate columns
             const candidates = await this.candidateManager.fuzzySearch(decodeURI(req.query.search), candidateCategories);
-            res.status(200).send(this.buildSuccessRes(`Successfully fetched results for searching candidates.`), candidates);
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched results for searching candidates.`, candidates));
         } catch (ex) {
             res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
@@ -218,8 +217,11 @@ export class UserController extends IController {
 
     public async searchEnterprise(req: Request, res: Response, next: NextFunction) {
         try {
+            const enterpriseCategories = (req.query.categories &&req.query.categories.split(',')) || ['Headline', 'Email', 'EnterpriseName', 'EnterpriseDescription', 'CEO', 'Headquarters', 'Industry'];
 
-            res.status(200).send(this.buildSuccessRes(`Successfully fetched results for searching candidates.`));
+            // Check for matching user columns and candidate columns
+            const enterprises = await this.enterpriseManager.fuzzySearch(decodeURI(req.query.search), enterpriseCategories);
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched results for searching enterprises.`, enterprises));
         } catch (ex) {
             res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
@@ -270,10 +272,16 @@ export class UserController extends IController {
                 this.findByUsername.bind(this)
             );
 
-        app.route(`/${config.app.api_route}/${config.app.api_ver}/user/candidate`)
+        app.route(`/${config.app.api_route}/${config.app.api_ver}/user/search/candidate`)
             .get(
                 middleware.authentication(module.libs.auth),
                 this.searchCandidate.bind(this)
+            );
+
+        app.route(`/${config.app.api_route}/${config.app.api_ver}/user/search/enterprise`)
+            .get(
+                middleware.authentication(module.libs.auth),
+                this.searchEnterprise.bind(this)
             );
 
     }

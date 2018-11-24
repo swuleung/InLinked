@@ -1,1 +1,1 @@
-{"version":3,"file":"candidate.js","sourceRoot":"","sources":["../../models/candidate.ts"],"names":[],"mappings":";;AAQA,qBAA4B,GAAQ;IAChC,OAAO,GAAG,CAAC,WAAW,KAAK,SAAS,CAAC;AACzC,CAAC;AAFD,kCAEC"}
+{"version":3,"file":"candidate.js","sourceRoot":"","sources":["../../models/candidate.ts"],"names":[],"mappings":";;AA2BA,qBAA4B,GAAQ;IAChC,OAAO,GAAG,CAAC,WAAW,KAAK,SAAS,CAAC;AACzC,CAAC;AAFD,kCAEC"}

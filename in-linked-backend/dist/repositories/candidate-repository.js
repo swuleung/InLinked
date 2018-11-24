@@ -78,6 +78,34 @@ class CandidateRepository {
             }
         });
     }
+    /* SPECIAL FUNCTION */
+    fuzzySearchHelper(query, columnNames, limit) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const candidates = new Map();
+            const conn = yield this.db.getConnection();
+            for (const column of columnNames) {
+                for (const str of query.split(' ')) {
+                    const rows = yield conn.table('User')
+                        .innerJoin(this.TABLE_NAME, 'User.UserId', `${this.TABLE_NAME}.CandidateId`)
+                        .whereRaw(`${column} LIKE '%${str}%'`)
+                        .orderByRaw(`
+                        ${column} LIKE '${str}%' DESC,
+                        IFNULL(NULLIF(INSTR(${column}, ' ${str}'), 0), 99999),
+                        IFNULL(NULLIF(INSTR(${column}, '${str}'), 0), 99999),
+                        ${column}
+                    `)
+                        .limit(limit || 30);
+                    const candidateByColArr = this.toModelListUser(rows);
+                    for (const candidate of candidateByColArr) {
+                        if (!(candidate.candidateId in [...candidates.keys()])) {
+                            candidates.set(candidate.candidateId, candidate);
+                        }
+                    }
+                }
+            }
+            return [...candidates.values()];
+        });
+    }
     toModel(row) {
         return {
             candidateId: row.CandidateId,
@@ -86,6 +114,31 @@ class CandidateRepository {
             educationLevel: row.EducationLevel,
             displayEmail: row.DisplayEmail
         };
+    }
+    toModelUser(row) {
+        return {
+            userId: row.UserId,
+            username: row.Username,
+            headline: row.Headline,
+            email: row.Email,
+            profilePicture: row.ProfilePicture,
+            coverPhoto: row.CoverPhoto,
+            role: row.Role,
+            acctype: row.AccType,
+            createDate: row.CreateDate,
+            lastActiveDate: row.LastActiveDate,
+            candidateId: row.CandidateId,
+            fullName: row.FullName,
+            skills: row.Skills,
+            educationLevel: row.EducationLevel,
+            displayEmail: row.DisplayEmail,
+        };
+    }
+    toModelList(list) {
+        return list.map(candidate => this.toModel(candidate));
+    }
+    toModelListUser(list) {
+        return list.map(candidateExt => this.toModelUser(candidateExt));
     }
 }
 exports.CandidateRepository = CandidateRepository;

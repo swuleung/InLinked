@@ -1,7 +1,7 @@
 import { MySql } from '../utils/lib/database';
 import { Enterprise } from '../models';
 import { ValidationException, NotFoundException } from '../utils/exceptions';
-import { EnterpriseEx } from '../models/enterprise';
+import { EnterpriseExt } from '../models/enterprise';
 
 export class EnterpriseRepository {
     private readonly TABLE_NAME: string = 'enterprise';
@@ -81,13 +81,14 @@ export class EnterpriseRepository {
     }
 
     /* SPECIAL FUNCTION */
-    public async fuzzySearchHelper(query: string, columnNames: string[], limit?: number): Promise<Enterprise[]> {
-        const enterprises = new Map<number, Enterprise>();
+    public async fuzzySearchHelper(query: string, columnNames: string[], limit?: number): Promise<EnterpriseExt[]> {
+        const enterprises = new Map<number, EnterpriseExt>();
         const conn = await this.db.getConnection();
 
         for (const column of columnNames) {
             for (const str of query.split(' ')) {
                 const rows = await conn.table(this.TABLE_NAME)
+                    .innerJoin('User', 'User.UserId', `${this.TABLE_NAME}.EnterpriseId`)
                     .whereRaw(`${column} LIKE '%${str}%'`)
                     .orderByRaw(`
                         ${column} LIKE '${str}%' DESC,
@@ -96,7 +97,7 @@ export class EnterpriseRepository {
                         ${column}
                     `)
                     .limit(limit || 30);
-                const enterpriseByColArr: Enterprise[] = this.toModelList(rows);
+                const enterpriseByColArr: EnterpriseExt[] = this.toModelListUser(rows);
                 for (const enterprise of enterpriseByColArr) {
                     if (!(enterprise.enterpriseId in [...enterprises.keys()])) {
                         enterprises.set(enterprise.enterpriseId, enterprise);
@@ -119,24 +120,24 @@ export class EnterpriseRepository {
         };
     }
 
-    public toModelUser(row: any): EnterpriseEx {
+    public toModelUser(row: any): EnterpriseExt {
         return {
-            userId: row.UserId;
-            username: row.Username;
-            headline?: row.Headline;
-            email: row.Email;
-            profilePicture?: row.ProfilePicture;
-            coverPhoto?: row.CoverPhoto;
-            role: row.Role;
-            acctype: row.AccType;
-            createDate: row.CreateDate;
-            lastActiveDate: row.LastActiveUser;
-            enterpriseId: row.EnterpriseId;
-            enterpriseName: row.EnterpriseName;
-            enterpriseDescription: row.EnterpriseDescription;
-            ceo?: row.CEO;
-            headquarters?: row.Headquarters;
-            industry?: row.Industry;
+            userId: row.UserId,
+            username: row.Username,
+            headline: row.Headline,
+            email: row.Email,
+            profilePicture: row.ProfilePicture,
+            coverPhoto: row.CoverPhoto,
+            role: row.Role,
+            acctype: row.AccType,
+            createDate: row.CreateDate,
+            lastActiveDate: row.LastActiveUser,
+            enterpriseId: row.EnterpriseId,
+            enterpriseName: row.EnterpriseName,
+            enterpriseDescription: row.EnterpriseDescription,
+            ceo: row.CEO,
+            headquarters: row.Headquarters,
+            industry: row.Industry,
         }
     }
 
