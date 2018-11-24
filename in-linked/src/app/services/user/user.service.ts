@@ -60,7 +60,7 @@ export class UserService {
               coverPhoto: result.data.coverPhoto,
               acctype: result.data.acctype,
               fullName: result.data.fullName,
-              skills: '',
+              skills: result.data.skills,
               educationLevel: result.data.educationLevel.toLocaleLowerCase(),
               displayEmail: 1
             };
@@ -225,7 +225,8 @@ export class UserService {
       profilePicture: user.profilePicture,
       coverPhoto: user.coverPhoto,
       acctype: user.acctype,
-      lastActiveDate: new Date().toISOString().slice(0, 10)
+      lastActiveDate: new Date().toISOString().slice(0, 10),
+      role: 'user' // To satisfy authorization
     };
 
     // Build the response
@@ -256,14 +257,17 @@ export class UserService {
         candidate
       };
     }
-
-    return this.http.put<any>(`${this.apiUrl}/user`, body, {headers: headers})
+    const userID: number = this.buildAuthBody().user.userId;
+    return this.http.put<any>(`${this.apiUrl}/user/${userID}`, body, {headers: headers})
       .pipe(
         map(res => {
-          if (res.status === 200) {
+          if (res.success === 1) {
             return true;
           }
           return false;
+        }),
+        catchError(err => {
+          return of(false);
         })
       );
   }

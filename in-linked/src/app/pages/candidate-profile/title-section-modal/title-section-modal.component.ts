@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, Output, EventEmitter} from '@angular/core';
 
 import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../../services/user/user.service';
 import { Candidate } from 'src/app/models/candidate';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-candidate-title-section-modal',
@@ -10,6 +11,7 @@ import { Candidate } from 'src/app/models/candidate';
   styleUrls: ['./title-section-modal.component.scss']
 })
 export class TitleSectionModalComponent {
+  @Output() titleUpdateUser = new EventEmitter<boolean>();
   private modalRef: NgbModalRef;
   private firstName = '';
   private lastName = '';
@@ -27,7 +29,7 @@ export class TitleSectionModalComponent {
     private user: UserService) {}
 
   open(content) {
-    this.modalService.open(content, { size: 'lg' });
+    this.modalRef = this.modalService.open(content, { size: 'lg' });
     this.populateModal();
   }
 
@@ -74,8 +76,11 @@ export class TitleSectionModalComponent {
       this.user.update(updatedUser).subscribe((res) => {
         if (res) {
           this.modalRef.close('updated');
+          this.user.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe((user) => {
+            this.titleUpdateUser.emit(true);
+          });
         } else {
-          this.errorMessage = 'Could not update profile';
+          window.alert('Could not update profile');
         }
       });
     }
