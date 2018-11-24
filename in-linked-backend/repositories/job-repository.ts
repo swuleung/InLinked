@@ -136,23 +136,47 @@ export class JobRepository {
         const conn = await this.db.getConnection();
 
         // Iterate over all column names we want to check with given strings
+        // NOTE: This version is faster, but does not try to match each word in the name
+        // for (const column of columnNames) {
+        //     const rows = await conn.table(this.TABLE_NAME)
+        //         .where({ column: `%${query}%` })
+        //         .orderByRaw(`
+        //             ${column} LIKE '${query}%' DESC,
+        //             IFNULL(NULLIF(INSTR(${column}, ' ${query}), 0), 99999),
+        //             IFNULL(NULLIF(INSTR(${column}, '${query}'), 0), 99999),
+        //             ${column}
+        //         `);
+        //     let jobsArr: Job[] = this.toModelList(rows);
+        //     for (let job of jobsArr) {
+        //         if (!(job.jobId in jobs.keys())) {
+        //             // Insert
+        //         }
+        //     }
+        // }
+
+
         for (const column of columnNames) {
-            const rows = await conn.table(this.TABLE_NAME)
-                .where({ column: `%${query}%` })
-                .orderByRaw(`
-                    ${column} LIKE '${query}%' DESC,
-                    IFNULL(NULLIF(INSTR(${column}, ' ${query}), 0), 99999),
-                    IFNULL(NULLIF(INSTR(${column}, '${query}'), 0), 99999),
-                    ${column}
-                `);
-            let jobsArr: Job[] = this.toModelList(rows);
-            for (let job of jobsArr) {
-                if (!(job.jobId in jobs.keys())) {
-                    // Insert
+            // Query for each string
+            for (const str of query.split(' ')) {
+                const rows = await conn.table(this.TABLE_NAME)
+                    .where({ column: `%${str}%` })
+                    .orderByRaw(`
+                        ${column} LIKE '${str}%' DESC,
+                        IFNULL(NULLIF(INSTR(${column}, ' ${str}), 0), 99999),
+                        IFNULL(NULLIF(INSTR(${column}, '${str}'), 0), 99999),
+                        ${column}
+                    `);
+                const jobsArr: Job[] = this.toModelList(rows);
+                for (const job of jobsArr) {
+                    if (!(job.jobId in jobs.keys())) {
+                        // Insert into map
+                        jobs[job.jobId] = job;
+                    }
                 }
             }
         }
 
+        return this.toModelList(jobs.values());
     }
 
     public toModel(row: any): Job {
