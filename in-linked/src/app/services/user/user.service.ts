@@ -206,7 +206,8 @@ export class UserService {
 
   /**
    * Update a candidate's fullName, skills, educationLevel, and/or displayEmail
-   * or an enterprise's enterpriseName, enterpriseDescription, ceo, headquarters, and/ or industry
+   * or an enterprise's enterpriseName, enterpriseDescription, ceo, headquarters, and/ or industry.
+   * Can also update corresponding user's headline, profilePicture, coverPhoto, or lastActive
    *
    * @param {any} user - The candidate or enterprise being updated
    * @returns {Observable<boolean>} - true on success, false otherwise
@@ -215,7 +216,7 @@ export class UserService {
   update(user: any): Observable<boolean> {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
      'Content-Type': 'application/json' });
-    
+
     const userBody = {
       userId: 0,
       username: user.username,
@@ -224,7 +225,7 @@ export class UserService {
       profilePicture: user.profilePicture,
       coverPhoto: user.coverPhoto,
       acctype: user.acctype,
-      lastActiveDate: new Date().toISOString().slice(0,10)
+      lastActiveDate: new Date().toISOString().slice(0, 10)
     };
 
     // Build the response
@@ -237,7 +238,7 @@ export class UserService {
         ceo: user.ceo,
         headquarters: user.headquarters,
         industry: user.industry
-      }
+      };
       body = {
         user: userBody,
         enterprise

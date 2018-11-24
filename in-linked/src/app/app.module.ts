@@ -36,10 +36,11 @@ import { SearchAllComponent } from './pages/search-page/search-all/search-all.co
 import { SearchEnterprisesComponent } from './pages/search-page/search-enterprises/search-enterprises.component';
 import { SearchCandidatesComponent } from './pages/search-page/search-candidates/search-candidates.component';
 import { SearchJobsComponent } from './pages/search-page/search-jobs/search-jobs.component';
+import { environment } from 'src/environments/environment';
 
 // Automatically attach token to each request with http module
 export function tokenGetter() {
-  return localStorage.getItem('token');
+  return localStorage.getItem(environment.token_key);
 }
 
 @NgModule({
