@@ -47,6 +47,7 @@
         </div>
       </div>
       <label for="password-change">Change Your Password</label>
+      <div *ngIf="errorMessage" class="title-warning-message">{{errorMessage}}</div>
       <div id="password-change">
 
         <div class="form-row">

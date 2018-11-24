@@ -5,7 +5,7 @@
     <div class="section-header">
       <div class="h1 section-title">{{ (candidate)?.fullName }}</div>
       <div *ngIf="isCurrentUser" class="section-edit">
-        <app-candidate-title-section-modal></app-candidate-title-section-modal>
+        <app-candidate-title-section-modal (titleUpdateUser)="onTitleModalUpdate($event)"></app-candidate-title-section-modal>
       </div>
     </div>
     <p>{{ (candidate)?.headline }}</p>

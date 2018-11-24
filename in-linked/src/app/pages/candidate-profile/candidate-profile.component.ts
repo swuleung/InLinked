@@ -26,6 +26,12 @@ export class CandidateProfileComponent implements OnInit {
     this.loadUser();
   }
 
+  onTitleModalUpdate(update: boolean) {
+    if (update) {
+      this.loadUser();
+    }
+  }
+
   loadUser(): void {
     const authUser = this.userService.decode(localStorage.getItem(environment.token_key)); // Get the current user
     console.log(authUser);
