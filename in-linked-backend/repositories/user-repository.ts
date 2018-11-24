@@ -112,29 +112,6 @@ export class UserRepository {
         }
     }
 
-    /**
-     * Transforms a given row into a User model
-     * 
-     * @param {*} row - row that we are converting
-     * @returns {User} - returns a User model that was recently converted
-     * @memberof UserRepository
-     */
-    public toModel(row: any): User {
-        return {
-            userId: row.UserId,
-            username: row.Username,
-            headline: row.Headline,
-            password: row.Password,
-            email: row.Email,
-            profilePicture: row.ProfilePicture,
-            coverPhoto: row.CoverPhoto,
-            role: row.Role,
-            acctype: row.AccType,
-            createDate: row.CreateDate,
-            lastActiveDate: row.LastActiveDate
-        };
-    }
-
     /* MORE SPECIFIC CASES */
     /**
      * Update a password by the email
@@ -195,5 +172,59 @@ export class UserRepository {
             );
         }
         return this.toModel(row);
+    }
+
+    public async fuzzySearchHelper(query: string, columnNames: string[], limit?: number): Promise<User[]> {
+        const users = new Map<number, User>();
+        const conn = await this.db.getConnection();
+
+        for (const column of columnNames) {
+            for (const str of query.split(' ')) {
+                const rows = await conn.table(this.TABLE_NAME)
+                    .whereRaw(`${column} LIKE '%${str}%'`)
+                    .orderByRaw(`
+                        ${column} LIKE '${str}%' DESC,
+                        IFNULL(NULLIF(INSTR(${column}, ' ${str}'), 0), 99999),
+                        IFNULL(NULLIF(INSTR(${column}, '${str}'), 0), 99999),
+                        ${column}
+                    `)
+                    .limit(30);
+                const userByColArr: User[] = this.toModelList(rows);
+                for (const user of userByColArr) {
+                    if (!(user.userId in [...users.keys()])) {
+                        users.set(user.userId, user);
+                    }
+                }
+            }
+        }
+
+        return [...users.values()];
+    }
+    
+    /**
+     * Transforms a given row into a User model
+     * 
+     * @param {*} row - row that we are converting
+     * @returns {User} - returns a User model that was recently converted
+     * @memberof UserRepository
+     */
+    public toModel(row: any): User {
+        return {
+            userId: row.UserId,
+            username: row.Username,
+            headline: row.Headline,
+            password: row.Password,
+            email: row.Email,
+            profilePicture: row.ProfilePicture,
+            coverPhoto: row.CoverPhoto,
+            role: row.Role,
+            acctype: row.AccType,
+            createDate: row.CreateDate,
+            lastActiveDate: row.LastActiveDate
+        };
+    }
+
+    public toModelList(list: any): User[] {
+        return list.map((user: User) => this.toModel(user));
     }
 }

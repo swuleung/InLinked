@@ -1,5 +1,5 @@
 import { MySql } from '../utils/lib/database';
-import { Candidate } from '../models';
+import { Candidate, CandidateExt } from '../models';
 import { ValidationException, NotFoundException } from '../utils/exceptions';
 
 export class CandidateRepository {
@@ -77,6 +77,35 @@ export class CandidateRepository {
         }
     }
 
+    /* SPECIAL FUNCTION */
+    public async fuzzySearchHelper(query: string, columnNames: string[], limit?: number): Promise<CandidateExt[]> {
+        const candidates = new Map<number, CandidateExt>();
+        const conn = await this.db.getConnection();
+
+        for (const column of columnNames) {
+            for (const str of query.split(' ')) {
+                const rows = await conn.table('User')
+                    .innerJoin(this.TABLE_NAME, 'User.UserId', `${this.TABLE_NAME}.CandidateId`)
+                    .whereRaw(`${column} LIKE '%${str}%'`)
+                    .orderByRaw(`
+                        ${column} LIKE '${str}%' DESC,
+                        IFNULL(NULLIF(INSTR(${column}, ' ${str}'), 0), 99999),
+                        IFNULL(NULLIF(INSTR(${column}, '${str}'), 0), 99999),
+                        ${column}
+                    `)
+                    .limit(limit || 30);
+                const candidateByColArr: CandidateExt[] = this.toModelListUser(rows);
+                for (const candidate of candidateByColArr) {
+                    if (!(candidate.candidateId in [...candidates.keys()])) {
+                        candidates.set(candidate.candidateId, candidate);
+                    }
+                }
+            }
+        }
+
+        return [...candidates.values()];
+    }
+
     public toModel(row: any): Candidate {
         return {
             candidateId: row.CandidateId,
@@ -85,5 +114,33 @@ export class CandidateRepository {
             educationLevel: row.EducationLevel,
             displayEmail: row.DisplayEmail
         }
+    }
+
+    public toModelUser(row: any): CandidateExt {
+        return {
+            userId: row.UserId;
+            username: row.Username;
+            headline: row.Headline;
+            email: row.Email;
+            profilePicture: row.ProfilePicture;
+            coverPhoto: row.CoverPhoto;
+            role: row.Role;
+            acctype: row.AccType;
+            createDate: row.CreateDate;
+            lastActiveDate: row.LastActiveDate;
+            candidateId: row.CandidateId;
+            fullName: row.FullName;
+            skills: row.Skills;
+            educationLevel: row.EducationLevel;
+            displayEmail: row.DisplayEmail;
+        };
+    }
+
+    public toModelList(list: any): Candidate[] {
+        return list.map(candidate => this.toModel(candidate));
+    }
+
+    public toModelListUser(list: any): CandidateExt[] {
+        return list.map(candidateExt => this.toModelUser(candidateExt));
     }
 }

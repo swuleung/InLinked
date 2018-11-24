@@ -203,6 +203,28 @@ export class UserController extends IController {
         }
     }
 
+    // TODO: ADD THESE TO CONTROLLER
+    public async searchCandidate(req: Request, res: Response, next: NextFunction) {
+        try {
+            const candidateCategories = req.query.candidateCategories.split(',') || ['Headline', 'Email', 'FullName', 'Skills', 'EducationLevel'];
+
+            // Check for matching user columns and candidate columns
+            const candidates = await this.candidateManager.fuzzySearch(decodeURI(req.query.search), candidateCategories);
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched results for searching candidates.`), candidates);
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
+        }
+    }
+
+    public async searchEnterprise(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched results for searching candidates.`));
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
+        }
+    }
+
     /**
      * Bind the different functions to routes
      * @param app Express app to bind the routes to
@@ -212,7 +234,7 @@ export class UserController extends IController {
         app.route(`/${config.app.api_route}/${config.app.api_ver}/user`)
             .post(
                 this.create.bind(this)
-            )
+            );
         app.route(`/${config.app.api_route}/${config.app.api_ver}/user/:id`)
             .get(
                 middleware.authentication(module.libs.auth),
@@ -247,5 +269,12 @@ export class UserController extends IController {
                 middleware.authorization([Role.USER, Role.ADMIN]),
                 this.findByUsername.bind(this)
             );
+
+        app.route(`/${config.app.api_route}/${config.app.api_ver}/user/candidate`)
+            .get(
+                middleware.authentication(module.libs.auth),
+                this.searchCandidate.bind(this)
+            );
+
     }
 }

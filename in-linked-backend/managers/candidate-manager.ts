@@ -1,4 +1,4 @@
-import { Candidate } from '../models';
+import { Candidate, CandidateExt } from '../models';
 import { CandidateRepository } from '../repositories/candidate-repository';
 
 /**
@@ -26,5 +26,10 @@ export class CandidateManager {
 
     public async delete(id: number): Promise<void> {
         return await this.repo.delete(id);
+    }
+
+    /* Special functionality */
+    public async fuzzySearch(query: string, columns: string[]): Promise<CandidateExt[]> {
+        return this.repo.fuzzySearchHelper(query, columns);
     }
 }

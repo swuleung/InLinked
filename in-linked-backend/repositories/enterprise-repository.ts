@@ -1,6 +1,7 @@
 import { MySql } from '../utils/lib/database';
 import { Enterprise } from '../models';
 import { ValidationException, NotFoundException } from '../utils/exceptions';
+import { EnterpriseEx } from '../models/enterprise';
 
 export class EnterpriseRepository {
     private readonly TABLE_NAME: string = 'enterprise';
@@ -79,6 +80,34 @@ export class EnterpriseRepository {
         }
     }
 
+    /* SPECIAL FUNCTION */
+    public async fuzzySearchHelper(query: string, columnNames: string[], limit?: number): Promise<Enterprise[]> {
+        const enterprises = new Map<number, Enterprise>();
+        const conn = await this.db.getConnection();
+
+        for (const column of columnNames) {
+            for (const str of query.split(' ')) {
+                const rows = await conn.table(this.TABLE_NAME)
+                    .whereRaw(`${column} LIKE '%${str}%'`)
+                    .orderByRaw(`
+                        ${column} LIKE '${str}%' DESC,
+                        IFNULL(NULLIF(INSTR(${column}, ' ${str}'), 0), 99999),
+                        IFNULL(NULLIF(INSTR(${column}, '${str}'), 0), 99999),
+                        ${column}
+                    `)
+                    .limit(limit || 30);
+                const enterpriseByColArr: Enterprise[] = this.toModelList(rows);
+                for (const enterprise of enterpriseByColArr) {
+                    if (!(enterprise.enterpriseId in [...enterprises.keys()])) {
+                        enterprises.set(enterprise.enterpriseId, enterprise);
+                    }
+                }
+            }
+        }
+
+        return [...enterprises.values()];
+    }
+
     public toModel(row: any): Enterprise {
         return {
             enterpriseId: row.EnterpriseId,
@@ -88,5 +117,34 @@ export class EnterpriseRepository {
             headquarters: row.Headquarters,
             industry: row.Industry
         };
+    }
+
+    public toModelUser(row: any): EnterpriseEx {
+        return {
+            userId: row.UserId;
+            username: row.Username;
+            headline?: row.Headline;
+            email: row.Email;
+            profilePicture?: row.ProfilePicture;
+            coverPhoto?: row.CoverPhoto;
+            role: row.Role;
+            acctype: row.AccType;
+            createDate: row.CreateDate;
+            lastActiveDate: row.LastActiveUser;
+            enterpriseId: row.EnterpriseId;
+            enterpriseName: row.EnterpriseName;
+            enterpriseDescription: row.EnterpriseDescription;
+            ceo?: row.CEO;
+            headquarters?: row.Headquarters;
+            industry?: row.Industry;
+        }
+    }
+
+    public toModelList(list: any): Enterprise[] {
+        return list.map(enterprise => this.toModel(enterprise));
+    }
+
+    public toModelListUser(list: any): EnterpriseExt[] {
+        return list.map(enterpriseExt => this.toModelUser(enterpriseExt));
     }
 }

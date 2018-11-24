@@ -23,4 +23,9 @@ export class EnterpriseManager {
     public async delete(id: number): Promise<void> {
         return await this.repo.delete(id);
     }
+
+    /* Special functionality */
+    public async fuzzySearch(query: string, columns: string[]): Promise<Enterprise[]> {
+        return this.repo.fuzzySearchHelper(query, columns);
+    }
 }
