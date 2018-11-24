@@ -10,6 +10,7 @@ import { UserFeedComponent } from './pages/user-feed/user-feed.component';
 import { CreateAccountComponent } from './pages/create-account/create-account.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { ServiceTestComponent } from './pages/service-test/service-test.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -32,6 +33,7 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
