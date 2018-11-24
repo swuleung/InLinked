@@ -154,29 +154,29 @@ export class JobRepository {
         //     }
         // }
 
-
         for (const column of columnNames) {
             // Query for each string
             for (const str of query.split(' ')) {
                 const rows = await conn.table(this.TABLE_NAME)
-                    .where({ column: `%${str}%` })
+                    .whereRaw(`${column} LIKE '%${str}%'`)
                     .orderByRaw(`
                         ${column} LIKE '${str}%' DESC,
-                        IFNULL(NULLIF(INSTR(${column}, ' ${str}), 0), 99999),
+                        IFNULL(NULLIF(INSTR(${column}, ' ${str}'), 0), 99999),
                         IFNULL(NULLIF(INSTR(${column}, '${str}'), 0), 99999),
                         ${column}
-                    `);
+                    `)
+                    .limit(30);
                 const jobsArr: Job[] = this.toModelList(rows);
                 for (const job of jobsArr) {
-                    if (!(job.jobId in jobs.keys())) {
+                    if (!(job.jobId in [...jobs.keys()])) {
                         // Insert into map
-                        jobs[job.jobId] = job;
+                        jobs.set(job.jobId, job);
                     }
                 }
             }
         }
 
-        return this.toModelList(jobs.values());
+        return [...jobs.values()];
     }
 
     public toModel(row: any): Job {

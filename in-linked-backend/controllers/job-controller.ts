@@ -82,8 +82,17 @@ export class JobController extends IController {
     public async getByEnterpriseId(req: Request, res: Response, next: NextFunction) {
         try {
             const jobs = await this.jobManager.getByEnterpriseId(req.params.enterpriseId);
-
             res.status(200).send(this.buildSuccessRes(`Successfully fetched jobs posted by enterprise id '${req.params.enterpriseId}'.`, jobs));
+        } catch (ex) {
+            res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
+        }
+    }
+    
+    public async searchJob(req: Request, res: Response, next: NextFunction) {
+        try {
+            console.log(req.query.categories);
+            const jobs = await this.jobManager.fuzzySearch(decodeURI(req.query.search), req.query.categories.split(',')); // Categories passed in as query params, provide all column names if no filter is applied
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched jobs posted by query: ${decodeURI(req.query.search)}.`, jobs));
         } catch (ex) {
             res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
@@ -96,6 +105,10 @@ export class JobController extends IController {
                 middleware.authorization([Role.USER, Role.ADMIN]),
                 this.create.bind(this)
             )
+            .get( // Fuzzy searching
+                middleware.authentication(module.libs.auth),
+                this.searchJob.bind(this)
+            );
 
         app.route(`/${config.app.api_route}/${config.app.api_ver}/job/:id`)
             .get(

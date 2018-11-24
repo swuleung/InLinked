@@ -41,8 +41,21 @@ export class JobManager {
         return await this.jobRepo.delete(id);
     }
 
+    /* SPECIAL FUNCTIONS */
+
+    /**
+     * Searches for all jobs posted by an enterprise
+     *
+     * @param {number} enterpriseId
+     * @returns {Promise<Job[]>}
+     * @memberof JobManager
+     */
     public async getByEnterpriseId(enterpriseId: number): Promise<Job[]> {
         return await this.jobRepo.getByEnterpriseId(enterpriseId);
+    }
+
+    public async fuzzySearch(query: string, columns: string[]): Promise<Job[]> {
+        return await this.jobRepo.fuzzySearchHelper(query, columns);
     }
 
 }

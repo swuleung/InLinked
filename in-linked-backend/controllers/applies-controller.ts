@@ -109,14 +109,14 @@ export class AppliesController extends IController {
                 this.delete.bind(this)
             );
 
-        app.route(`/${config.app.api_route}/${config.app.api_ver}/applies/:candidateId`)
+        app.route(`/${config.app.api_route}/${config.app.api_ver}/applies/candidate/:candidateId`)
             .post(
                 middleware.authentication(module.libs.auth),
                 middleware.authorization([Role.USER, Role.ADMIN]),
                 this.getByCandidate.bind(this)
             );
 
-        app.route(`/${config.app.api_route}/${config.app.api_ver}/applies/:jobId`)
+        app.route(`/${config.app.api_route}/${config.app.api_ver}/applies/job/:jobId`)
             .post(
                 middleware.authentication(module.libs.auth),
                 middleware.authorization([Role.USER, Role.ADMIN]),
