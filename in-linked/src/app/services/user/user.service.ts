@@ -196,7 +196,7 @@ export class UserService {
   get(id: number): Observable<any> {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
-    return this.http.get<any>(`${this.apiUrl}/user/${id}`, {headers: headers})
+    return this.http.get<any>(`${this.apiUrl}/user/${id}`, { headers: headers })
       .pipe(
         map(res => {
           if (!res.success || res.success === 0) {
@@ -287,7 +287,7 @@ export class UserService {
     // Note: the authorization token is of the admin
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
-    return this.http.delete(`${this.apiUrl}/user/${id}`, {headers: headers});
+    return this.http.delete<any>(`${this.apiUrl}/user/${id}`, { headers: headers });
   }
 
   changePassword(payload: any): Observable<boolean> {
