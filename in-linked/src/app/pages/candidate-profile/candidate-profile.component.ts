@@ -55,6 +55,7 @@ export class CandidateProfileComponent implements OnInit {
       // Check if it was loaded before
       if (!this.candidate) {
         this.userService.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe((res: Candidate) => {
+
           this.candidate = res;
           this.skills = res.skills.split(',');
           this.initExperience(this.candidate.candidateId);
@@ -62,8 +63,12 @@ export class CandidateProfileComponent implements OnInit {
         });
       }
     } else {
-      console.log('other account');
       this.userService.getByUsername(username).subscribe((res: Candidate) => {
+        // Request resource was not found
+        if (!res || res.acctype !== 'candidate') {
+          window.location.href = 'dashboard/error';
+          return;
+        }
         this.candidate = res;
         this.skills = res.skills.split(',');
         this.initExperience(this.candidate.candidateId);

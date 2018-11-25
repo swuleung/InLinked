@@ -11,6 +11,7 @@ import { CreateAccountComponent } from './pages/create-account/create-account.co
 import { AdminComponent } from './pages/admin/admin.component';
 import { ServiceTestComponent } from './pages/service-test/service-test.component';
 import { AuthGuard } from './guards/auth.guard';
+import { ErrorComponent } from './pages/error/error.component';
 
 const routes: Routes = [
   {
@@ -70,14 +71,18 @@ const routes: Routes = [
       {
         path: 'admin',
         component: AdminComponent
-      }
+      },
+      {
+        path: 'error',
+        component: ErrorComponent
+      },
     ]
   },
   // 404
-  // {
-  //   path: '**',
-  //   component: PageNotFoundComponent
-  // }
+  {
+    path: '**',
+    redirectTo: 'dashboard/error'
+  }
 ];
 
 @NgModule({

@@ -1,5 +1,6 @@
 @import '../../../../../global/app';
 
 .dashboard-container {
-    margin-top: $nav-space;
+    min-height: 100vh;
+    padding-top: $nav-space;
 }

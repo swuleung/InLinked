@@ -9,10 +9,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 /* Font Awesome */
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faMinus, faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
 
-library.add(faMinus, faEdit);
+library.add(faMinus, faEdit, faCoffee);
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
@@ -38,6 +38,7 @@ import { SearchCandidatesComponent } from './pages/search-page/search-candidates
 import { SearchJobsComponent } from './pages/search-page/search-jobs/search-jobs.component';
 import { environment } from 'src/environments/environment';
 import { MonthConversionPipe } from './services/pipes/month-conversion.pipe';
+import { ErrorComponent } from './pages/error/error.component';
 
 // Automatically attach token to each request with http module
 export function tokenGetter() {
@@ -68,7 +69,8 @@ export function tokenGetter() {
     SearchEnterprisesComponent,
     SearchCandidatesComponent,
     SearchJobsComponent,
-    MonthConversionPipe
+    MonthConversionPipe,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,

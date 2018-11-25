@@ -1,0 +1,11 @@
+@import '../../../global/app';
+
+.error-container {
+    margin-top: -$nav-space;
+    min-height: 100vh;
+    overflow: hidden;
+
+    .col-12 {
+        min-height: 100vh;
+    }
+}
