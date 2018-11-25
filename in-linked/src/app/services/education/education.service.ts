@@ -1,36 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { map, catchError } from 'rxjs/operators';
-import { UserService } from '../user/user.service';
+import { of, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ExperienceService {
+export class EducationService {
 
   constructor(private http: HttpClient, private userService: UserService) { }
 
-  create(candidateId: number, positionName: string, enterpriseName: string, startMonth: number, startYear: number,enterpriseId?: number, description?: string,  endMonth?: number, endYear?: number, location?: string): Observable<boolean> {
+  create(candidateId: number, schoolName: string, startMonth: number, startYear: number, location: string, endMonth?: number, endYear?: number, degree?: string): Observable<boolean> {
     const payload = {
-      experience: {
-        experienceId: 0,
+      education: {
+        educationId: 0,
         candidateId: candidateId,
-        enterpriseId: enterpriseId || null,
-        enterpriseName: enterpriseName,
-        positionName: positionName,
-        description: description || null,
+        schoolName: schoolName,
         startMonth: startMonth,
         startYear: startYear,
+        location: location,
         endMonth: endMonth || null,
         endYear: endYear || null,
-        location: location || null
+        degree: degree || null
       },
       user: this.userService.buildAuthBody()
     };
 
-    return this.http.post<any>(`${environment.api_path}/experience`, payload)
+    return this.http.post<any>(`${environment.api_path}/education`, payload)
       .pipe(
         map(result => {
           if (!result.success || result.success === 0) {
@@ -42,10 +40,10 @@ export class ExperienceService {
       );
   }
 
-  get(id: number): Observable<any> {
+  get(educationId: number): Observable<any> {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
-    return this.http.get<any>(`${environment.api_path}/experience/${id}`, { headers: headers })
+    return this.http.get<any>(`${environment.api_path}/experience/${educationId}`, { headers: headers })
       .pipe(
         map(res => {
           if (!res.success || res.success === 0) {
@@ -57,27 +55,26 @@ export class ExperienceService {
       );
   }
 
-  update(experienceId: number, positionName: string, enterpriseName: string, startMonth: number, startYear: number, endMonth?: number, endYear?:number, description?: string,positionLocation?: string): Observable<boolean> {
-
+  update(educationId: number, candidateId: number, schoolName: string, startMonth: number, startYear: number, location: string, endMonth?: number, endYear?: number, degree?: string) {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
      'Content-Type': 'application/json' });
 
     const payload = {
-      experience: {
-        experienceId: experienceId,
-        positionName: positionName,
-        enterpriseName: enterpriseName,
+      education: {
+        educationId: educationId,
+        candidateId: candidateId,
+        schoolName: schoolName,
         startMonth: startMonth,
         startYear: startYear,
+        location: location,
         endMonth: endMonth || null,
         endYear: endYear || null,
-        description: description || null,
-        location: positionLocation || null
+        degree: degree || null
       },
       user: this.userService.buildAuthBody()
     };
     
-    return this.http.put<any>(`${environment.api_path}/experience/${experienceId}`, payload, { headers: headers })
+    return this.http.put<any>(`${environment.api_path}/experience/${educationId}`, payload, { headers: headers })
       .pipe(
         map(res => {
           if (!res.success || res.success === 0) {
@@ -89,19 +86,18 @@ export class ExperienceService {
           return of(false);
         })
       );
-
   }
 
-  delete(experienceId: number): Observable<void> {
+  delete(educationId: number) {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
-    return this.http.delete<any>(`${environment.api_path}/user/${experienceId}`, { headers: headers });
+    return this.http.delete<any>(`${environment.api_path}/user/${educationId}`, { headers: headers });
   }
 
-  getByUserId(userId: number): Observable<any> {
+  getByUserId(userId: number) {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
-    return this.http.post<any>(`${environment.api_path}/experience/${userId}`, { headers: headers })
+    return this.http.post<any>(`${environment.api_path}/education/user/${userId}`, { headers: headers })
       .pipe(
         map(res => {
           if (!res.success || res.success === 0) {
@@ -112,5 +108,4 @@ export class ExperienceService {
         catchError(err => of(null))
       );
   }
-
 }
