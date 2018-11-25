@@ -23,6 +23,13 @@
     display: block;
 }
 
+.education:last-child,
+.experience:last-child  {
+    hr {
+        border-color: transparent;
+    }
+}
+
 .container:last-child {
     padding-bottom: 3 * $padding-base;
 }
