@@ -31,14 +31,14 @@
           <div id="candidate-display-email-radios">
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="display-email" id="yes-email" value="yes-email"
-                [(ngModel)]="displayEmail" checked>
+                [(ngModel)]="displayEmail" [value]="'yes-email'" [checked]="displayEmail === 'yes-email'">
               <label class="form-check-label" for="yes-email">
                 Yes
               </label>
             </div>
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="display-email" id="no-email" value="no-email"
-                [(ngModel)]="displayEmail">
+                [(ngModel)]="displayEmail" [value]="'no-email'" [checked]="displayEmail === 'no-email'">
               <label class="form-check-label" for="no-email">
                 No
               </label>

@@ -56,6 +56,7 @@ export class TitleSectionModalComponent {
         countEmpty++;
       }
     }
+    console.log(this.displayEmail);
     if (!(countEmpty === 0 || countEmpty === 3)) {
       this.errorMessage = 'Enter all three password fields to change password.';
     } else {
@@ -74,6 +75,7 @@ export class TitleSectionModalComponent {
         educationLevel: this.user.candidateData.educationLevel,
         displayEmail: this.displayEmail === 'yes-email' ? 1 : 0
       };
+      console.log(updatedUser.displayEmail);
       this.user.update(updatedUser).subscribe((res) => {
         if (res) {
           this.user.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe((user) => {
@@ -105,6 +107,9 @@ export class TitleSectionModalComponent {
             window.alert('Could not change password');
           }
         });
+      } else {
+        // No password update, just close
+        this.modalRef.close('updated');
       }
     }
   }

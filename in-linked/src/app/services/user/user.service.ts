@@ -64,7 +64,7 @@ export class UserService {
               fullName: result.data.fullName,
               skills: result.data.skills,
               educationLevel: result.data.educationLevel.toLocaleLowerCase(),
-              displayEmail: 1
+              displayEmail: result.data.displayEmail.data[0]
             };
             console.log(result.data.role);
           } else {
