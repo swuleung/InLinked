@@ -44,8 +44,6 @@
       </div>
     </ng-template>
     
-
-    
   </div>
 
 </div>
@@ -73,6 +71,27 @@
           <app-candidate-education-section-modal></app-candidate-education-section-modal>
       </div>
     </div>
+    <ng-template [ngIf]="experienceList.length > 0" [ngIfElse]="noEducation">
+      <div class="education" *ngFor="let education of educationList">
+        <h5 class="font-weight-bold">{{ education.schoolName }}</h5>
+        <h6 *ngIf="education.degree !== null">{{ education.degree | titlecase }}</h6>
+  
+        <ng-template [ngIf]="education.endMonth !== null || education.endYear !== null" [ngIfElse]="presentWorkPlace">
+          <h6>{{ education.startMonth | MonthConversion }} {{ education.startYear }} - {{ education.endMonth | MonthConversion }} {{ education.endYear }}</h6>
+        </ng-template>
+        <ng-template #presentWorkPlace>
+          <h6>{{ education.startMonth | MonthConversion }} {{ education.startYear }} - Present<i class="mdi mdi-format-header-6"></i></h6>
+        </ng-template>
+  
+        <h6>{{ education.location }}</h6>
+        <hr />
+      </div>
+    </ng-template>
+    <ng-template #noEducation>
+      <div class="placeholder">
+        <h3 class="text-center">No Schools Listed</h3>
+      </div>
+    </ng-template>
     <div class="education">
       <h3>Pork Univesity</h3>
       <h4>Bark Bark, CT </h4>

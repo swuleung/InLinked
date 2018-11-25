@@ -8,6 +8,7 @@ import { Candidate } from '../../models/candidate';
 import { ExperienceService } from '../../services/experience/experience.service';
 import { EducationService } from '../../services/education/education.service';
 import { Experience } from '../../models/experience';
+import { Education } from '../../models/education';
 
 @Component({
   selector: 'app-candidate-profile',
@@ -20,6 +21,7 @@ export class CandidateProfileComponent implements OnInit {
   isCurrentUser: boolean; // Used to check if we should enable edit options
   skills: string[];
   experienceList: Experience[];
+  educationList: Education[];
 
   candidate: Candidate;
 
@@ -56,7 +58,7 @@ export class CandidateProfileComponent implements OnInit {
           this.candidate = res;
           this.skills = res.skills.split(',');
           this.initExperience(this.candidate.candidateId);
-          // this.initEducation(this.candidate.candidateId);
+          this.initEducation(this.candidate.candidateId);
         });
       }
     } else {
@@ -65,7 +67,7 @@ export class CandidateProfileComponent implements OnInit {
         this.candidate = res;
         this.skills = res.skills.split(',');
         this.initExperience(this.candidate.candidateId);
-        // this.initEducation(this.candidate.candidateId);
+        this.initEducation(this.candidate.candidateId);
       });
     }
   }
@@ -77,8 +79,8 @@ export class CandidateProfileComponent implements OnInit {
   }
 
   initEducation(candidateId: number): void {
-    this.educationService.getByUserId(candidateId).subscribe((educationList: any) => {
-
+    this.educationService.getByUserId(candidateId).subscribe((educationList: Education[]) => {
+      this.educationList = educationList;
     });
   }
 

@@ -22,3 +22,7 @@
     color: #6c7892;
     display: block;
 }
+
+.container:last-child {
+    padding-bottom: 3 * $padding-base;
+}
