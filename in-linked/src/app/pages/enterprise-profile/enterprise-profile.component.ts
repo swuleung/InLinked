@@ -32,10 +32,8 @@ export class EnterpriseProfileComponent implements OnInit {
    * @memberof EnterpriseProfileComponent
    */
   loadUser(authUser: AuthUser): void {
-    console.log(authUser);
     this.route.params.subscribe(params => {
       this.isCurrentUser = authUser.username === params['username'];
-      console.log(authUser.username, params['username']);
       this.initEnterprise(this.isCurrentUser, params['username']);
     });
       

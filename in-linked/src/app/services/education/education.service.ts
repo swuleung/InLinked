@@ -49,7 +49,7 @@ export class EducationService {
           if (!res.success || res.success === 0) {
             return null;
           }
-          return res;
+          return res.data;
         }),
         catchError(err => of(null))
       );
@@ -103,7 +103,7 @@ export class EducationService {
           if (!res.success || res.success === 0) {
             return null;
           }
-          return res;
+          return res.data;
         }),
         catchError(err => of(null))
       );
