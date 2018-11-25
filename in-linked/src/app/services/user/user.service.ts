@@ -41,6 +41,7 @@ export class UserService {
   loadCurrentUser(authToken: string): Observable<Candidate | Enterprise> {
     this.decoded = this.decode(authToken);
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${authToken}`, 'Content-Type': 'application/x-www-form-urlencoded' });
+    console.log('loadCurrentUser');
     return this.http.get<any>(`${this.apiUrl}/user/${this.decoded.id}`, {headers: headers})
       .pipe(
         map(result => {
@@ -58,12 +59,14 @@ export class UserService {
               email: result.data.email,
               profilePicture: result.data.profilePicture,
               coverPhoto: result.data.coverPhoto,
+              role: result.data.role,
               acctype: result.data.acctype,
               fullName: result.data.fullName,
               skills: result.data.skills,
               educationLevel: result.data.educationLevel.toLocaleLowerCase(),
               displayEmail: 1
             };
+            console.log(result.data.role);
           } else {
             this.enterpriseData = {
               userId: result.data.userId,
@@ -147,6 +150,7 @@ export class UserService {
               email: result.email,
               profilePicture: result.profilePicture,
               coverPhoto: result.coverPhoto,
+              role: result.role,
               acctype: result.acctype,
               fullName: fullName,
               skills: '',
@@ -261,10 +265,10 @@ export class UserService {
     return this.http.put<any>(`${this.apiUrl}/user/${userID}`, body, {headers: headers})
       .pipe(
         map(res => {
-          if (res.success === 1) {
-            return true;
+          if (!res.success || res.success === 0) {
+            return false;
           }
-          return false;
+          return true;
         }),
         catchError(err => {
           return of(false);
@@ -286,6 +290,24 @@ export class UserService {
     return this.http.delete(`${this.apiUrl}/user/${id}`, {headers: headers});
   }
 
+  changePassword(payload: any): Observable<boolean> {
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
+      'Content-Type': 'application/json' });
+      return this.http.post<any>(`${this.apiUrl}/user/changepass`, payload, { headers: headers })
+        .pipe(
+          map(res => {
+            console.log(res);
+            if (res && res.success === 0) {
+              return false;
+            }
+            return true;
+          }),
+          catchError(err => {
+            return of(false);
+          })
+      );
+  }
+
   getByUsername(username: string): Observable<Candidate | Enterprise> {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
@@ -301,7 +323,6 @@ export class UserService {
           }),
           catchError(err => of(null))
         );
-
   }
 
   /* HELPERS */

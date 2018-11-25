@@ -67,6 +67,7 @@ export class TitleSectionModalComponent {
         email: this.email,
         profilePicture: this.user.candidateData.profilePicture,
         coverPhoto: this.user.candidateData.coverPhoto,
+        role: 'user',
         acctype: 'candidate',
         fullName: this.firstName + ' ' + this.lastName,
         skills: this.user.candidateData.skills,
@@ -75,7 +76,6 @@ export class TitleSectionModalComponent {
       };
       this.user.update(updatedUser).subscribe((res) => {
         if (res) {
-          this.modalRef.close('updated');
           this.user.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe((user) => {
             this.titleUpdateUser.emit(true);
           });
@@ -83,6 +83,29 @@ export class TitleSectionModalComponent {
           window.alert('Could not update profile');
         }
       });
+
+      // Update password if needed
+      if (countEmpty === 3) {
+        const passwordPayload = {
+          email: this.user.candidateData.email,
+          oldPassword: this.currPassword,
+          newPassword: this.newPassword,
+          user: {
+            role: this.user.candidateData.role
+          }
+        };
+        this.user.changePassword(passwordPayload).subscribe((res: boolean) => {
+          console.log(res);
+          if (res === true) {
+            this.user.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe((user) => {
+              this.modalRef.close('updated');
+              // this.titleUpdateUser.emit(true);
+            });
+          } else {
+            window.alert('Could not change password');
+          }
+        });
+      }
     }
   }
 }
