@@ -56,7 +56,7 @@ export class CandidateProfileComponent implements OnInit {
           this.candidate = res;
           this.skills = res.skills.split(',');
           this.initExperience(this.candidate.candidateId);
-          this.initEducation(this.candidate.candidateId);
+          // this.initEducation(this.candidate.candidateId);
         });
       }
     } else {
@@ -65,17 +65,14 @@ export class CandidateProfileComponent implements OnInit {
         this.candidate = res;
         this.skills = res.skills.split(',');
         this.initExperience(this.candidate.candidateId);
-        this.initEducation(this.candidate.candidateId);
+        // this.initEducation(this.candidate.candidateId);
       });
     }
   }
 
   initExperience(candidateId: number): void {
     this.experienceService.getByUserId(candidateId).subscribe((experienceList: Experience[]) => {
-      // Transform some values before we insert
-      for (const experience of experienceList) {
-        if (experience.endMonth === null || experience)
-      }
+      this.experienceList = experienceList;
     });
   }
 

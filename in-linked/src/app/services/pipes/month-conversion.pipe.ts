@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from "@angular/core";
 
-@Pipe({ name: 'monthConversion'})
+@Pipe({ name: 'MonthConversion'})
 export class MonthConversionPipe implements PipeTransform {
     private months = [
     'N/A', 'Jan', 'Feb', 'Mar', 'Apr', 'May',

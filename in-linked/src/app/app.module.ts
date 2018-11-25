@@ -37,6 +37,7 @@ import { SearchEnterprisesComponent } from './pages/search-page/search-enterpris
 import { SearchCandidatesComponent } from './pages/search-page/search-candidates/search-candidates.component';
 import { SearchJobsComponent } from './pages/search-page/search-jobs/search-jobs.component';
 import { environment } from 'src/environments/environment';
+import { MonthConversionPipe } from './services/pipes/month-conversion.pipe';
 
 // Automatically attach token to each request with http module
 export function tokenGetter() {
@@ -66,7 +67,8 @@ export function tokenGetter() {
     SearchAllComponent,
     SearchEnterprisesComponent,
     SearchCandidatesComponent,
-    SearchJobsComponent
+    SearchJobsComponent,
+    MonthConversionPipe
   ],
   imports: [
     BrowserModule,

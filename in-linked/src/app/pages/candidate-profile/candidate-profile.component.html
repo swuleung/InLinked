@@ -21,44 +21,31 @@
       </div>
     </div>
 
-    <div class="experience" *ngFor="let experience of experienceList">
-      <h3>{{ experience.positionName }}</h3>
-      <h4>{{ experience.enterpriseName }}</h4>
-      <h5>August 2016 - Present</h5>
-      <h5>Dog Park, Doglandia</h5>
-      <p>Bacon ipsum dolor amet shoulder tongue chicken, kielbasa jerky biltong swine sirloin picanha. Turkey doner
-        boudin kevin pastrami flank hamburger tail bresaola chicken leberkas shank ball tip pork belly jerky. Doner
-        andouille ham hock cow ground round jerky filet mignon pork loin hamburger pig meatloaf beef meatball pork
-        chop. Turducken flank hamburger tri-tip sausage boudin chicken. Ham chicken shankle ground round buffalo
-        biltong. Pork chop boudin bresaola beef jerky brisket shoulder pancetta. Burgdoggen ribeye porchetta jerky
-        brisket bacon.</p>
-    </div>
+    <ng-template [ngIf]="experienceList.length > 0" [ngIfElse]="noExperience">
+      <div class="experience" *ngFor="let experience of experienceList">
+        <h5 class="font-weight-bold">{{ experience.positionName }}</h5>
+        <h6>{{ experience.enterpriseName }}</h6>
+  
+        <ng-template [ngIf]="experience.endMonth !== null || experience.endYear !== null" [ngIfElse]="presentWorkPlace">
+          <h6>{{ experience.startMonth | MonthConversion }} {{ experience.startYear }} - {{ experience.endMonth | MonthConversion }} {{ experience.endYear }}</h6>
+        </ng-template>
+        <ng-template #presentWorkPlace>
+          <h6>{{ experience.startMonth | MonthConversion }} {{ experience.startYear }} - Present<i class="mdi mdi-format-header-6"></i></h6>
+        </ng-template>
+  
+        <h6 *ngIf="experience.location !== null">{{ experience.location }}</h6>
+        <p *ngIf="experience.description !== null">{{ experience.description }}</p>
+        <hr />
+      </div>
+    </ng-template>
+    <ng-template #noExperience>
+      <div class="placeholder">
+        <h3 class="text-center">No Experience Listed</h3>
+      </div>
+    </ng-template>
+    
 
-    <div class="experience">
-      <h3>Bacon Eater</h3>
-      <h4>Pork University</h4>
-      <h5>August 2016 - Present</h5>
-      <h5>Dog Park, Doglandia</h5>
-      <p>Bacon ipsum dolor amet shoulder tongue chicken, kielbasa jerky biltong swine sirloin picanha. Turkey doner
-        boudin kevin pastrami flank hamburger tail bresaola chicken leberkas shank ball tip pork belly jerky. Doner
-        andouille ham hock cow ground round jerky filet mignon pork loin hamburger pig meatloaf beef meatball pork
-        chop. Turducken flank hamburger tri-tip sausage boudin chicken. Ham chicken shankle ground round buffalo
-        biltong. Pork chop boudin bresaola beef jerky brisket shoulder pancetta. Burgdoggen ribeye porchetta jerky
-        brisket bacon.</p>
-    </div>
-    <hr>
-    <div class="experience">
-      <h3>Bacon Eater</h3>
-      <h4>Pork University</h4>
-      <h5>August 2016 - Present</h5>
-      <h5>Dog Park, Doglandia</h5>
-      <p>Bacon ipsum dolor amet shoulder tongue chicken, kielbasa jerky biltong swine sirloin picanha. Turkey doner
-        boudin kevin pastrami flank hamburger tail bresaola chicken leberkas shank ball tip pork belly jerky. Doner
-        andouille ham hock cow ground round jerky filet mignon pork loin hamburger pig meatloaf beef meatball pork
-        chop. Turducken flank hamburger tri-tip sausage boudin chicken. Ham chicken shankle ground round buffalo
-        biltong. Pork chop boudin bresaola beef jerky brisket shoulder pancetta. Burgdoggen ribeye porchetta jerky
-        brisket bacon.</p>
-    </div>
+    
   </div>
 
 </div>
