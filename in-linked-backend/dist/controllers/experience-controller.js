@@ -53,8 +53,8 @@ class ExperienceController extends controller_abstract_1.IController {
                 experience.description = newExperienceData.description || experience.description;
                 experience.startMonth = newExperienceData.startMonth,
                     experience.startYear = newExperienceData.startYear,
-                    experience.endMonth = newExperienceData.endMonth, // Allow nulls
-                    experience.endYear = newExperienceData.endYear, // Allow nulls
+                    experience.endMonth = newExperienceData.endMonth,
+                    experience.endYear = newExperienceData.endYear,
                     experience.location = newExperienceData.location || experience.location;
                 yield this.experienceManager.update(experience);
                 res.status(200).send(this.buildSuccessRes(`Experience id: ${experience.experienceId} successfully updated.`));
