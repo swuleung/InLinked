@@ -96,7 +96,6 @@ class ExperienceRepository {
         });
     }
     /* CUSTOM FUNCTIONS */
-    // TODO: NEEDS TESTING
     getByUser(userId, limit) {
         return __awaiter(this, void 0, void 0, function* () {
             const conn = yield this.db.getConnection();
