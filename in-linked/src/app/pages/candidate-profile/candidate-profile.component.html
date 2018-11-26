@@ -57,9 +57,18 @@
       </div>
     </div>
 
-    <ul class="list-inline">
-      <li *ngFor="let skill of skills" class="list-inline-item skill-pill">{{ skill }}</li>
-    </ul>
+    <ng-template [ngIf]="(skills)?.length > 0" [ngIfElse]="noSkills">
+        <ul class="list-inline">
+          <li *ngFor="let skill of skills" class="list-inline-item skill-pill">{{ skill }}</li>
+        </ul>
+    </ng-template>
+
+    <ng-template #noSkills>
+        <div class="placeholder">
+            <h3 class="text-center">No Skills Listed</h3>
+          </div>
+    </ng-template>
+    
   </div>
 </div>
 
