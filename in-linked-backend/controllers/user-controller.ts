@@ -91,7 +91,7 @@ export class UserController extends IController {
                 cand.fullName = newCandData.fullName;
                 cand.skills = newCandData.skills || cand.skills;
                 cand.educationLevel = newCandData.educationLevel || cand.educationLevel;
-                cand.displayEmail = newCandData.displayEmail || cand.displayEmail;
+                cand.displayEmail = newCandData.displayEmail;
 
                 await this.candidateManager.update(cand);
             } else if (user.acctype === AccType.ENTERPRISE) {
@@ -249,7 +249,6 @@ export class UserController extends IController {
             )
             .delete(
                 middleware.authentication(module.libs.auth),
-                middleware.authorization([Role.ADMIN]),
                 this.delete.bind(this)
             );
 

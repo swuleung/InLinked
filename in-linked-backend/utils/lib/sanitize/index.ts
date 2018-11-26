@@ -11,6 +11,7 @@ export function sanitizeUser(user: User): any {
         email: user.email,
         profilePicture: user.profilePicture,
         coverPhoto: user.coverPhoto,
+        role: user.role,
         acctype: user.acctype
     };
 }

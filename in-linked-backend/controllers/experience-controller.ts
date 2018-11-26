@@ -75,8 +75,8 @@ export class ExperienceController extends IController {
     /* Specific functions */
     public async getByUser(req: Request, res: Response, next: NextFunction) {
         try {
-            const experience = await this.experienceManager.getByUser(req.params.userId);
-            res.status(200).send(this.buildSuccessRes(`Successfully fetched experiences for user id '${req.params.userId}' experience`, experience));
+            const experience = await this.experienceManager.getByUser(req.params.candidateId);
+            res.status(200).send(this.buildSuccessRes(`Successfully fetched experiences for user id '${req.params.candidateId}' experience`, experience));
         } catch (ex) {
             res.status(500).send(this.buildErrorRes(isError(ex) ? ex.toObject() : { message: ex.message }));
         }
@@ -102,11 +102,10 @@ export class ExperienceController extends IController {
             )
             .delete(
                 middleware.authentication(module.libs.auth),
-                middleware.authorization([Role.USER, Role.ADMIN]),
                 this.delete.bind(this)
             );
         
-        app.route(`/${config.app.api_route}/${config.app.api_ver}/experience/user/:userId`)
+        app.route(`/${config.app.api_route}/${config.app.api_ver}/experience/user/:candidateId`)
             .post(
                 middleware.authentication(module.libs.auth),
                 middleware.authorization([Role.USER, Role.ADMIN]),

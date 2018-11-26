@@ -103,8 +103,8 @@ class ExperienceRepository {
             const row = yield conn
                 .table(this.TABLE_NAME)
                 .where({ UserId: userId })
-                .orderBy('StartMonth', 'desc')
                 .orderBy('StartYear', 'desc')
+                .orderBy('StartMonth', 'desc')
                 .limit(limit || 30);
             if (!row) {
                 throw new exceptions_1.NotFoundException(`The user id ${userId} does not have any experience.`);
