@@ -1,14 +1,14 @@
 <div class="card filter-card" id="form-filter">
     <h4> Form Filters </h4>
-    <form>
+    <form #search="ngForm" (ngSubmit)="onSubmit()">
         <div class="form-row">
             <div class="form-group col-md-3 col-sm-6 col-xs-12">
                 <label for="employment-type">Employment Type</label>
                 <div id="employment-type">
-                    <div class="form-check" *ngFor="let ept of employmentTypes">
-                        <input class="form-check-input" type="checkbox" name="employment-type" id="{{ept}}" value="{{ept}}">
-                        <label class="form-check-label" for="{{ept}}">
-                            {{ept}}
+                    <div class="form-check" *ngFor="let ept of employmentTypes; let i = index">
+                        <input class="form-check-input" type="checkbox" name="employment-type" id="{{ept.value}}" value="{{ept.value}}" [(ngModel)]="employmentTypes[i].checked">
+                        <label class="form-check-label" for="{{ept.value}}">
+                            {{ept.value}}
                         </label>
                     </div>
                 </div>
@@ -16,10 +16,10 @@
             <div class="form-group col-md-3 col-sm-6 col-xs-12">
                 <label for="experience-level">Experience Level</label>
                 <div id="experience-level">
-                    <div class="form-check" *ngFor="let exp of experienceLevels">
-                        <input class="form-check-input" type="checkbox" name="experience-level" id="{{exp}}" value="{{exp}}">
-                        <label class="form-check-label" for="{{exp}}">
-                            {{exp}}
+                    <div class="form-check" *ngFor="let exp of experienceLevels; let i = index">
+                        <input class="form-check-input" type="checkbox" name="experience-level" id="{{exp.value}}" value="{{exp.value}}" [(ngModel)]="experienceLevels[i].checked">
+                        <label class="form-check-label" for="{{exp.value}}">
+                            {{exp.value}}
                         </label>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
                 <label for="education-level">Education Level</label>
                 <div id="education-level">
                     <div class="form-check" *ngFor="let edu of educationLevels">
-                        <input class="form-check-input" type="radio" name="education-level" id="{{edu}}" value="{{edu}}">
+                        <input class="form-check-input" type="radio" name="education-level" id="{{edu}}" value="{{edu}}" [(ngModel)]="educationLevel">
                         <label class="form-check-label" for="{{edu}}">
                             {{edu}}
                         </label>
@@ -39,7 +39,7 @@
                 <label for="date-posted">Date Posted</label>
                 <div id="date-posted">
                     <div class="form-check" *ngFor="let dp of datePosted">
-                        <input class="form-check-input" type="radio" name="date-posted" id="{{dp}}" value="{{dp}}">
+                        <input class="form-check-input" type="radio" name="date-posted" id="{{dp}}" value="{{dp}}" [(ngModel)]="date">
                         <label class="form-check-label" for="{{dp}}">
                             {{dp}}
                         </label>
@@ -49,7 +49,7 @@
         </div>
         <div class="text-right">
             <button type="button" class="btn btn-link">Cancel</button>
-            <button type="button" class="btn btn-primary">Apply</button>
+            <button type="submit" class="btn btn-primary">Apply</button>
         </div>
     </form>
 </div>

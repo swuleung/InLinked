@@ -8,21 +8,21 @@ import { JobService } from 'src/app/services/job/job.service';
 })
 export class SearchJobsComponent implements OnInit {
     private employmentTypes = [
-        'Full-Time',
-        'Part-Time',
-        'Contract',
-        'Temporary',
-        'Volunteer',
-        'Other'
+        {value: 'Full-Time', checked: false},
+        {value: 'Part-Time', checked: false},
+        {value: 'Contract', checked: false},
+        {value: 'Temporary', checked: false},
+        {value: 'Volunteer', checked: false},
+        {value: 'Other', checked: false}
     ];
 
     private experienceLevels = [
-        'Entry-level',
-        'Internship',
-        'Associate',
-        'Senior',
-        'Director',
-        'Executive'
+        {value: 'Entry-level', checked: false},
+        {value: 'Internship', checked: false},
+        {value: 'Associate', checked: false},
+        {value: 'Senior', checked: false},
+        {value: 'Director', checked: false},
+        {value: 'Executive', checked: false}
     ];
 
     private educationLevels = [
@@ -40,9 +40,18 @@ export class SearchJobsComponent implements OnInit {
         'Any Time'
     ];
 
+    private educationLevel: string;
+    private date: string;
+
     constructor(private jobService: JobService) { }
 
     ngOnInit() {
     }
 
+    onSubmit() {
+        console.log(this.educationLevel);
+        console.log(this.date);
+        console.log(this.employmentTypes);
+        console.log(this.experienceLevels);
+    }
 }
