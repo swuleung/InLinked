@@ -17,7 +17,7 @@
     <div class="section-header">
       <div class="h2 section-title">Experience</div>
       <div *ngIf="isCurrentUser" class="section-edit">
-        <app-candidate-experience-section-modal [experienceList]="experienceList"></app-candidate-experience-section-modal>
+        <app-candidate-experience-section-modal [experienceList]="experienceList" (experienceUpdateUser)="onTitleModalUpdate($event)"></app-candidate-experience-section-modal>
       </div>
     </div>
 

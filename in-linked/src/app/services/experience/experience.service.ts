@@ -13,6 +13,9 @@ export class ExperienceService {
   constructor(private http: HttpClient, private userService: UserService) { }
 
   create(candidateId: number, positionName: string, enterpriseName: string, startMonth: number, startYear: number, enterpriseId?: number, description?: string, endMonth?: number, endYear?: number, location?: string): Observable<boolean> {
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
+     'Content-Type': 'application/json' });
+
     const payload = {
       experience: {
         experienceId: 0,
@@ -30,7 +33,7 @@ export class ExperienceService {
       user: this.userService.buildAuthBody()
     };
 
-    return this.http.post<any>(`${environment.api_path}/experience`, payload)
+    return this.http.post<any>(`${environment.api_path}/experience`, payload, { headers: headers })
       .pipe(
         map(result => {
           if (!result.success || result.success === 0) {
@@ -92,10 +95,13 @@ export class ExperienceService {
 
   }
 
-  delete(experienceId: number): Observable<void> {
+  delete(experienceId: number): Observable<boolean> {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
-    return this.http.delete<any>(`${environment.api_path}/user/${experienceId}`, { headers: headers });
+      // Note that delete does not allow bodies in Angular 6, but is allowed in HTTP spec
+      return this.http.request<any>('delete', `${environment.api_path}/experience/${experienceId}`, { headers: headers, body: { user: this.userService.buildAuthBody() } }).pipe(
+        map(() => true)
+      );
   }
 
   getByUserId(userId: number): Observable<any> {

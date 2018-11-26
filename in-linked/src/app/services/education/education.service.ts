@@ -55,7 +55,7 @@ export class EducationService {
       );
   }
 
-  update(educationId: number, candidateId: number, schoolName: string, startMonth: number, startYear: number, location: string, endMonth?: number, endYear?: number, degree?: string) {
+  update(educationId: number, candidateId: number, schoolName: string, startMonth: number, startYear: number, location: string, endMonth?: number, endYear?: number, degree?: string): Observable<boolean> {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
      'Content-Type': 'application/json' });
 
@@ -88,13 +88,15 @@ export class EducationService {
       );
   }
 
-  delete(educationId: number) {
+  delete(educationId: number): Observable<boolean> {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
-    return this.http.delete<any>(`${environment.api_path}/user/${educationId}`, { headers: headers });
+    return this.http.request<any>('delete', `${environment.api_path}/user/${educationId}`, { headers: headers, body: { user: this.userService.buildAuthBody() }}).pipe(
+      map(() => true)
+    );
   }
 
-  getByUserId(userId: number) {
+  getByUserId(userId: number): Observable<any> {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
     return this.http.post<any>(`${environment.api_path}/education/user/${userId}`, { user: this.userService.buildAuthBody() }, { headers: headers })

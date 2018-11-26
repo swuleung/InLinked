@@ -40,10 +40,8 @@ export class CandidateProfileComponent implements OnInit {
 
   loadUser(): void {
     const authUser = this.userService.decode(localStorage.getItem(environment.token_key)); // Get the current user
-    console.log(authUser);
     this.route.params.subscribe(params => {
       this.isCurrentUser = authUser.username === params['username'];
-      console.log(authUser.username, params['username']);
       this.initCandidate(this.isCurrentUser, params['username']);
     });
   }

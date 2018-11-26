@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
@@ -7,6 +7,9 @@ import { ExperienceService } from '../../../services/experience/experience.servi
 import { AuthUser } from '../../../models/auth-user';
 import { UserService } from '../../../services/user/user.service';
 import { environment } from '../../../../environments/environment';
+import { delay } from 'q';
+import { Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-candidate-experience-section-modal',
@@ -24,6 +27,8 @@ export class ExperienceSectionModalComponent implements OnInit {
 
   @Input()
   experienceList: Experience[];
+  @Output()
+  experienceUpdateUser = new EventEmitter<boolean>();
 
   constructor(private modalService: NgbModal, private formBuilder: FormBuilder, private userService: UserService, private experienceService: ExperienceService) {}
 
@@ -70,32 +75,28 @@ export class ExperienceSectionModalComponent implements OnInit {
     this.experienceToRemove.add(formData.expdata);
 
     console.log(this.experienceToUpdate, this.experienceToRemove);
-    // this.experiences.removeAt(experienceIndex);
+    this.experiences.removeAt(experienceIndex);
   }
 
   update(): boolean {
+    // Delete entries marked for removal
+    const observables: Observable<any>[] = [];
+    this.experienceToRemove.forEach(id => {
+      // Delete
+      observables.push(this.experienceService.delete(id));
+    });
 
-    // Go through the form array, update, delete, and add when needed
+    // Go through the form array, update and creating when needed
     for (let i = 0; i < this.experiences.length; i++) {
       const expRef = this.experiences.at(i).value;
 
-      if (this.experienceToRemove.has(expRef.expdata)) {
-        // Delete
-        console.log('Removing experience ' + expRef.expdata);
-        // this.experienceService.delete(expRef.expdata);
-      } else if (this.experienceToUpdate.has(expRef.expdata)) {
+      if (this.experienceToUpdate.has(expRef.expdata)) {
         // Update
-        console.log('Updating experience ' + expRef.expdata);
-        this.experienceService.update(expRef.expdata, expRef.position, expRef.enterprise, Number(expRef.startMonth),  Number(expRef.startYear),  Number(expRef.endMonth),  Number(expRef.endYear), expRef.experienceDescription, expRef.enterpriseLocation).subscribe(res => {
-          if (!res) {
-            alert('Unable to update experience.');
-          }
-        });
+        observables.push(this.experienceService.update(expRef.expdata, expRef.position, expRef.enterprise, Number(expRef.startMonth),  Number(expRef.startYear),  Number(expRef.endMonth),  Number(expRef.endYear), expRef.experienceDescription, expRef.enterpriseLocation));
       } else {
         // Add
-        console.log('Adding experience ' + expRef.position);
         // These services return boolean, use values to display errors
-        this.experienceService.create(
+        observables.push(this.experienceService.create(
           this.authUser.id,
           expRef.position,
           expRef.enterprise,
@@ -106,15 +107,22 @@ export class ExperienceSectionModalComponent implements OnInit {
           Number(expRef.endMonth),
           Number(expRef.endYear),
           expRef.enterpriseLocation
-        ).subscribe(res => {
-          if (!res) {
-            alert('Unable to add new experience.');
-          }
-        });
+        ));
       }
     }
 
-    this.modalRef.close('Submitting update');
+    // Run all the requests
+    forkJoin(observables).subscribe(res => {
+      // Check if all requests passed
+      for (const bool of res) {
+        if (!bool) {
+          alert('Unable to perform an update request.')
+        }
+      }
+
+      this.modalRef.close('Submitting update');
+      this.experienceUpdateUser.emit(true);
+    });
     return true;
   }
 

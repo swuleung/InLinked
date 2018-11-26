@@ -287,7 +287,9 @@ export class UserService {
     // Note: the authorization token is of the admin
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
-    return this.http.delete<any>(`${this.apiUrl}/user/${id}`, { headers: headers });
+    return this.http.request<any>('delete', `${this.apiUrl}/user/${id}`, { headers: headers, body: { user: this.buildAuthBody() }}).pipe(
+      map(() => true)
+    );
   }
 
   changePassword(payload: any): Observable<boolean> {
