@@ -1,6 +1,6 @@
 <div class="container title-section">
-  <div class="cover-photo" [style.backgroundImage]="'url(src=../../../../../assets/petco.jpg)'"></div>
-  <img class="profile-photo" src="../../../assets/dog-butt.png">
+  <div class="cover-photo" [ngStyle]="{ 'background-image': 'url(' + (enterprise)?.coverPhoto + ')'}"></div>
+  <img class="profile-photo" src="{{ (enterprise)?.profilePicture }}">
   <div class="card card-move-up title-section">
     <div class="section-header">
       <div class="section-title h1">

@@ -36,7 +36,6 @@ export class EnterpriseProfileComponent implements OnInit {
       this.isCurrentUser = authUser.username === params['username'];
       this.initEnterprise(this.isCurrentUser, params['username']);
     });
-      
   }
 
   initEnterprise(isCurrentUser: boolean, username: string) {
@@ -52,6 +51,10 @@ export class EnterpriseProfileComponent implements OnInit {
     } else {
       console.log('other account');
       this.userService.getByUsername(username).subscribe((res: Enterprise) => {
+        if (!res || res.acctype !== 'enterprise') {
+          window.location.href = 'dashboard/error';
+          return;
+        }
         this.enterprise = res;
       });
     }
