@@ -20,9 +20,15 @@
         </div>
   
         <div class="form-group">
-            <label for="enterprise-industry">CEO</label>
+            <label for="enterprise-industry">Industry</label>
             <input name="enterprise-industry" type="text" class="form-control" id="enterprise-industry" placeholder="Enterprise Industry"
               [(ngModel)]="enterpriseIndustry">
+        </div>
+
+        <div class="form-group">
+            <label for="enterprise-description">Description</label>
+            <textarea name="enterprise-description" type="text" class="form-control" id="enterprise-description" placeholder="Enterprise Description"
+              [(ngModel)]="enterpriseDescription"></textarea>
         </div>
       </form>
     </div>

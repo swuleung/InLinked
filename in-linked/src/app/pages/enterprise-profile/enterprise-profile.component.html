@@ -4,13 +4,13 @@
   <div class="card card-move-up title-section">
     <div class="section-header">
       <div class="section-title h1">
-        {{ (enterprise)?.enterpriseName || 'test' }}
+        {{ (enterprise)?.enterpriseName || 'N/A' }}
       </div>
       <div *ngIf="isCurrentUser" class="section-edit">
-        <app-enterprise-title-section-modal></app-enterprise-title-section-modal>
+        <app-enterprise-title-section-modal (titleUpdateUser)="onTitleModalUpdate($event)"></app-enterprise-title-section-modal>
       </div>
     </div>
-    <p>{{ (enterprise)?.headline || 'test' }}</p>
+    <p>{{ (enterprise)?.headline || 'N/A' }}</p>
   </div>
 </div>
 

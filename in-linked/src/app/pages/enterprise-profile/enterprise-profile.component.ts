@@ -22,7 +22,13 @@ export class EnterpriseProfileComponent implements OnInit {
   ngOnInit() {
     this.authUser = this.userService.decode(localStorage.getItem(environment.token_key)); // Get the current user
     // Check if this is the user we are loading
-    this.loadUser(this.authUser);
+    this.loadUser();
+  }
+
+  onTitleModalUpdate(update: boolean) {
+    if (update) {
+      this.loadUser();
+    }
   }
 
   /**
@@ -31,9 +37,10 @@ export class EnterpriseProfileComponent implements OnInit {
    * @param {Enterprise} enterprise
    * @memberof EnterpriseProfileComponent
    */
-  loadUser(authUser: AuthUser): void {
+  loadUser(): void {
+    // const authUser = this.userService.decode(localStorage.getItem(environment.token_key)); // Get the current user
     this.route.params.subscribe(params => {
-      this.isCurrentUser = authUser.username === params['username'];
+      this.isCurrentUser = this.authUser.username === params['username'];
       this.initEnterprise(this.isCurrentUser, params['username']);
     });
   }

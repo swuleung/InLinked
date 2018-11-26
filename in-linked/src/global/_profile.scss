@@ -7,6 +7,7 @@
     z-index: 1;
     position: relative;
     max-width: 200px;
+    margin-left: 20px;
 }
 
 .cover-photo{
@@ -41,7 +42,7 @@
     .cover-photo {
         display: none;
     }
-    .profile-photo{
+    .profile-photo {
         display: block;
         margin-top: 0;
         margin-bottom: 10px;
