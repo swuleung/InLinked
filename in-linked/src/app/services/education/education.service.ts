@@ -13,6 +13,9 @@ export class EducationService {
   constructor(private http: HttpClient, private userService: UserService) { }
 
   create(candidateId: number, schoolName: string, startMonth: number, startYear: number, location: string, endMonth?: number, endYear?: number, degree?: string): Observable<boolean> {
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
+    'Content-Type': 'application/json' });
+
     const payload = {
       education: {
         educationId: 0,
@@ -28,7 +31,7 @@ export class EducationService {
       user: this.userService.buildAuthBody()
     };
 
-    return this.http.post<any>(`${environment.api_path}/education`, payload)
+    return this.http.post<any>(`${environment.api_path}/education`, payload, { headers: headers })
       .pipe(
         map(result => {
           if (!result.success || result.success === 0) {
@@ -43,7 +46,7 @@ export class EducationService {
   get(educationId: number): Observable<any> {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
-    return this.http.get<any>(`${environment.api_path}/experience/${educationId}`, { headers: headers })
+    return this.http.get<any>(`${environment.api_path}/education/${educationId}`, { headers: headers })
       .pipe(
         map(res => {
           if (!res.success || res.success === 0) {
@@ -74,7 +77,7 @@ export class EducationService {
       user: this.userService.buildAuthBody()
     };
     
-    return this.http.put<any>(`${environment.api_path}/experience/${educationId}`, payload, { headers: headers })
+    return this.http.put<any>(`${environment.api_path}/education/${educationId}`, payload, { headers: headers })
       .pipe(
         map(res => {
           if (!res.success || res.success === 0) {
@@ -91,7 +94,7 @@ export class EducationService {
   delete(educationId: number): Observable<boolean> {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
-    return this.http.request<any>('delete', `${environment.api_path}/user/${educationId}`, { headers: headers, body: { user: this.userService.buildAuthBody() }}).pipe(
+    return this.http.request<any>('delete', `${environment.api_path}/education/${educationId}`, { headers: headers, body: { user: this.userService.buildAuthBody() }}).pipe(
       map(() => true)
     );
   }
