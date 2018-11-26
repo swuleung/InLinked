@@ -97,7 +97,7 @@ export class EducationService {
   getByUserId(userId: number) {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
-    return this.http.post<any>(`${environment.api_path}/education/user/${userId}`, this.userService.buildAuthBody(), { headers: headers })
+    return this.http.post<any>(`${environment.api_path}/education/user/${userId}`, { user: this.userService.buildAuthBody() }, { headers: headers })
       .pipe(
         map(res => {
           if (!res.success || res.success === 0) {

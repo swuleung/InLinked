@@ -12,7 +12,7 @@ export class ExperienceService {
 
   constructor(private http: HttpClient, private userService: UserService) { }
 
-  create(candidateId: number, positionName: string, enterpriseName: string, startMonth: number, startYear: number,enterpriseId?: number, description?: string,  endMonth?: number, endYear?: number, location?: string): Observable<boolean> {
+  create(candidateId: number, positionName: string, enterpriseName: string, startMonth: number, startYear: number, enterpriseId?: number, description?: string, endMonth?: number, endYear?: number, location?: string): Observable<boolean> {
     const payload = {
       experience: {
         experienceId: 0,
@@ -57,7 +57,7 @@ export class ExperienceService {
       );
   }
 
-  update(experienceId: number, positionName: string, enterpriseName: string, startMonth: number, startYear: number, endMonth?: number, endYear?:number, description?: string,positionLocation?: string): Observable<boolean> {
+  update(experienceId: number, positionName: string, enterpriseName: string, startMonth: number, startYear: number, endMonth?: number, endYear?: number, description?: string,positionLocation?: string): Observable<boolean> {
 
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
      'Content-Type': 'application/json' });
@@ -101,7 +101,7 @@ export class ExperienceService {
   getByUserId(userId: number): Observable<any> {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
-    return this.http.post<any>(`${environment.api_path}/experience/user/${userId}`, this.userService.buildAuthBody(), { headers: headers })
+    return this.http.post<any>(`${environment.api_path}/experience/user/${userId}`, { user: this.userService.buildAuthBody() }, { headers: headers })
       .pipe(
         map(res => {
           if (!res.success || res.success === 0) {

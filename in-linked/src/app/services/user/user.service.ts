@@ -261,7 +261,7 @@ export class UserService {
         candidate
       };
     }
-    const userID: number = this.buildAuthBody().user.userId;
+    const userID: number = this.buildAuthBody().userId;
     return this.http.put<any>(`${this.apiUrl}/user/${userID}`, body, {headers: headers})
       .pipe(
         map(res => {
@@ -311,7 +311,7 @@ export class UserService {
   getByUsername(username: string): Observable<Candidate | Enterprise> {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
-    return this.http.post<any>(`${this.apiUrl}/user/${username}`, this.buildAuthBody(),
+    return this.http.post<any>(`${this.apiUrl}/user/${username}`, { user: this.buildAuthBody() },
       { headers: headers })
         .pipe(
           map(userData => {
@@ -337,10 +337,8 @@ export class UserService {
   buildAuthBody(): any {
     const curUser: AuthUser = this.decode(localStorage.getItem(environment.token_key));
     return {
-      user: {
         userId: curUser.id,
         role: curUser.role
-      }
     };
   }
 }
