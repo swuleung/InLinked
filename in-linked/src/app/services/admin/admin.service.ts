@@ -38,7 +38,7 @@ export class AdminService {
       );
   }
 
-  create(username: string, password: string, email: string, ): Observable<boolean | Subscription> {
+  create(username: string, password: string, email: string): Observable<boolean | Subscription> {
     const newUser = {
       userId: 0, // To satisfy user model in backend
       username: username,
@@ -50,6 +50,7 @@ export class AdminService {
       role: 'admin',
       acctype: 'n/a'
     };
+
     return this.http.post(`${this.apiUrl}/user`, {user: newUser})
       .pipe(
         map(res => {
@@ -66,7 +67,7 @@ export class AdminService {
             return of(true);
           });
         }),
-        catchError(_ => of(false))
+        catchError(err => of(false))
       );
   }
 }
