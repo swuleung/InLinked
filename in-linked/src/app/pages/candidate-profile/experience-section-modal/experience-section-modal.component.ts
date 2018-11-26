@@ -22,6 +22,7 @@ export class ExperienceSectionModalComponent implements OnInit {
   modalRef: NgbModalRef;
   experienceForm: FormGroup;
   experiences: FormArray;
+  
   experienceToUpdate: Set<number>; // List of experience ids already loaded (helps us determine which entries to send to server instead of the whole thing)
   experienceToRemove: Set<number>;
 
