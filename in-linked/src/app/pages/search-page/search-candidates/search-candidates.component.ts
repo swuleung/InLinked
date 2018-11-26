@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SearchService } from 'src/app/services/search/search.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-candidates',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchCandidatesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router, private searchService: SearchService) { }
 
   ngOnInit() {
+  }
+
+  navigateToCandidateProfile(username: string) {
+    this.router.navigate([`/dashboard/candidate/${username}`])
   }
 
 }
