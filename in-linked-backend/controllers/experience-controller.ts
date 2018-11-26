@@ -102,6 +102,7 @@ export class ExperienceController extends IController {
             )
             .delete(
                 middleware.authentication(module.libs.auth),
+                middleware.authorization([Role.USER, Role.ADMIN]),
                 this.delete.bind(this)
             );
         
