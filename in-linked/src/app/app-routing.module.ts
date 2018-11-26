@@ -4,6 +4,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './layouts/dashboard/container/dashboard/dashboard.component';
 import { CandidateProfileComponent } from './pages/candidate-profile/candidate-profile.component';
 import { EnterpriseProfileComponent } from './pages/enterprise-profile/enterprise-profile.component';
+import { JobComponent } from './pages/job/job.component';
 import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { UserFeedComponent } from './pages/user-feed/user-feed.component';
@@ -63,6 +64,14 @@ const routes: Routes = [
       {
         path: 'search/:query',
         component: SearchPageComponent
+      },
+      {
+        path: 'job',
+        component: JobComponent
+      },
+      {
+        path: 'job/:jobid',
+        component: JobComponent
       },
       {
         path: 'settings',
