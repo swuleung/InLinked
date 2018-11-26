@@ -12,7 +12,7 @@ export class JobService {
 
   constructor(private http: HttpClient, private userService: UserService) { }
 
-  create(enterpriseId: number, jobTitle: string, jobDescription: string, jobUrl: string, postedDate: Date, salary?: number, employmentType?: string, experienceLevel?: string, educationLevel?: string, city?: string, province?: string, country?: string): Observable<boolean> {
+  create(enterpriseId: number, jobTitle: string, jobDescription: string, jobUrl: string, postedDate: Date, salary?: string, employmentType?: string, experienceLevel?: string, educationLevel?: string, city?: string, province?: string, country?: string): Observable<boolean> {
     const payload = {
       job: {
         jobId: 0,
@@ -59,7 +59,7 @@ export class JobService {
       );
   }
 
-  update(jobId: number, jobTitle: string, jobDescription: string, salary?: number, employmentType?: string, experienceLevel?: string, educationLevel?: string, city?: string, province?: string, country?: string, jobUrl?: string): Observable<boolean> {
+  update(jobId: number, jobTitle: string, jobDescription: string, salary?: string, employmentType?: string, experienceLevel?: string, educationLevel?: string, city?: string, province?: string, country?: string, jobUrl?: string): Observable<boolean> {
 
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
      'Content-Type': 'application/json' });

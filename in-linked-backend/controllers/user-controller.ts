@@ -89,7 +89,7 @@ export class UserController extends IController {
                 const cand = await this.candidateManager.get(user.userId);
 
                 cand.fullName = newCandData.fullName;
-                cand.skills = newCandData.skills || cand.skills;
+                cand.skills = newCandData.skills;
                 cand.educationLevel = newCandData.educationLevel || cand.educationLevel;
                 cand.displayEmail = newCandData.displayEmail;
 

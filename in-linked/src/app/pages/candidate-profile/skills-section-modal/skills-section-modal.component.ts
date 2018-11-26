@@ -29,7 +29,7 @@ export class SkillsSectionModalComponent implements OnInit {
 
   ngOnInit() {
     this.skillsForm = this.formBuilder.group({
-      skills : this.formBuilder.array([ this.createSkill() ])
+      skills : this.formBuilder.array([])
     });
     this.skills = this.skillsForm.get('skills') as FormArray;
     this.authUser = this.userService.decode(localStorage.getItem(environment.token_key));
@@ -80,6 +80,9 @@ export class SkillsSectionModalComponent implements OnInit {
   }
 
   reloadFormArray() {
+    if (this.skillsList === null) {
+      this.skillsList = [];
+    }
     for (let i = this.skills.length - 1; i >= 0; i--) {
       this.skills.removeAt(i);
     }

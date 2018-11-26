@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `Job` (
     EnterpriseId INTEGER NOT NULL,
     JobTitle VARCHAR(50) NOT NULL,
     JobDescription TEXT NOT NULL,
-    Salary INTEGER,
+    Salary VARCHAR(255),
     EmploymentType VARCHAR(30),
     ExperienceLevel VARCHAR(30),
     EducationLevel VARCHAR(30),

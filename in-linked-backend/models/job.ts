@@ -3,7 +3,7 @@ export interface Job {
     enterpriseId: number;
     jobTitle: string;
     jobDescription: string;
-    salary?: number;
+    salary?: string;
     employmentType?: string;
     experienceLevel?: string;
     educationLevel?: string;
