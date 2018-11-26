@@ -1,6 +1,6 @@
 <div class="container title-section">
-  <div class="cover-photo" [style.backgroundImage]="'url(src=../../../../../assets/dog-cover-photo.jpg)'"></div>
-  <img class="profile-photo" src="http://phoenixcavaliers.com/wp-content/uploads/Blenheim-puppy-Tatum-web-4.jpg">
+  <div class="cover-photo" [ngStyle]="{ 'background-image': 'url(' + (candidate)?.coverPhoto + ')'}">></div>
+  <img class="profile-photo" src="{{ (candidate)?.profilePicture }}">
   <div class="card card-move-up title-section">
     <div class="section-header">
       <div class="h1 section-title">{{ (candidate)?.fullName }}</div>
