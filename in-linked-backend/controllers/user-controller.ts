@@ -249,6 +249,7 @@ export class UserController extends IController {
             )
             .delete(
                 middleware.authentication(module.libs.auth),
+                middleware.authorization([Role.ADMIN]),
                 this.delete.bind(this)
             );
 
