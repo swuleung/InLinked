@@ -59,7 +59,7 @@ export class UserService {
               email: result.data.email,
               profilePicture: result.data.profilePicture,
               coverPhoto: result.data.coverPhoto,
-              role: result.data.role,
+              role: 'user',
               acctype: result.data.acctype,
               fullName: result.data.fullName,
               skills: result.data.skills,
