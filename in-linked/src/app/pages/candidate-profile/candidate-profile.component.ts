@@ -50,7 +50,7 @@ export class CandidateProfileComponent implements OnInit {
     if (isCurrentUser) {
       this.candidate = this.userService.getCorrespondingUserData() as Candidate;
       this.skills = (this.candidate) ? this.candidate.skills.split(',') : [];
-
+      console.log(this.skills);
       // Check if it was loaded before
       if (!this.candidate) {
         this.userService.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe((res: Candidate) => {
@@ -61,6 +61,9 @@ export class CandidateProfileComponent implements OnInit {
           this.initExperience(this.candidate.candidateId);
           this.initEducation(this.candidate.candidateId);
         });
+      } else {
+        this.initExperience(this.candidate.candidateId);
+        this.initEducation(this.candidate.candidateId);
       }
     } else {
       this.userService.getByUsername(username).subscribe((res: Candidate) => {
