@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from '../../services/user/user.service';
+import { SearchService } from 'src/app/services/search/search.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -7,15 +9,16 @@ import { UserService } from '../../services/user/user.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  brandTitle = 'InLinked';
-  status: boolean;
+  private brandTitle = 'InLinked';
+  private searchQuery = '';
+  private status: boolean;
 
   @Input()
   profileName: string;
   @Input()
   profileType: string;
 
-  constructor(private userService: UserService) { }
+  constructor(private router: Router, private userService: UserService, private searchService: SearchService) { }
 
   ngOnInit() {
     this.status = false;
@@ -24,6 +27,12 @@ export class NavbarComponent implements OnInit {
 
   toggleNavbar() {
     this.status = !this.status;
+  }
+
+  onSubmit() {
+    /* Do all searches in services and redirect to search page */
+    this.searchService.searchAll(this.searchQuery);
+    this.router.navigate(['/dashboard/search']);
   }
 }
 

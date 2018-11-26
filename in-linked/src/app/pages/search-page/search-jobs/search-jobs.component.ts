@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { JobService } from 'src/app/services/job/job.service';
+import { SearchService } from 'src/app/services/search/search.service';
 
 @Component({
     selector: 'app-search-jobs',
@@ -53,5 +54,7 @@ export class SearchJobsComponent implements OnInit {
         console.log(this.date);
         console.log(this.employmentTypes);
         console.log(this.experienceLevels);
+        /* Front-end filter for jobs */
+
     }
 }

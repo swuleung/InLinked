@@ -9,6 +9,10 @@ import { UserService } from '../user/user.service';
   providedIn: 'root'
 })
 export class SearchService {
+  private searchAllResult: any;
+  private searchEnterpriseResult: any;
+  private searchCandidateResult: any;
+  private searchJobsResult: any;
 
   constructor(private http: HttpClient, private userService: UserService) { }
 
@@ -76,19 +80,6 @@ export class SearchService {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
 
-    /*
-    const categories = {
-      JobTitle: jobTitle || null,
-      JobDescription: jobDescription || null,
-      EmploymentType: employmentType || null,
-      ExperienceLevel: experienceLevel || null,
-      EducationLevel: educationLevel || null,
-      City: city || null,
-      Province: province || null,
-      Country: country || null,
-      JobUrl: jobUrl || null
-    };*/
-
     const categories = [
       jobTitle || '',
       jobDescription || '',
@@ -117,4 +108,9 @@ export class SearchService {
         catchError(err => of(null))
       );
   }
+
+  searchAll(query: string) {
+
+  }
+
 }
