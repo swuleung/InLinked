@@ -17,6 +17,7 @@
                   </button>
                 </div>
               <input formControlName="position" type="text" class="form-control" id="position-{{i}}" placeholder="Position Title">
+              <input formControlName="expdata" type="password" class="form-control d-none" id="expdata-{{i}}">
             </div>
 
           <div class="form-row">
@@ -90,6 +91,7 @@
               rows="5"></textarea>
           </div>
         </div>
+        <hr />
       </div>
       <div class="text-center">
         <button type="button" class="btn btn-primary" (click)="addExperience()">Add Experience</button>
@@ -98,7 +100,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-link" (click)="d('Save click')">Cancel</button>
-    <button type="button" class="btn btn-success" (click)="d('Save click')">Submit Changes</button>
+    <button type="button" class="btn btn-success" (click)="update()">Submit Changes</button>
   </div>
 </ng-template>
 

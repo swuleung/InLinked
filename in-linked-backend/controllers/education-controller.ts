@@ -102,11 +102,10 @@ export class EducationController extends IController {
         )
         .delete(
             middleware.authentication(module.libs.auth),
-            middleware.authorization([Role.USER, Role.ADMIN]),
             this.delete.bind(this)
         );
 
-    app.route(`/${config.app.api_route}/${config.app.api_ver}/job/education/:candidateId`)
+    app.route(`/${config.app.api_route}/${config.app.api_ver}/education/user/:candidateId`)
         .post(
             middleware.authentication(module.libs.auth),
             middleware.authorization([Role.USER, Role.ADMIN]),

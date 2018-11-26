@@ -98,14 +98,13 @@ export class ExperienceRepository {
     
 
     /* CUSTOM FUNCTIONS */
-    // TODO: NEEDS TESTING
     public async getByUser(userId: number, limit?: number): Promise<Experience[]> {
         const conn = await this.db.getConnection();
         const row = await conn
             .table(this.TABLE_NAME)
             .where({ UserId: userId })
-            .orderBy('StartMonth', 'desc')
             .orderBy('StartYear', 'desc')
+            .orderBy('StartMonth', 'desc')
             .limit(limit || 30);
 
         if (!row) {

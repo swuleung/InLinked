@@ -95,7 +95,9 @@ export class EducationRepository {
     public async getByUserId(candidateId: number): Promise<Education[]> {
         const conn = await this.db.getConnection();
         const row = await conn.table(this.TABLE_NAME)
-            .where({ CandidateId: candidateId });
+            .where({ CandidateId: candidateId })
+            .orderBy('StartYear', 'desc')
+            .orderBy('StartMonth', 'desc');
 
         if (!row) {
             throw new NotFoundException(
