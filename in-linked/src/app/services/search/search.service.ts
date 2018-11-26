@@ -9,10 +9,11 @@ import { UserService } from '../user/user.service';
   providedIn: 'root'
 })
 export class SearchService {
-  private searchAllResult: any;
-  private searchEnterpriseResult: any;
-  private searchCandidateResult: any;
-  private searchJobsResult: any;
+  private searchEnterpriseResult = [];
+  private searchCandidateResult = [];
+  private searchJobsResult = [];
+
+  private filteredJobs = [];
 
   constructor(private http: HttpClient, private userService: UserService) { }
 
@@ -32,7 +33,6 @@ export class SearchService {
       'search': query,
       'categories': filters.join(',')
     };
-    console.log(data);
 
     return this.http.get<any>(`${environment.api_path}/user/search/candidate`, { headers: headers, params: data })
       .pipe(
@@ -68,7 +68,6 @@ export class SearchService {
     return this.http.get<any>(`${environment.api_path}/user/search/enterprise`, { headers: headers, params: data })
       .pipe(
         map(result => {
-          console.log('ENTERPRISE SEARCH RESULT', result);
           if (!result.success || result.success === 0) {
             return [];
           }
@@ -98,12 +97,10 @@ export class SearchService {
       'search': query,
       'categories': filters.join(',')
     };
-    console.log(data);
 
     return this.http.get<any>(`${environment.api_path}/job`, { headers: headers, params: data })
       .pipe(
         map(result => {
-          console.log('JOB SEARCH RESULT', result);
           if (!result.success || result.success === 0) {
             return [];
           }
@@ -115,24 +112,63 @@ export class SearchService {
 
   /* When a search is executed, this is called, to populate all the searches */
   searchAll(query: string) {
+    // Clear out the data for new search
+    this.searchCandidateResult = [];
+    this.searchEnterpriseResult = [];
+    this.searchJobsResult = [];
+    this.filteredJobs = [];
     this.searchCandidate(query).subscribe(
       result => {
-        console.log('SEARCH CANDIDATE RESULT', result);
+        console.log(result);
         this.searchCandidateResult = result;
       }
     );
     this.searchEnterprise(query).subscribe(
       result => {
-        console.log('SEARCH ENTERPRISE RESULT', result);
+        console.log(result);
         this.searchEnterpriseResult = result;
       }
     );
     this.searchJobs(query).subscribe(
       result => {
-        console.log('SEARCH JOB RESULT', result);
+        /* Substitute the enterpriseId with enterpriseName */
+        for (const job of result) {
+          console.log(job);
+          this.userService.get(job.enterpriseId).subscribe(
+            enterprise => {
+              enterprise ? job['enterpriseId'] = enterprise.enterpriseName : job['enterpriseId'] = 'N/A';
+            }
+          );
+        }
         this.searchJobsResult = result;
+        console.log(this.searchJobsResult);
       }
     );
   }
 
+  filterJobs(employmentTypes: any[], experienceLevels: any[], educationLevel: string, date: string): void {
+    if (!this.searchJobsResult.length) {
+      return;
+    }
+    employmentTypes = employmentTypes.filter((v) => v.checked === true).map((emp) => emp.value);
+    experienceLevels = experienceLevels.filter((v) => v.check === true).map((exp) => exp.value);
+    for (const job of this.searchJobsResult) {
+      if (job.employmentType in employmentTypes) {
+        this.filteredJobs.push(job);
+      } else if (job.experienceLevel in experienceLevels) {
+        this.filteredJobs.push(job);
+      } else if (job.educationLevel === educationLevel) {
+        this.filteredJobs.push(job);
+      } else if (this.checkJobDate(job, date)) {
+        this.filteredJobs.push(job);
+      }
+    }
+  }
+
+  checkJobDate(job: any, date: string): boolean {
+    if (date === 'Any Time') {
+      return true;
+    }
+    return true;
+  }
 }
