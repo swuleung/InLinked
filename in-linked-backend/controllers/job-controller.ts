@@ -90,7 +90,8 @@ export class JobController extends IController {
     
     public async searchJob(req: Request, res: Response, next: NextFunction) {
         try {
-            const categories = req.query.categories.split(',') || ['JobTitle', 'JobDescription', 'EmploymentType', 'ExperienceLevel', 'EducationLevel', 'City', 'Province', 'Country', 'JobURL'];
+            const categories = (req.query.categories && req.query.categories.split(',')) || ['JobTitle', 'JobDescription', 'EmploymentType', 'ExperienceLevel', 'EducationLevel', 'City', 'Province', 'Country', 'JobURL'];
+
             const jobs = await this.jobManager.fuzzySearch(decodeURI(req.query.search), categories); // Categories passed in as query params, provide all column names if no filter is applied
             res.status(200).send(this.buildSuccessRes(`Successfully fetched jobs posted by query: ${decodeURI(req.query.search)}.`, jobs));
         } catch (ex) {

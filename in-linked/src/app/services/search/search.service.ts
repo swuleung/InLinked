@@ -28,20 +28,22 @@ export class SearchService {
     if (skills) { filters.push('Skills'); }
     if (educationLevel) { filters.push('EducationLevel'); }
 
-    const params = new HttpParams();
-    params.append('search', query);
-    params.append('categories', filters.join(','));
-    console.log('CANDIDATE SEARCH PARAMS', params);
+    const data = {
+      'search': query,
+      'categories': filters.join(',')
+    };
+    console.log(data);
 
-    return this.http.get<any>(`${environment.api_path}/user/search/candidate`, { headers: headers, params: params })
+    return this.http.get<any>(`${environment.api_path}/user/search/candidate`, { headers: headers, params: data })
       .pipe(
         map(result => {
-          if (!result.status || result.status === 0) {
-            return false;
+          console.log('CANDIDATE SEARCH RESULT', result);
+          if (!result.success || result.success === 0) {
+            return [];
           }
-          return true;
+          return result.data;
         }),
-        catchError(err => of(null))
+        catchError(err => of([]))
       );
   }
 
@@ -58,20 +60,21 @@ export class SearchService {
     if (headquarters) { filters.push('Headquarters'); }
     if (industry) { filters.push('Industry'); }
 
-    const params = new HttpParams();
-    params.append('search', query);
-    params.append('categories', filters.join(','));
-    console.log('ENTERPRISE SEARCH PARAMS', params);
+    const data = {
+      'search': query,
+      'categories': filters.join(',')
+    };
 
-    return this.http.get<any>(`${environment.api_path}/user/search/enterprise`, { headers: headers, params: params })
+    return this.http.get<any>(`${environment.api_path}/user/search/enterprise`, { headers: headers, params: data })
       .pipe(
         map(result => {
-          if (!result.status || result.status === 0) {
-            return false;
+          console.log('ENTERPRISE SEARCH RESULT', result);
+          if (!result.success || result.success === 0) {
+            return [];
           }
-          return true;
+          return result.data;
         }),
-        catchError(err => of(null))
+        catchError(err => of([]))
       );
   }
 
@@ -80,37 +83,56 @@ export class SearchService {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
 
-    const categories = [
-      jobTitle || '',
-      jobDescription || '',
-      employmentType || '',
-      experienceLevel || '',
-      educationLevel || '',
-      city || '',
-      province || '',
-      country || '',
-      jobUrl || ''
-    ];
+    const filters = [];
+    if (jobTitle) { filters.push(jobTitle); }
+    if (jobDescription) { filters.push(jobDescription); }
+    if (employmentType) { filters.push(employmentType); }
+    if (experienceLevel) { filters.push(experienceLevel); }
+    if (educationLevel) { filters.push(educationLevel); }
+    if (city) { filters.push(city); }
+    if (province) { filters.push(province); }
+    if (country) { filters.push(country); }
+    if (jobUrl) { filters.push(jobUrl); }
 
-    const params = new HttpParams();
-    params.set('search', query);
-    params.set('categories', categories.join(','));
-    console.log('JOB SEARCH PARAMS', params.toString());
+    const data = {
+      'search': query,
+      'categories': filters.join(',')
+    };
+    console.log(data);
 
-    return this.http.get<any>(`${environment.api_path}/job`, { headers: headers, params: params })
+    return this.http.get<any>(`${environment.api_path}/job`, { headers: headers, params: data })
       .pipe(
         map(result => {
+          console.log('JOB SEARCH RESULT', result);
           if (!result.success || result.success === 0) {
-            return null;
+            return [];
           }
           return result.data;
         }),
-        catchError(err => of(null))
+        catchError(err => of([]))
       );
   }
 
+  /* When a search is executed, this is called, to populate all the searches */
   searchAll(query: string) {
-
+    this.searchCandidate(query).subscribe(
+      result => {
+        console.log('SEARCH CANDIDATE RESULT', result);
+        this.searchCandidateResult = result;
+      }
+    );
+    this.searchEnterprise(query).subscribe(
+      result => {
+        console.log('SEARCH ENTERPRISE RESULT', result);
+        this.searchEnterpriseResult = result;
+      }
+    );
+    this.searchJobs(query).subscribe(
+      result => {
+        console.log('SEARCH JOB RESULT', result);
+        this.searchJobsResult = result;
+      }
+    );
   }
 
 }
