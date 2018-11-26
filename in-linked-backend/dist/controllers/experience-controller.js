@@ -94,7 +94,7 @@ class ExperienceController extends controller_abstract_1.IController {
         app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/experience/:id`)
             .get(middleware.authentication(module.libs.auth), this.get.bind(this))
             .put(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.update.bind(this))
-            .delete(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.delete.bind(this));
+            .delete(middleware.authentication(module.libs.auth), this.delete.bind(this));
         app.route(`/${config_1.default.app.api_route}/${config_1.default.app.api_ver}/experience/user/:candidateId`)
             .post(middleware.authentication(module.libs.auth), middleware.authorization([auth_1.Role.USER, auth_1.Role.ADMIN]), this.getByUser.bind(this));
     }

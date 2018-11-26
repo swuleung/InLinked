@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { environment } from 'src/environments/environment';
@@ -103,34 +103,6 @@ export class JobService {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
     return this.http.post<any>(`${environment.api_path}/job/enterprise/${enterpriseId}`, this.userService.buildAuthBody(), { headers: headers })
-      .pipe(
-        map(result => {
-          if (!result.success || result.success === 0) {
-            return null;
-          }
-          return result.data;
-        }),
-        catchError(err => of(null))
-      );
-  }
-
-  searchJobs(jobTitle?: string, jobDescription?: string, employmentType?: string, experienceLevel?: string, educationLevel?: string, city?: string, province?: string, country?: string, jobUrl?: string): Observable<any> {
-    const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
-      'Content-Type': 'application/json' });
-
-    const categories = {
-      JobTitle: jobTitle || null,
-      JobDescription: jobDescription || null,
-      EmploymentType: employmentType || null,
-      ExperienceLevel: experienceLevel || null,
-      EducationLevel: educationLevel || null,
-      City: city || null,
-      Province: province || null,
-      Country: country || null,
-      JobUrl: jobUrl || null
-    }
-
-    return this.http.get<any>(`${environment.api_path}/job`, { headers: headers, params: categories })
       .pipe(
         map(result => {
           if (!result.success || result.success === 0) {
