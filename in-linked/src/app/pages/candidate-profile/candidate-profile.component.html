@@ -71,7 +71,7 @@
           <app-candidate-education-section-modal [educationList]="educationList" (educationUpdateUser)="onTitleModalUpdate($event)"></app-candidate-education-section-modal>
       </div>
     </div>
-    <ng-template [ngIf]="(experienceList)?.length > 0" [ngIfElse]="noEducation">
+    <ng-template [ngIf]="(educationList)?.length > 0" [ngIfElse]="noEducation">
       <div class="education" *ngFor="let education of educationList">
         <h5 class="font-weight-bold">{{ education.schoolName }}</h5>
         <h6 *ngIf="education.degree !== null">{{ education.degree | titlecase }}</h6>
