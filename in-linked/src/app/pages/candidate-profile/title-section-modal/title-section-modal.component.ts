@@ -56,7 +56,6 @@ export class TitleSectionModalComponent {
         countEmpty++;
       }
     }
-    console.log(this.displayEmail);
     if (!(countEmpty === 0 || countEmpty === 3)) {
       this.errorMessage = 'Enter all three password fields to change password.';
     } else {

@@ -48,7 +48,7 @@ export class UserService {
           if (result.success && result.success === 0) {
             return null; // If there is an error
           }
-          this.currentAccountType = result.acctype;
+          this.currentAccountType = result.data.acctype;
           // Filter result object before returning?
           if (result.data.acctype === 'candidate') {
             this.candidateData = {

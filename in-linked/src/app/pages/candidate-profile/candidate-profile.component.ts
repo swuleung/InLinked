@@ -49,12 +49,14 @@ export class CandidateProfileComponent implements OnInit {
   initCandidate(isCurrentUser: boolean, username: string): void {
     if (isCurrentUser) {
       this.candidate = this.userService.getCorrespondingUserData() as Candidate;
+      this.skills = (this.candidate) ? this.candidate.skills.split(',') : [];
 
       // Check if it was loaded before
       if (!this.candidate) {
         this.userService.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe((res: Candidate) => {
 
           this.candidate = res;
+          console.log(this.skills);
           this.skills = res.skills.split(',');
           this.initExperience(this.candidate.candidateId);
           this.initEducation(this.candidate.candidateId);

@@ -53,7 +53,7 @@
     <div class="section-header">
       <div class="h2 section-title">Skills</div>
       <div *ngIf="isCurrentUser" class="section-edit">
-        <app-candidate-skills-section-modal></app-candidate-skills-section-modal>
+        <app-candidate-skills-section-modal [skillsList]="skills" (skillsUpdateUser)="onTitleModalUpdate($event)"></app-candidate-skills-section-modal>
       </div>
     </div>
 
