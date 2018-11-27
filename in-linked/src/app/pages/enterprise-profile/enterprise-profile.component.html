@@ -33,3 +33,9 @@
     <p class="text-secondary mb-2">{{ (enterprise)?.industry || "Not listed..." }}</p>
   </div> 
 </div>
+
+<div *ngIf="isCurrentUser" class="container information-container">
+    <div class="card text-center">
+        <app-enterprise-delete-modal></app-enterprise-delete-modal>
+    </div>
+</div>

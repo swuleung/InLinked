@@ -1,105 +1,113 @@
 <div class="container title-section">
-  <div class="cover-photo" [ngStyle]="{ 'background-image': 'url(' + (candidate)?.coverPhoto + ')'}">></div>
-  <img class="profile-photo" src="{{ (candidate)?.profilePicture }}">
-  <div class="card card-move-up title-section">
-    <div class="section-header">
-      <div class="h1 section-title">{{ (candidate)?.fullName }}</div>
-      <div *ngIf="isCurrentUser" class="section-edit">
-        <app-candidate-title-section-modal (titleUpdateUser)="onTitleModalUpdate($event)"></app-candidate-title-section-modal>
-      </div>
+    <div class="cover-photo" [ngStyle]="{ 'background-image': 'url(' + (candidate)?.coverPhoto + ')'}">></div>
+    <img class="profile-photo" src="{{ (candidate)?.profilePicture }}">
+    <div class="card card-move-up title-section">
+        <div class="section-header">
+            <div class="h1 section-title">{{ (candidate)?.fullName }}</div>
+            <div *ngIf="isCurrentUser" class="section-edit">
+                <app-candidate-title-section-modal (titleUpdateUser)="onTitleModalUpdate($event)"></app-candidate-title-section-modal>
+            </div>
+        </div>
+        <p>{{ (candidate)?.headline }}</p>
     </div>
-    <p>{{ (candidate)?.headline }}</p>
-  </div>
 </div>
 
 <div class="container information-container">
-  <div class="card information-card">
-    <div class="section-header">
-      <div class="h2 section-title">Experience</div>
-      <div *ngIf="isCurrentUser" class="section-edit">
-        <app-candidate-experience-section-modal [experienceList]="experienceList" (experienceUpdateUser)="onTitleModalUpdate($event)"></app-candidate-experience-section-modal>
-      </div>
-    </div>
+    <div class="card information-card">
+        <div class="section-header">
+            <div class="h2 section-title">Experience</div>
+            <div *ngIf="isCurrentUser" class="section-edit">
+                <app-candidate-experience-section-modal [experienceList]="experienceList" (experienceUpdateUser)="onTitleModalUpdate($event)"></app-candidate-experience-section-modal>
+            </div>
+        </div>
 
-    <ng-template [ngIf]="(experienceList)?.length > 0" [ngIfElse]="noExperience">
-      <div class="experience" *ngFor="let experience of experienceList">
-        <h5 class="font-weight-bold">{{ experience.positionName }}</h5>
-        <h6>{{ experience.enterpriseName }}</h6>
-  
-        <ng-template [ngIf]="experience.endMonth !== null || experience.endYear !== null" [ngIfElse]="presentWorkPlace">
-          <h6>{{ experience.startMonth | MonthConversion }} {{ experience.startYear }} - {{ experience.endMonth | MonthConversion }} {{ experience.endYear }}</h6>
+        <ng-template [ngIf]="(experienceList)?.length > 0" [ngIfElse]="noExperience">
+            <div class="experience" *ngFor="let experience of experienceList">
+                <h5 class="font-weight-bold">{{ experience.positionName }}</h5>
+                <h6>{{ experience.enterpriseName }}</h6>
+
+                <ng-template [ngIf]="experience.endMonth !== null || experience.endYear !== null" [ngIfElse]="presentWorkPlace">
+                    <h6>{{ experience.startMonth | MonthConversion }} {{ experience.startYear }} - {{
+                        experience.endMonth | MonthConversion }} {{ experience.endYear }}</h6>
+                </ng-template>
+                <ng-template #presentWorkPlace>
+                    <h6>{{ experience.startMonth | MonthConversion }} {{ experience.startYear }} - Present<i class="mdi mdi-format-header-6"></i></h6>
+                </ng-template>
+
+                <h6 *ngIf="experience.location !== null">{{ experience.location }}</h6>
+                <p *ngIf="experience.description !== null">{{ experience.description }}</p>
+                <hr />
+            </div>
         </ng-template>
-        <ng-template #presentWorkPlace>
-          <h6>{{ experience.startMonth | MonthConversion }} {{ experience.startYear }} - Present<i class="mdi mdi-format-header-6"></i></h6>
+        <ng-template #noExperience>
+            <div class="placeholder">
+                <h3 class="text-center">No Experience Listed</h3>
+            </div>
         </ng-template>
-  
-        <h6 *ngIf="experience.location !== null">{{ experience.location }}</h6>
-        <p *ngIf="experience.description !== null">{{ experience.description }}</p>
-        <hr />
-      </div>
-    </ng-template>
-    <ng-template #noExperience>
-      <div class="placeholder">
-        <h3 class="text-center">No Experience Listed</h3>
-      </div>
-    </ng-template>
-    
-  </div>
+
+    </div>
 
 </div>
 
 <div class="container information-container">
-  <div class="card information-card">
-    <div class="section-header">
-      <div class="h2 section-title">Skills</div>
-      <div *ngIf="isCurrentUser" class="section-edit">
-        <app-candidate-skills-section-modal [skillsList]="skills" (skillsUpdateUser)="onTitleModalUpdate($event)"></app-candidate-skills-section-modal>
-      </div>
+    <div class="card information-card">
+        <div class="section-header">
+            <div class="h2 section-title">Skills</div>
+            <div *ngIf="isCurrentUser" class="section-edit">
+                <app-candidate-skills-section-modal [skillsList]="skills" (skillsUpdateUser)="onTitleModalUpdate($event)"></app-candidate-skills-section-modal>
+            </div>
+        </div>
+
+        <ng-template [ngIf]="(skills)?.length > 0" [ngIfElse]="noSkills">
+            <ul class="list-inline">
+                <li *ngFor="let skill of skills" class="list-inline-item skill-pill">{{ skill }}</li>
+            </ul>
+        </ng-template>
+
+        <ng-template #noSkills>
+            <div class="placeholder">
+                <h3 class="text-center">No Skills Listed</h3>
+            </div>
+        </ng-template>
+
     </div>
-
-    <ng-template [ngIf]="(skills)?.length > 0" [ngIfElse]="noSkills">
-        <ul class="list-inline">
-          <li *ngFor="let skill of skills" class="list-inline-item skill-pill">{{ skill }}</li>
-        </ul>
-    </ng-template>
-
-    <ng-template #noSkills>
-        <div class="placeholder">
-            <h3 class="text-center">No Skills Listed</h3>
-          </div>
-    </ng-template>
-    
-  </div>
 </div>
 
 <div class="container information-container">
-  <div class="card information-card">
-    <div class="section-header">
-      <div class="h2 section-title">Education</div>
-      <div *ngIf="isCurrentUser" class="section-edit">
-          <app-candidate-education-section-modal [educationList]="educationList" (educationUpdateUser)="onTitleModalUpdate($event)"></app-candidate-education-section-modal>
-      </div>
+    <div class="card information-card">
+        <div class="section-header">
+            <div class="h2 section-title">Education</div>
+            <div *ngIf="isCurrentUser" class="section-edit">
+                <app-candidate-education-section-modal [educationList]="educationList" (educationUpdateUser)="onTitleModalUpdate($event)"></app-candidate-education-section-modal>
+            </div>
+        </div>
+        <ng-template [ngIf]="(educationList)?.length > 0" [ngIfElse]="noEducation">
+            <div class="education" *ngFor="let education of educationList">
+                <h5 class="font-weight-bold">{{ education.schoolName }}</h5>
+                <h6 *ngIf="education.degree !== null">{{ education.degree | titlecase }}</h6>
+
+                <ng-template [ngIf]="education.endMonth !== null || education.endYear !== null" [ngIfElse]="presentWorkPlace">
+                    <h6>{{ education.startMonth | MonthConversion }} {{ education.startYear }} - {{ education.endMonth
+                        | MonthConversion }} {{ education.endYear }}</h6>
+                </ng-template>
+                <ng-template #presentWorkPlace>
+                    <h6>{{ education.startMonth | MonthConversion }} {{ education.startYear }} - Present<i class="mdi mdi-format-header-6"></i></h6>
+                </ng-template>
+
+                <h6>{{ education.location }}</h6>
+                <hr />
+            </div>
+        </ng-template>
+        <ng-template #noEducation>
+            <div class="placeholder">
+                <h3 class="text-center">No Schools Listed</h3>
+            </div>
+        </ng-template>
     </div>
-    <ng-template [ngIf]="(educationList)?.length > 0" [ngIfElse]="noEducation">
-      <div class="education" *ngFor="let education of educationList">
-        <h5 class="font-weight-bold">{{ education.schoolName }}</h5>
-        <h6 *ngIf="education.degree !== null">{{ education.degree | titlecase }}</h6>
-  
-        <ng-template [ngIf]="education.endMonth !== null || education.endYear !== null" [ngIfElse]="presentWorkPlace">
-          <h6>{{ education.startMonth | MonthConversion }} {{ education.startYear }} - {{ education.endMonth | MonthConversion }} {{ education.endYear }}</h6>
-        </ng-template>
-        <ng-template #presentWorkPlace>
-          <h6>{{ education.startMonth | MonthConversion }} {{ education.startYear }} - Present<i class="mdi mdi-format-header-6"></i></h6>
-        </ng-template>
-  
-        <h6>{{ education.location }}</h6>
-        <hr />
-      </div>
-    </ng-template>
-    <ng-template #noEducation>
-      <div class="placeholder">
-        <h3 class="text-center">No Schools Listed</h3>
-      </div>
-    </ng-template>
-  </div>
+</div>
+
+<div *ngIf="isCurrentUser" class="container information-container">
+    <div class="card text-center">
+        <app-candidate-delete-modal></app-candidate-delete-modal>
+    </div>
 </div>

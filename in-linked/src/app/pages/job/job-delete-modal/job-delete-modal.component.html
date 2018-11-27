@@ -1,0 +1,27 @@
+<ng-template #content let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="job-company-details-section">Delete Account</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="text-danger mb-3"> Are you sure you want to delete this job posting? There will be no way to
+            retrieve this post.
+            Type in your username <strong class="text-info"> {{username}} </strong> to confirm deletion. </div>
+        <form>
+            <div class="form-group">
+                <input name="job-username" type="text" class="form-control" id="job-username" placeholder="Username"
+                    [(ngModel)]="enteredUsername">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-link" (click)="d('Save click')">Cancel</button>
+        <button type="button" class="btn btn-danger" [disabled]="enteredUsername!==username" (click)="onSubmit();">Delete Post</button>
+    </div>
+</ng-template>
+
+<button class="btn btn-link text-danger" (click)="open(content)">
+    Click here to delete this post.
+</button>

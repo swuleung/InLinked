@@ -49,4 +49,7 @@
                 {{ (job)?.jobDescription|| 'No job description provided' }}
         </h6>
     </div>
+    <div *ngIf="isCurrentEnterprise" class="card mt-2 text-center p-0">
+        <app-job-delete-modal></app-job-delete-modal>
+    </div>
 </div>

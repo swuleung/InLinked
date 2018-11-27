@@ -1,0 +1,25 @@
+<ng-template #content let-d="dismiss">
+        <div class="modal-header">
+            <h4 class="modal-title" id="candidate-delete-section">Delete Account</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="text-danger mb-3"> Are you sure you want to delete your account? There will be no way to retrieve your account. 
+                Type in your username <strong class="text-info"> {{username}} </strong> to confirm deletion. </div>
+            <form>
+                <div class="form-group">
+                    <input name="candidate-username" type="text" class="form-control" id="candidate-username" placeholder="Username"
+                        [(ngModel)]="enteredUsername">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-link" (click)="d('Save click')">Cancel</button>
+            <button type="button" class="btn btn-danger" [disabled]="enteredUsername!==username" (click)="onSubmit();">Delete
+                Account</button>
+        </div>
+    </ng-template>
+    
+    <button class="btn btn-link text-danger" (click)="open(content)">Click here to delete this account.</button>

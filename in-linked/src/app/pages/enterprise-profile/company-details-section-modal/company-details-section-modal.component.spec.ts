@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CompanyDetailsSectionModalComponent } from './fast-facts-section-modal.component';
+import { CompanyDetailsSectionModalComponent } from './company-details-section-modal.component';
 
 describe('CompanyDetailsSectionModalComponent', () => {
   let component: CompanyDetailsSectionModalComponent;

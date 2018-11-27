@@ -43,6 +43,9 @@ import { JobComponent } from './pages/job/job.component';
 import { JobModalComponent } from './pages/job/job-modal/job-modal.component';
 import { CreateJobComponent } from './pages/create-job/create-job.component';
 import { ViewJobsComponent } from './pages/view-jobs/view-jobs.component';
+import { EnterpriseDeleteModalComponent } from './pages/enterprise-profile/enterprise-delete-modal/enterprise-delete-modal.component';
+import { CandidateDeleteModalComponent } from './pages/candidate-profile/candidate-delete-modal/candidate-delete-modal.component';
+import { JobDeleteModalComponent } from './pages/job/job-delete-modal/job-delete-modal.component';
 
 // Automatically attach token to each request with http module
 export function tokenGetter() {
@@ -78,7 +81,10 @@ export function tokenGetter() {
         JobComponent,
         JobModalComponent,
         CreateJobComponent,
-        ViewJobsComponent
+        ViewJobsComponent,
+        EnterpriseDeleteModalComponent,
+        CandidateDeleteModalComponent,
+        JobDeleteModalComponent
     ],
     imports: [
         BrowserModule,
