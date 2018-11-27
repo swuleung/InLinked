@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../../services/user/user.service';
+import { AuthenticationService } from '../../../services/authentication/authentication.service';
 import { environment } from '../../../../environments/environment';
 @Component({
     selector: 'app-candidate-delete-modal',
@@ -14,7 +15,11 @@ export class CandidateDeleteModalComponent {
     enteredUsername: string;
     closeResult: string;
 
-    constructor(private modalService: NgbModal, private user: UserService) { }
+    constructor(
+        private modalService: NgbModal,
+        private user: UserService,
+        private authService: AuthenticationService
+    ) { }
 
     open(content) {
         this.modalRef = this.modalService.open(content, { size: 'lg' });
@@ -32,7 +37,8 @@ export class CandidateDeleteModalComponent {
         this.user.delete(this.user.candidateData.userId).subscribe((res) => {
             if (res) {
                 this.modalRef.close('Deleted user');
-                // TODO Logout of account after deleting
+                this.authService.logout();
+                window.location.href = '/dashboard';
             } else {
                 window.alert('Could not delete user');
             }
