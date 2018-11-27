@@ -12,7 +12,7 @@ export class JobService {
 
   constructor(private http: HttpClient, private userService: UserService) { }
 
-  create(enterpriseId: number, jobTitle: string, jobDescription: string, jobUrl: string, postedDate: Date, salary?: string, employmentType?: string, experienceLevel?: string, educationLevel?: string, city?: string, province?: string, country?: string): Observable<boolean> {
+  create(enterpriseId: number, jobTitle: string, jobDescription: string, jobUrl: string, postedDate: Date, salary?: number, employmentType?: string, experienceLevel?: string, educationLevel?: string, city?: string, province?: string, country?: string): Observable<boolean> {
     const payload = {
       job: {
         jobId: 0,

@@ -1,115 +1,123 @@
-import {Component, Output, EventEmitter} from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
-import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../../services/user/user.service';
 import { environment } from 'src/environments/environment';
-import { Candidate } from 'src/app/models/candidate';
+import { Job } from '../../../models/job';
+import { ActivatedRoute } from '@angular/router';
+import { JobService } from 'src/app/services/job/job.service';
 
 @Component({
-  selector: 'app-job-modal',
-  templateUrl: './job-modal.component.html',
-  styleUrls: ['./job-modal.component.scss']
+    selector: 'app-job-modal',
+    templateUrl: './job-modal.component.html',
+    styleUrls: ['./job-modal.component.scss']
 })
 export class JobModalComponent {
-  @Output() titleUpdateUser = new EventEmitter<boolean>();
-  private modalRef: NgbModalRef;
-  private firstName = '';
-  private lastName = '';
-  private headline = '';
-  private email = '';
-  private displayEmail = 'yes-email';
-  private currPassword = '';
-  private newPassword = '';
-  private newConfirm = '';
-  private errorMessage = '';
-  closeResult: string;
+    private educationLevels = [
+        'High School',
+        'Bachelors',
+        'Masters',
+        'Doctorate',
+        'Postdoc'
+    ];
 
-  constructor(
-    private modalService: NgbModal,
-    private user: UserService) {}
+    private experienceLevels = [
+        'Entry-level',
+        'Internship',
+        'Associate',
+        'Senior',
+        'Director',
+        'Executive'
+    ];
 
-  open(content) {
-    this.modalRef = this.modalService.open(content, { size: 'lg' });
-    this.populateModal();
-  }
+    private employmentTypes = [
+        'Full-Time',
+        'Part-Time',
+        'Contract',
+        'Temporary',
+        'Volunteer',
+        'Other'
+    ];
 
-  populateModal() {
-    if (this.user.candidateData) {
-      const currUser = this.user.candidateData;
-      const name = currUser.fullName.split(' ');
-      this.firstName = name[0] ? name[0] : '';
-      this.lastName = name[1] ? name[1] : '';
-      this.headline = currUser.headline;
-      this.email = currUser.email;
-      this.displayEmail = currUser.displayEmail ? 'yes-email' : 'no-email';
+    @Output() jobUpdated = new EventEmitter<boolean>();
+    private modalRef: NgbModalRef;
+    private jobId;
+    private jobTitle = '';
+    private jobUrl = '';
+    private jobDescription;
+    private educationLevel;
+    private experienceLevel;
+    private employmentType;
+    private salary = '';
+    private city = '';
+    private province = '';
+    private country = '';
+    private errorMessage = '';
+    closeResult: string;
+
+    constructor(
+        private route: ActivatedRoute,
+        private modalService: NgbModal,
+        private user: UserService,
+        private job: JobService
+    ) { }
+
+    open(content) {
+        this.modalRef = this.modalService.open(content, { size: 'lg' });
+        this.populateModal();
     }
-  }
 
-  onSubmit(): void {
-    // Check if fields are valid, close on success
-    if (this.newPassword !== this.newConfirm) {
-      this.errorMessage = 'New password does not match the confirm password.';
-    }
-    let countEmpty = 0;
-    for (const pw of [this.currPassword, this.newPassword, this.newConfirm]) {
-      if (pw !== '') {
-        countEmpty++;
-      }
-    }
-    if (!(countEmpty === 0 || countEmpty === 3)) {
-      this.errorMessage = 'Enter all three password fields to change password.';
-    } else {
-      const updatedUser: Candidate = {
-        userId: this.user.candidateData.userId,
-        candidateId: this.user.candidateData.candidateId,
-        username: this.user.candidateData.username,
-        headline: this.headline,
-        email: this.email,
-        profilePicture: this.user.candidateData.profilePicture,
-        coverPhoto: this.user.candidateData.coverPhoto,
-        role: 'user',
-        acctype: 'candidate',
-        fullName: this.firstName + ' ' + this.lastName,
-        skills: this.user.candidateData.skills,
-        educationLevel: this.user.candidateData.educationLevel,
-        displayEmail: this.displayEmail === 'yes-email' ? 1 : 0
-      };
-      console.log(updatedUser.displayEmail);
-      this.user.update(updatedUser).subscribe((res) => {
-        if (res) {
-          this.user.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe((user) => {
-            this.titleUpdateUser.emit(true);
-          });
-        } else {
-          window.alert('Could not update profile');
-        }
-      });
-
-      // Update password if needed
-      if (countEmpty === 3) {
-        const passwordPayload = {
-          email: this.user.candidateData.email,
-          oldPassword: this.currPassword,
-          newPassword: this.newPassword,
-          user: {
-            role: this.user.candidateData.role
-          }
-        };
-        this.user.changePassword(passwordPayload).subscribe((res: boolean) => {
-          console.log(res);
-          if (res === true) {
-            this.user.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe((user) => {
-              this.modalRef.close('updated');
-              // this.titleUpdateUser.emit(true);
+    populateModal() {
+        this.route.params.subscribe(params => {
+            this.jobId = +params['jobid'];
+            this.job.get(this.jobId).subscribe((res: Job) => {
+                this.jobTitle = res.jobTitle;
+                this.jobDescription = res.jobDescription;
+                this.salary = res.salary;
+                this.employmentType = res.employmentType;
+                this.experienceLevel = res.experienceLevel;
+                this.educationLevel = res.educationLevel;
+                this.city = res.city;
+                this.province = res.province;
+                this.country = res.country;
+                this.jobUrl = res.jobUrl;
             });
-          } else {
-            window.alert('Could not change password');
-          }
         });
-      } else {
+    }
+
+    onSubmit(): void {
+        // Check if fields are valid, close on success
+        const updatedJob: Job = {
+            jobId: this.jobId,
+            enterpriseId: this.user.enterpriseData.userId,
+            jobTitle: this.jobTitle,
+            jobDescription: this.jobDescription,
+            salary: this.salary,
+            employmentType: this.employmentType,
+            experienceLevel: this.experienceLevel,
+            educationLevel: this.educationLevel,
+            city: this.city,
+            province: this.province,
+            country: this.country,
+            jobUrl: this.jobUrl,
+            postedDate: new Date()
+        };
+
+        this.job.update(updatedJob.jobId, updatedJob.jobTitle, updatedJob.jobDescription,
+            updatedJob.salary, updatedJob.employmentType, updatedJob.experienceLevel,
+            updatedJob.educationLevel, updatedJob.city, updatedJob.province, updatedJob.country, updatedJob.jobUrl).subscribe((res) => {
+            if (res) {
+                this.jobUpdated.emit(true);
+                // this.user.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe((user) => {
+                //     this.titleUpdateUser.emit(true);
+                // });
+            } else {
+                window.alert('Could not update job');
+            }
+        });
+
         // No password update, just close
         this.modalRef.close('updated');
-      }
     }
-  }
 }
+

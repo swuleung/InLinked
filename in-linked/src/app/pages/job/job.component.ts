@@ -27,6 +27,12 @@ export class JobComponent implements OnInit {
         });
     }
 
+    onJobUpdate(update: boolean) {
+        if (update) {
+            this.initJob(this.job.jobId);
+        }
+    }
+
     initJob(jobid: number) {
         this.jobService.get(jobid).subscribe((res: Job) => {
             this.job = res;
