@@ -1,7 +1,7 @@
 export interface Applies {
     jobId: number;
     candidateId: number;
-    dateApplied: Date;
+    dateApplied: string;
 }
 
 export function isApplies(obj: any): boolean {

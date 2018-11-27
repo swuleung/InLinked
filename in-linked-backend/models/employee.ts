@@ -1,6 +1,6 @@
 export interface Employee {
     employeeId: number;
     role: string;
-    dateJoined: Date;
+    dateJoined: string;
     supervisorId?: number;
 }

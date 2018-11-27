@@ -77,9 +77,9 @@ export class UserController extends IController {
             const user = await this.userManager.get(req.params.id);
 
             // Update vars
-            user.coverPhoto = newUserData.coverPhoto;
+            user.coverPhoto = newUserData.coverPhoto || user.coverPhoto;
             user.headline = newUserData.headline;
-            user.profilePicture = newUserData.profilePicture;
+            user.profilePicture = newUserData.profilePicture || user.profilePicture;
             user.lastActiveDate = newUserData.lastActiveDate;
 
             await this.userManager.update(user);
