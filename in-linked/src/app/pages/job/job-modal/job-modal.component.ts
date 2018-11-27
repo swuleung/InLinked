@@ -3,6 +3,7 @@ import {Component, Output, EventEmitter} from '@angular/core';
 import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../../services/user/user.service';
 import { environment } from 'src/environments/environment';
+import { Candidate } from 'src/app/models/candidate';
 
 @Component({
   selector: 'app-job-modal',
@@ -50,7 +51,7 @@ export class JobModalComponent {
       this.errorMessage = 'New password does not match the confirm password.';
     }
     let countEmpty = 0;
-    for(const pw of [this.currPassword, this.newPassword, this.newConfirm]) {
+    for (const pw of [this.currPassword, this.newPassword, this.newConfirm]) {
       if (pw !== '') {
         countEmpty++;
       }

@@ -5,7 +5,7 @@ import { UserService } from '../../services/user/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { Enterprise } from 'src/app/models/enterprise';
-import { Observable } from 'rxjs';
+import { AuthUser } from 'src/app/models/auth-user';
 
 @Component({
     selector: 'app-job',
@@ -13,23 +13,24 @@ import { Observable } from 'rxjs';
     styleUrls: ['./job.component.scss']
 })
 export class JobComponent implements OnInit {
-    isCurrentUser: boolean; // Used to check if we should enable edit options
-    // private authUser: AuthUser;
+    private authUser: AuthUser;
+    isCurrentEnterprise: boolean;
     job: Job;
     enterprise: Enterprise;
 
     constructor(private route: ActivatedRoute, private jobService: JobService, private userService: UserService) { }
 
     ngOnInit() {
+        this.authUser = this.userService.decode(localStorage.getItem(environment.token_key));
         this.route.params.subscribe(params => {
-            this.initJob(true, +params['jobid']);
+            this.initJob(+params['jobid']);
         });
     }
 
-    initJob(isCurrentUser: boolean, jobid: number) {
+    initJob(jobid: number) {
         this.jobService.get(jobid).subscribe((res: Job) => {
             this.job = res;
-
+            this.isCurrentEnterprise = this.job && this.job.enterpriseId === this.authUser.id ? true : false;
             this.userService.get(this.job.enterpriseId).subscribe((resu: any) => {
                 this.enterprise = resu.data;
             });
