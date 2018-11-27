@@ -105,15 +105,9 @@ export class JobService {
             'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
             'Content-Type': 'application/json'
         });
-        return this.http.delete<any>(`${environment.api_path}/job/${jobId}`, { headers: headers })
+        return this.http.request<any>('delete', `${environment.api_path}/job/${jobId}`, { headers: headers, body: { user: this.userService.buildAuthBody() }})
             .pipe(
-                map(result => {
-                    if (!result.success || result.success === 0) {
-                        return null;
-                    }
-                    return result.data;
-                }),
-                catchError(err => of(null))
+                map(() => true)
             );
     }
 
