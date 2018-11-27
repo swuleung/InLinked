@@ -40,6 +40,9 @@ import { environment } from 'src/environments/environment';
 import { MonthConversionPipe } from './services/pipes/month-conversion.pipe';
 import { ErrorComponent } from './pages/error/error.component';
 import { JobComponent } from './pages/job/job.component';
+import { JobModalComponent } from './pages/job/job-modal/job-modal.component';
+import { CreateJobComponent } from './pages/create-job/create-job.component';
+import { ViewJobsComponent } from './pages/view-jobs/view-jobs.component';
 
 // Automatically attach token to each request with http module
 export function tokenGetter() {
@@ -72,7 +75,10 @@ export function tokenGetter() {
     SearchJobsComponent,
     MonthConversionPipe,
     ErrorComponent,
-    JobComponent
+    JobComponent,
+    JobModalComponent,
+    CreateJobComponent,
+    ViewJobsComponent
   ],
   imports: [
     BrowserModule,

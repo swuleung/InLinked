@@ -54,44 +54,6 @@
     </form>
 </div>
 
-<ul class="list-group list-group-flush">
-    <li class="list-group-item">
-        <div class="row">
-            <div class="col-1">
-                <img class="inline-image" src="../../../assets/dog-butt.png">
-            </div>
-            <div class="col">
-                OwO Engineer
-                <br>
-                Petco
-            </div>
-        </div>
-    </li>
-    <li class="list-group-item">
-        <div class="row">
-            <div class="col-1">
-                <img class="inline-image" src="../../../assets/dog-butt.png">
-            </div>
-            <div class="col">
-                UWU Analyst
-                <br>
-                Petco
-            </div>
-        </div>
-    </li>
-    <li class="list-group-item">
-        <div class="row">
-            <div class="col-1">
-                <img class="inline-image" src="../../../assets/dog-butt.png">
-            </div>
-            <div class="col">
-                OmO Engineeer
-                <br>
-                Petco
-            </div>
-        </div>
-    </li>
-</ul>
 <div *ngIf="searchService.filteredJobs.length; else checkJobResults">
     <ul class="list-group list-group-flush">
         <li *ngFor="let result of searchService.filteredJobs" class="list-group-item list-group-item-action" (click)="navigateToJobPage(result.jobId)">

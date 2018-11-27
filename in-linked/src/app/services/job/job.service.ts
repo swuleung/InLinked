@@ -13,7 +13,9 @@ export class JobService {
   constructor(private http: HttpClient, private userService: UserService) { }
 
   create(enterpriseId: number, jobTitle: string, jobDescription: string, jobUrl: string, postedDate: Date, salary?: string, employmentType?: string, experienceLevel?: string, educationLevel?: string, city?: string, province?: string, country?: string): Observable<boolean> {
-    const payload = {
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
+     'Content-Type': 'application/json' });
+     const payload = {
       job: {
         jobId: 0,
         enterpriseId: enterpriseId,
@@ -27,12 +29,11 @@ export class JobService {
         province: province || null,
         country: country || null,
         jobUrl: jobUrl,
-        postedDate: postedDate
+        postedDate: postedDate.toISOString().split('T')[0]
       },
       user: this.userService.buildAuthBody()
     };
-
-    return this.http.post<any>(`${environment.api_path}/job`, payload)
+    return this.http.post<any>(`${environment.api_path}/job`, payload, { headers: headers })
       .pipe(
         map(result => {
           if (!result.success || result.success === 0) {
@@ -102,7 +103,7 @@ export class JobService {
   getByEnterpriseId(enterpriseId: number): Observable<any> {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
-    return this.http.post<any>(`${environment.api_path}/job/enterprise/${enterpriseId}`, this.userService.buildAuthBody(), { headers: headers })
+    return this.http.post<any>(`${environment.api_path}/job/enterprise/${enterpriseId}`, { user: this.userService.buildAuthBody()}, { headers: headers })
       .pipe(
         map(result => {
           if (!result.success || result.success === 0) {

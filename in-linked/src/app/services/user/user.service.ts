@@ -19,7 +19,7 @@ export class UserService {
   apiUrl = 'http://localhost:8080/api/v1';
   public candidateData: Candidate;
   public enterpriseData: Enterprise;
-  private currentAccountType: string; // Candidate or enterprise
+  public currentAccountType: string; // Candidate or enterprise
   private decoded: AuthUser;
 
   constructor(
@@ -202,6 +202,8 @@ export class UserService {
           if (!res.success || res.success === 0) {
             return null;
           }
+          console.log('get this id');
+          console.log(res);
           return res;
         }),
         catchError(err => of(null))

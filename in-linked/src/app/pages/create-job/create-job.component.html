@@ -1,0 +1,70 @@
+<div class="container card">
+    <div class="h1 text-center"> Create a Job Posting </div>
+    <div *ngIf="errorMessage" class="create-warning-message row justify-content-center">
+            {{ errorMessage }}
+    </div>
+    <form #createJob (ngSubmit)="onSubmit()">
+        <div class="form-row">
+            <div class="form-group col">
+                <label for="job-title">Job Title</label>
+                <input name="job-title" type="text" class="form-control" id="job-title" placeholder="Job Title"
+                    [(ngModel)]="jobTitle" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col">
+                <label for="job-url">Job Url</label>
+                <input name="job-url" type="text" class="form-control" id="job-url" placeholder="Job Url"
+                    [(ngModel)]="jobUrl" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col">
+                <label for="employment-type">Type</label>
+                <select id="employment-type" name="employment-type" class="form-control" [(ngModel)]="employmentType">
+                    <option *ngFor="let emp of employmentTypes" [value]="emp" [selected]="employmentType==emp">{{emp}}</option>
+                </select>
+            </div>
+            <div class="form-group col">
+                <label for="experience-level">Experience</label>
+                <select id="experience-level" name="experience-level" class="form-control" [(ngModel)]="experienceLevel">
+                    <option *ngFor="let exp of experienceLevels" [value]="exp" [selected]="experienceLevel==exp">{{exp}}</option>
+                </select>
+            </div>
+            <div class="form-group col">
+                <label for="education-level">Education</label>
+                <select id="education-level" name="education-level" class="form-control" [(ngModel)]="educationLevel">
+                    <option *ngFor="let edu of educationLevels" [value]="edu" [selected]="educationLevel==edu">{{edu}}</option>
+                </select>
+            </div>
+            <div class="form-group col">
+                <label for="salary">Salary</label>
+                <input name="salary" type="text" class="form-control" id="salary" placeholder="Salary per Hour"
+                    [(ngModel)]="salary">
+            </div>
+        </div>
+        <label for="location">Location Information</label>
+        <div id="location">
+            <div class="form-row">
+                <div class="form-group col">
+                    <input name="city" type="text" class="form-control" id="city" placeholder="City" [(ngModel)]="city">
+                </div>
+                <div class="form-group col">
+                    <input name="province" type="text" class="form-control" id="province" placeholder="Province"
+                        [(ngModel)]="province">
+                </div>
+                <div class="form-group col">
+                    <input name="country" type="text" class="form-control" id="country" placeholder="Country"
+                        [(ngModel)]="country">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="job-description">Job Description</label>
+            <textarea name="job-description" class="form-control" id="enterprise-headline" rows="3" [(ngModel)]="jobDescription" required></textarea>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-success"> Submit </button>
+        </div>
+    </form>
+</div>

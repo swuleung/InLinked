@@ -27,7 +27,10 @@ export class EnterpriseProfileComponent implements OnInit {
 
   onTitleModalUpdate(update: boolean) {
     if (update) {
-      this.loadUser();
+      this.userService.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe((res: Enterprise) => {
+        this.enterprise = res;
+        console.log(this.enterprise);
+      });
     }
   }
 

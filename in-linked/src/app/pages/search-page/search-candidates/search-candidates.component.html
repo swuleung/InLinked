@@ -1,35 +1,3 @@
-<ul class="list-group list-group-flush">
-  <li class="list-group-item">
-    <div class="row">
-      <div class="col-1">
-        <img class="inline-image" src="http://phoenixcavaliers.com/wp-content/uploads/Blenheim-puppy-Tatum-web-4.jpg">
-      </div>
-      <div class="col">
-        Bonnie
-      </div>
-    </div>
-  </li>
-  <li class="list-group-item">
-    <div class="row">
-      <div class="col-1">
-        <img class="inline-image" src="http://phoenixcavaliers.com/wp-content/uploads/Blenheim-puppy-Tatum-web-4.jpg">
-      </div>
-      <div class="col">
-        Bonnie
-      </div>
-    </div>
-  </li>
-  <li class="list-group-item">
-    <div class="row">
-      <div class="col-1">
-        <img class="inline-image" src="http://phoenixcavaliers.com/wp-content/uploads/Blenheim-puppy-Tatum-web-4.jpg">
-      </div>
-      <div class="col">
-        Bonnie
-      </div>
-    </div>
-  </li>
-</ul>
 <div *ngIf="searchService.searchCandidateResult.length; else noCandidateResults">
   <ul class="list-group list-group-flush">
     <li *ngFor="let result of searchService.searchCandidateResult" class="list-group-item list-group-item-action" (click)="navigateToCandidateProfile(result.username)">
