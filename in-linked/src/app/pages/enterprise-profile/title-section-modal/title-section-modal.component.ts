@@ -60,9 +60,11 @@ export class EnterpriseTitleSectionModalComponent {
   onCoverPhotoChanged(event: any) {
     this.selectedCoverPhoto = event.target.files[0];
     const reader = new FileReader();
-    reader.readAsBinaryString(this.selectedProfilePicture);
+    reader.readAsBinaryString(this.selectedCoverPhoto);
     reader.onload = () => {
+      console.log('selected photo');
       this.coverPhotoEncoded = 'data:image/png;base64,' + btoa(reader.result as any);
+      console.log(this.coverPhotoEncoded);
       this.user.enterpriseData.profilePicture = this.coverPhotoEncoded;
     };
   }
