@@ -28,7 +28,6 @@ export class ViewJobsComponent implements OnInit {
 
 
     initViewJobs() {
-        console.log('we cry\n\n');
         console.log(this.userService.enterpriseData);
         this.enterprise = this.userService.getCorrespondingUserData() as Enterprise;
 
