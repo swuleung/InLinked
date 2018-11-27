@@ -6,12 +6,12 @@ import { Enterprise } from '../../../models/enterprise';
 import { environment } from '../../../../environments/environment';
 
 @Component({
-  selector: 'app-enterprise-fast-facts-section-modal',
-  templateUrl: './fast-facts-section-modal.component.html',
-  styleUrls: ['./fast-facts-section-modal.component.scss']
+  selector: 'app-enterprise-company-details-section-modal',
+  templateUrl: './company-details-section-modal.component.html',
+  styleUrls: ['./company-details-section-modal.component.scss']
 })
-export class FastFactsSectionModalComponent {
-  @Output() factsUpdateUser = new EventEmitter<boolean>();
+export class CompanyDetailsSectionModalComponent {
+  @Output() companyDetailsUpdateUser = new EventEmitter<boolean>();
   private modalRef: NgbModalRef;
   enterpriseHeadquarters: string;
   enterpriseCeo: string;

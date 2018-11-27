@@ -30,7 +30,7 @@ import { ExperienceSectionModalComponent } from './pages/candidate-profile/exper
 import { SkillsSectionModalComponent } from './pages/candidate-profile/skills-section-modal/skills-section-modal.component';
 import { EducationSectionModalComponent } from './pages/candidate-profile/education-section-modal/education-section-modal.component';
 import { EnterpriseTitleSectionModalComponent } from './pages/enterprise-profile/title-section-modal/title-section-modal.component';
-import { FastFactsSectionModalComponent } from './pages/enterprise-profile/fast-facts-section-modal/fast-facts-section-modal.component';
+import { CompanyDetailsSectionModalComponent } from './pages/enterprise-profile/company-details-section-modal/company-details-section-modal.component';
 import { ServiceTestComponent } from './pages/service-test/service-test.component';
 import { SearchAllComponent } from './pages/search-page/search-all/search-all.component';
 import { SearchEnterprisesComponent } from './pages/search-page/search-enterprises/search-enterprises.component';
@@ -46,60 +46,60 @@ import { ViewJobsComponent } from './pages/view-jobs/view-jobs.component';
 
 // Automatically attach token to each request with http module
 export function tokenGetter() {
-  return localStorage.getItem(environment.token_key);
+    return localStorage.getItem(environment.token_key);
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    EnterpriseProfileComponent,
-    LoginComponent,
-    SettingsComponent,
-    SearchPageComponent,
-    CandidateProfileComponent,
-    CreateAccountComponent,
-    DashboardComponent,
-    UserFeedComponent,
-    AdminComponent,
-    TitleSectionModalComponent,
-    ExperienceSectionModalComponent,
-    SkillsSectionModalComponent,
-    EducationSectionModalComponent,
-    EnterpriseTitleSectionModalComponent,
-    FastFactsSectionModalComponent,
-    ServiceTestComponent,
-    SearchAllComponent,
-    SearchEnterprisesComponent,
-    SearchCandidatesComponent,
-    SearchJobsComponent,
-    MonthConversionPipe,
-    ErrorComponent,
-    JobComponent,
-    JobModalComponent,
-    CreateJobComponent,
-    ViewJobsComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: tokenGetter,
-        whitelistedDomains: ['localhost:8080/dashboard'], // Paths we want to send the auth token with in the header
-        blacklistedRoutes: [
-          'localhost:8080/login/',
-          'localhost:8080/create-account/'
-        ] // Paths that we do not want to send the auth token with (typically like login and stuff)
-      }
-    }),
-    FontAwesomeModule,
-    NgbModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        NavbarComponent,
+        EnterpriseProfileComponent,
+        LoginComponent,
+        SettingsComponent,
+        SearchPageComponent,
+        CandidateProfileComponent,
+        CreateAccountComponent,
+        DashboardComponent,
+        UserFeedComponent,
+        AdminComponent,
+        TitleSectionModalComponent,
+        ExperienceSectionModalComponent,
+        SkillsSectionModalComponent,
+        EducationSectionModalComponent,
+        EnterpriseTitleSectionModalComponent,
+        CompanyDetailsSectionModalComponent,
+        ServiceTestComponent,
+        SearchAllComponent,
+        SearchEnterprisesComponent,
+        SearchCandidatesComponent,
+        SearchJobsComponent,
+        MonthConversionPipe,
+        ErrorComponent,
+        JobComponent,
+        JobModalComponent,
+        CreateJobComponent,
+        ViewJobsComponent
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        JwtModule.forRoot({
+            config: {
+                tokenGetter: tokenGetter,
+                whitelistedDomains: ['localhost:8080/dashboard'], // Paths we want to send the auth token with in the header
+                blacklistedRoutes: [
+                    'localhost:8080/login/',
+                    'localhost:8080/create-account/'
+                ] // Paths that we do not want to send the auth token with (typically like login and stuff)
+            }
+        }),
+        FontAwesomeModule,
+        NgbModule
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

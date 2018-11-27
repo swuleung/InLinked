@@ -19,7 +19,7 @@
     <div class="section-header">
       <div class="h4 section-title pb-3">About Us</div>
       <div *ngIf="isCurrentUser" class="section-edit">
-        <app-enterprise-fast-facts-section-modal (factsUpdateUser)="onTitleModalUpdate($event)"></app-enterprise-fast-facts-section-modal>
+        <app-enterprise-company-details-section-modal (companyDetailsUpdateUser)="onTitleModalUpdate($event)"></app-enterprise-company-details-section-modal>
       </div>
     </div>
     <p>{{ (enterprise)?.enterpriseDescription }}</p>
