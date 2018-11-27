@@ -202,6 +202,8 @@ export class UserService {
           if (!res.success || res.success === 0) {
             return null;
           }
+          console.log('get this id');
+          console.log(res);
           return res;
         }),
         catchError(err => of(null))

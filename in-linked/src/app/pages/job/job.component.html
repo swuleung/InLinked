@@ -5,48 +5,42 @@
                 <img class="company-profile-photo d-inline" src="../../../assets/dog-butt.png">
             </div>
             <div class="col-md col-sm-12">
-                <h4>Job Name</h4>
+                <h4>{{ (job)?.jobTitle || 'Unvailable job title...'  | titlecase}}</h4>
                 <br>
-                <h5>Company</h5>
-                <h5>Location</h5>
+                <h5> {{ (enterprise)?.enterpriseName || 'Unavailable Enterprise...' | titlecase }} </h5>
+                <h5> {{ (job)?.city + ',' || '' | titlecase}} {{ (job)?.province + ',' || '' | titlecase}} {{ (job)?.country || '' | titlecase}}</h5>
             </div>
-            <div class="col-md col-sm-12 text-right">
-                <button class="btn btn-primary"> Apply Externally </button>
+            <div class="col-md-3 col-sm-12 text-right" *ngIf="(job)?.jobUrl">
+                <a href="{{(job)?.jobUrl}}" class="btn btn-primary" role="button" target="_blank"> Apply Externally </a>
             </div>
         </div>
         <hr>
-        <div class="row">
-            <div class="col-md col-xs-12">
+        <div class="row" *ngIf="(job)?.employmentType || (job)?.experienceLevel || (job)?.educationLevel || (job)?.postedDate || (job)?.salary">
+            <div class="col-md col-xs-12" *ngIf="(job)?.employmentType">
                 <h6> Employment Type </h6>
-                <div class="text-secondary"> Full-time </div>
+                <div class="text-secondary"> {{ (job)?.employmentType | titlecase}} </div>
             </div>
-            <div class="col-md col-xs-12">
+            <div class="col-md col-xs-12" *ngIf="(job)?.experienceLevel">
                 <h6> Experience Level </h6>
-                <div class="text-secondary"> Entry Level </div>
+                <div class="text-secondary"> {{ (job)?.experienceLevel | titlecase}} </div>
             </div>
-            <div class="col-md col-xs-12">
+            <div class="col-md col-xs-12" *ngIf="(job)?.educationLevel">
                 <h6> Education Level </h6>
-                <div class="text-secondary"> Bachelors </div>
+                <div class="text-secondary"> {{ (job)?.educationLevel | titlecase}} </div>
             </div>
-            <div class="col-md col-s-12">
+            <div class="col-md col-s-12" *ngIf="(job)?.postedDate">
                 <h6> Date Posted </h6>
-                <div class="text-secondary"> 11/28/2018 </div>
+                <div class="text-secondary"> {{ (job)?.postedDate | titlecase}} </div>
             </div>
-            <div class="col-md col-s-12">
+            <div class="col-md col-s-12" *ngIf="(job)?.salary">
                 <h6> Salary </h6>
-                <div class="text-secondary"> $25/hr </div>
+                <div class="text-secondary"> {{ (job)?.salary }} </div>
             </div>
         </div>
         <hr>
         <div class="h5">Job Description</div>
         <h6>
-            Nam ut egestas nibh, at rutrum dolor. Sed ornare dolor et maximus vestibulum. Sed vitae convallis risus.
-            Quisque eu eros a sapien scelerisque auctor. Nunc dictum, dolor sed aliquet mollis, lectus metus tincidunt
-            augue, eu scelerisque leo erat quis dui. Fusce eget justo ut nulla mollis volutpat vel eu urna. Proin sed
-            rutrum orci, vel eleifend elit. Etiam eu fermentum nisl. Nunc sapien lorem, venenatis in justo eget,
-            eleifend consectetur risus. Ut facilisis gravida neque, at porta tortor placerat id. Sed blandit neque sit
-            amet diam accumsan, eu suscipit turpis ultricies. Praesent dapibus nibh sed enim porta placerat. Nulla
-            gravida odio eget libero posuere, vel maximus est tempor. Suspendisse ut vehicula tellus.
+                {{ (job)?.jobDescription|| 'No job description provided' }}
         </h6>
     </div>
 </div>
