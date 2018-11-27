@@ -1,6 +1,6 @@
 <ng-template #content let-d="dismiss">
     <div class="modal-header">
-        <h4 class="modal-title" id="candidate-title-section">Update Job</h4>
+        <h4 class="modal-title">Update Job</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -68,9 +68,12 @@
             </div>
         </form>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-link" (click)="d('Save click')">Cancel</button>
-        <button type="button" class="btn btn-success" (click)="onSubmit();">Submit Changes</button>
+    <div class="modal-footer d-inline-block">
+        <div class="float-left text-danger align-middle"> Delete Job </div>
+        <div class="float-right">
+            <button type="button" class="btn btn-link" (click)="d('Save click')">Cancel</button>
+            <button type="button" class="btn btn-success" (click)="onSubmit();">Submit Changes</button>
+        </div>
     </div>
 </ng-template>
 

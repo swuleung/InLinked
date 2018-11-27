@@ -8,7 +8,9 @@
                 <h4>{{ (job)?.jobTitle || 'Unvailable job title...'  | titlecase}}</h4>
                 <br>
                 <h5> {{ (enterprise)?.enterpriseName || 'Unavailable Enterprise...' | titlecase }} </h5>
-                <h5> {{ (job)?.city + ',' || '' | titlecase}} {{ (job)?.province + ',' || '' | titlecase}} {{ (job)?.country || '' | titlecase}}</h5>
+                <h5 class="d-inline" *ngIf="(job)?.city"> {{ (job)?.city + ', ' | titlecase}} </h5>
+                <h5 class="d-inline" *ngIf="(job)?.province"> {{ (job)?.province + ', '| titlecase}} </h5>
+                <h5 class="d-inline" *ngIf="(job)?.country"> {{ (job)?.country| titlecase}}</h5>
             </div>
             <div class="col-md-3 col-sm-12 text-right">
                 <a *ngIf="(job)?.jobUrl" href="{{(job)?.jobUrl}}" class="btn btn-primary" role="button" target="_blank"> Apply Externally </a>
@@ -34,7 +36,7 @@
             </div>
             <div class="col-md col-s-12" *ngIf="(job)?.postedDate">
                 <h6> Date Posted </h6>
-                <div class="text-secondary"> {{ (job)?.postedDate | titlecase}} </div>
+                <div class="text-secondary"> {{ (job)?.postedDate.split('T')[0] | titlecase}} </div>
             </div>
             <div class="col-md col-s-12" *ngIf="(job)?.salary">
                 <h6> Salary </h6>
@@ -46,5 +48,8 @@
         <h6>
                 {{ (job)?.jobDescription|| 'No job description provided' }}
         </h6>
+    </div>
+    <div *ngIf="isCurrentEnterprise" class="card mt-2 text-center p-0">
+        <app-job-delete-modal></app-job-delete-modal>
     </div>
 </div>

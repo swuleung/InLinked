@@ -9,10 +9,13 @@
     <div class="list-group mt-3">
         <a href="/dashboard/job/{{job.jobId}}" class="list-group-item list-group-item-action" *ngFor="let job of jobsList">
             <div class="row">
-                <div class="col"> {{job.jobTitle}}</div>
-                <div class="col"> {{ (job)?.city + ',' || '' | titlecase}} {{ (job)?.province + ',' || '' |
-                    titlecase}} {{ (job)?.country || '' | titlecase}} </div>
-                <div class="col"> {{job.postedDate}} </div>
+                <div class="col-md-5 col-xs-12"> {{job.jobTitle}}</div>
+                <div class="col-md-4 col-xs-12">
+                    <span class="d-inline" *ngIf="(job)?.city"> {{ (job)?.city + ', ' | titlecase}} </span>
+                    <span class="d-inline" *ngIf="(job)?.province"> {{ (job)?.province + ', '| titlecase}} </span>
+                    <span class="d-inline" *ngIf="(job)?.country"> {{ (job)?.country| titlecase}}</span>
+                </div>
+                <div class="col-md-3 col-xs-12"> {{job.postedDate.split('T')[0]}} </div>
             </div>
         </a>
     </div>

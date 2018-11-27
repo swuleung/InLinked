@@ -38,7 +38,6 @@ export class ViewJobsComponent implements OnInit {
                     this.enterprise = res;
                     this.jobService.getByEnterpriseId(this.enterprise.userId).subscribe((resu: any) => {
                         this.jobsList = resu;
-                        console.log(resu);
                     });
                 } else {
                     console.log('not an enterprise');
