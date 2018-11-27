@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,9 @@ export class LoginComponent implements OnInit {
     private user: UserService) { }
 
   ngOnInit() {
+    if (localStorage.getItem(environment.token_key)) {
+      this.router.navigate([`/dashboard`]);
+    }
   }
 
   login(email: string, password: string) {

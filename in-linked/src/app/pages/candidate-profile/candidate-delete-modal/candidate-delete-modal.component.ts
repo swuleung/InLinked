@@ -38,7 +38,7 @@ export class CandidateDeleteModalComponent {
             if (res) {
                 this.modalRef.close('Deleted user');
                 this.authService.logout();
-                window.location.href = '/dashboard';
+                window.location.href = '/login';
             } else {
                 window.alert('Could not delete user');
             }

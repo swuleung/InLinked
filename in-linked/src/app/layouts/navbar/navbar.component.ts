@@ -43,7 +43,7 @@ export class NavbarComponent implements OnInit {
 
     logout() {
         this.authService.logout();
-        window.location.href = '/dashboard';
+        window.location.href = '/login';
     }
 }
 
