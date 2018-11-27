@@ -56,7 +56,7 @@ export class CompanyDetailsSectionModalComponent {
 
     this.user.update(updatedUser).subscribe((res) => {
       if (res) {
-        this.factsUpdateUser.emit(true);
+        this.companyDetailsUpdateUser.emit(true);
         this.modalRef.close('Updated user');
       } else {
         window.alert('Could not update profile');
