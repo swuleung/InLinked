@@ -115,7 +115,7 @@ export class EnterpriseRepository {
             enterpriseName: row.EnterpriseName,
             enterpriseDescription: row.EnterpriseDescription,
             ceo: row.CEO,
-            headquarters: row.Headquarters,
+            headquarters: row.HeadQuarters,
             industry: row.Industry
         };
     }
@@ -136,7 +136,7 @@ export class EnterpriseRepository {
             enterpriseName: row.EnterpriseName,
             enterpriseDescription: row.EnterpriseDescription,
             ceo: row.CEO,
-            headquarters: row.Headquarters,
+            headquarters: row.HeadQuarters,
             industry: row.Industry,
         }
     }

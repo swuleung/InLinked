@@ -30,10 +30,12 @@ export class JobComponent implements OnInit {
     initJob(jobid: number) {
         this.jobService.get(jobid).subscribe((res: Job) => {
             this.job = res;
-            this.isCurrentEnterprise = this.job && this.job.enterpriseId === this.authUser.id ? true : false;
-            this.userService.get(this.job.enterpriseId).subscribe((resu: any) => {
-                this.enterprise = resu.data;
-            });
+            if (this.job) {
+                this.isCurrentEnterprise = this.job.enterpriseId === this.authUser.id ? true : false;
+                this.userService.get(this.job.enterpriseId).subscribe((resu: any) => {
+                    this.enterprise = resu.data;
+                });
+            }
         });
     }
 }
