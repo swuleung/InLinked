@@ -1,0 +1,20 @@
+<div class="container card">
+    <div class='d-inline-block'>
+        <div class="float-left">
+            <div class="h1"> Posted Jobs </div>
+            <div class="text-secondary"> Click on a job posting to edit the details. </div>
+        </div>
+        <a class="btn btn-success float-right" href="/dashboard/job">Creat a new Job Posting </a>
+    </div>
+    <div class="list-group mt-3">
+        <a href="/dashboard/job/{{job.jobId}}" class="list-group-item list-group-item-action" *ngFor="let job of jobsList">
+            <div class="row">
+                <div class="col"> {{job.jobTitle}}</div>
+                <div class="col"> {{ (job)?.city + ',' || '' | titlecase}} {{ (job)?.province + ',' || '' |
+                    titlecase}} {{ (job)?.country || '' | titlecase}} </div>
+                <div class="col"> {{job.postedDate}} </div>
+            </div>
+        </a>
+    </div>
+
+</div>
