@@ -5,7 +5,7 @@
                 <img class="company-profile-photo d-inline" src="../../../assets/dog-butt.png">
             </div>
             <div class="col-md col-sm-12">
-                <h4>{{ (job)?.jobTitle || 'Unvailable job title...'  | titlecase}}</h4>
+                <h4>{{ (job)?.jobTitle || 'Unavailable job title...'  | titlecase}}</h4>
                 <br>
                 <h5> {{ (enterprise)?.enterpriseName || 'Unavailable Enterprise...' | titlecase }} </h5>
                 <h5 class="d-inline" *ngIf="(job)?.city"> {{ (job)?.city + ', ' | titlecase}} </h5>

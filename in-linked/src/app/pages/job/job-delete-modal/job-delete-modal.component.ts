@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../../services/user/user.service';
 import { JobService } from '../../../services/job/job.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-job-delete-modal',
@@ -18,8 +18,9 @@ export class JobDeleteModalComponent {
     jobId: number;
 
     constructor(
-        private modalService: NgbModal, 
-        private user: UserService, 
+        private router: Router,
+        private modalService: NgbModal,
+        private user: UserService,
         private job: JobService,
         private route: ActivatedRoute,) { }
 
@@ -43,8 +44,9 @@ export class JobDeleteModalComponent {
         this.job.delete(this.jobId).subscribe((res) => {
             if (res) {
                 this.modalRef.close('Deleted job');
+                this.router.navigate(['/dashboard/job/viewjobs']);
             } else {
-                window.alert('Could not delete user');
+                window.alert('Could not delete job');
             }
         });
     }
