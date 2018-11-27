@@ -36,3 +36,26 @@
     </div>
   </li>
 </ul>
+<div *ngIf="searchService.searchEnterpriseResult.length; else noEnterpriseResults">
+  <ul class="list-group list-group-flush">
+    <li *ngFor="let result of searchService.searchEnterpriseResult" class="list-group-item list-group-item-action" (click)="navigateToEnterpriseProfile(result.username)">
+      <div class="row">
+        <div class="col-1">
+          <img class="inline-image" src="data:image/png;base64,{{result.profilePicture}}" onerror="this.src='../../../assets/dog-butt.png'">
+        </div>
+        <div class="col">
+          <a>
+            {{ result.enterpriseName }}
+            <br>
+            {{ result.industry }}
+          </a>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+<ng-template #noEnterpriseResults>
+  <div class="alert alert-light" role="alert">
+    No Enterprises Found
+  </div>
+</ng-template>

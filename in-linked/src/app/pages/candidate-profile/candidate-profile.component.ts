@@ -56,12 +56,25 @@ export class CandidateProfileComponent implements OnInit {
         this.userService.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe((res: Candidate) => {
 
           this.candidate = res;
-          console.log(this.skills);
           this.skills = res.skills.split(',');
+          
+          // If skills just contains an empty string, set it to null
+          console.log(this.skills.length);
+          if (this.skills.length > 0 && this.skills[0] === '') {
+            console.log('null');
+            this.skills = null;
+          }
+
           this.initExperience(this.candidate.candidateId);
           this.initEducation(this.candidate.candidateId);
         });
       } else {
+        // If skills just contains an empty string, set it to null
+        console.log(this.skills.length);
+        if (this.skills.length > 0 && this.skills[0] === '') {
+          console.log('null');
+          this.skills = null;
+        }
         this.initExperience(this.candidate.candidateId);
         this.initEducation(this.candidate.candidateId);
       }
@@ -74,6 +87,10 @@ export class CandidateProfileComponent implements OnInit {
         }
         this.candidate = res;
         this.skills = res.skills.split(',');
+        // If skills just contains an empty string, set it to null
+        if (this.skills.length > 0 && this.skills[0] === '') {
+          this.skills = null;
+        }
         this.initExperience(this.candidate.candidateId);
         this.initEducation(this.candidate.candidateId);
       });

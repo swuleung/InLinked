@@ -3,10 +3,11 @@
     border: 5px solid white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 4px 15px 0 rgba(0, 0, 0, 0.19);
     height: 150px;
-    margin-top: -75px;
+    margin-top: -125px;
     z-index: 1;
     position: relative;
     max-width: 200px;
+    margin-left: 20px;
 }
 
 .cover-photo{
@@ -41,7 +42,7 @@
     .cover-photo {
         display: none;
     }
-    .profile-photo{
+    .profile-photo {
         display: block;
         margin-top: 0;
         margin-bottom: 10px;

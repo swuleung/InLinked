@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { JobService } from 'src/app/services/job/job.service';
 import { SearchService } from 'src/app/services/search/search.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-search-jobs',
@@ -44,7 +45,7 @@ export class SearchJobsComponent implements OnInit {
     private educationLevel: string;
     private date: string;
 
-    constructor(private jobService: JobService) { }
+    constructor(private router: Router, private jobService: JobService, private searchService: SearchService) { }
 
     ngOnInit() {
     }
@@ -55,6 +56,10 @@ export class SearchJobsComponent implements OnInit {
         console.log(this.employmentTypes);
         console.log(this.experienceLevels);
         /* Front-end filter for jobs */
+        this.searchService.filterJobs(this.employmentTypes, this.experienceLevels, this.educationLevel, this.date);
+    }
 
+    navigateToJobPage(jobId: number) {
+        this.router.navigate([`/job/${jobId}`]);
     }
 }

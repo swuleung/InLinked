@@ -89,7 +89,7 @@ export class UserController extends IController {
                 const cand = await this.candidateManager.get(user.userId);
 
                 cand.fullName = newCandData.fullName;
-                cand.skills = newCandData.skills || cand.skills;
+                cand.skills = newCandData.skills;
                 cand.educationLevel = newCandData.educationLevel || cand.educationLevel;
                 cand.displayEmail = newCandData.displayEmail;
 
@@ -205,7 +205,7 @@ export class UserController extends IController {
 
     public async searchCandidate(req: Request, res: Response, next: NextFunction) {
         try {
-            const candidateCategories = (req.query.categories &&req.query.categories.split(',')) || ['Username', 'Headline', 'Email', 'FullName', 'Skills', 'EducationLevel'];
+            const candidateCategories = (req.query.categories && req.query.categories.split(',')) || ['Username', 'Headline', 'Email', 'FullName', 'Skills', 'EducationLevel'];
 
             // Check for matching user columns and candidate columns
             const candidates = await this.candidateManager.fuzzySearch(decodeURI(req.query.search), candidateCategories);
@@ -217,7 +217,7 @@ export class UserController extends IController {
 
     public async searchEnterprise(req: Request, res: Response, next: NextFunction) {
         try {
-            const enterpriseCategories = (req.query.categories &&req.query.categories.split(',')) || ['Headline', 'Email', 'EnterpriseName', 'EnterpriseDescription', 'CEO', 'Headquarters', 'Industry'];
+            const enterpriseCategories = (req.query.categories && req.query.categories.split(',')) || ['Headline', 'Email', 'EnterpriseName', 'EnterpriseDescription', 'CEO', 'Headquarters', 'Industry'];
 
             // Check for matching user columns and candidate columns
             const enterprises = await this.enterpriseManager.fuzzySearch(decodeURI(req.query.search), enterpriseCategories);
