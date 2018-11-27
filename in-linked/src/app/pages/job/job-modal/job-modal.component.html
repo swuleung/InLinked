@@ -16,6 +16,13 @@
             </div>
             <div class="form-row">
                 <div class="form-group col">
+                    <label for="job-url">Job Url</label>
+                    <input name="job-url" type="text" class="form-control" id="job-url" placeholder="Job Url"
+                        [(ngModel)]="jobUrl">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
                     <label for="employment-type">Type</label>
                     <select id="employment-type" name="employment-type" class="form-control" [(ngModel)]="employmentType">
                         <option *ngFor="let emp of employmentTypes" [value]="emp" [selected]="employmentType==emp">{{emp}}</option>

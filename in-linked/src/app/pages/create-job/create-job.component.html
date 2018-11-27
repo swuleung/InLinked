@@ -1,11 +1,21 @@
 <div class="container card">
     <div class="h1 text-center"> Create a Job Posting </div>
-    <form>
+    <div *ngIf="errorMessage" class="create-warning-message row justify-content-center">
+            {{ errorMessage }}
+    </div>
+    <form #createJob (ngSubmit)="onSubmit()">
         <div class="form-row">
             <div class="form-group col">
                 <label for="job-title">Job Title</label>
                 <input name="job-title" type="text" class="form-control" id="job-title" placeholder="Job Title"
-                    [(ngModel)]="jobTitle">
+                    [(ngModel)]="jobTitle" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col">
+                <label for="job-url">Job Url</label>
+                <input name="job-url" type="text" class="form-control" id="job-url" placeholder="Job Url"
+                    [(ngModel)]="jobUrl" required>
             </div>
         </div>
         <div class="form-row">
@@ -51,10 +61,10 @@
         </div>
         <div class="form-group">
             <label for="job-description">Job Description</label>
-            <textarea name="job-description" class="form-control" id="enterprise-headline" rows="3" [(ngModel)]="jobDescription"></textarea>
+            <textarea name="job-description" class="form-control" id="enterprise-headline" rows="3" [(ngModel)]="jobDescription" required></textarea>
         </div>
         <div class="text-center">
-            <button class="btn btn-success"> Submit </button>
+            <button type="submit" class="btn btn-success"> Submit </button>
         </div>
     </form>
 </div>
