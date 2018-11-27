@@ -26,13 +26,8 @@ CREATE TABLE IF NOT EXISTS `Enterprise` (
     EnterpriseName VARCHAR(90) NOT NULL,
     EnterpriseDescription LONGTEXT NOT NULL,
     CEO VARCHAR(50),
-<<<<<<< HEAD
     Headquarters VARCHAR(255),
     Industry VARCHAR(255),
-=======
-    HeadQuarters VARCHAR(255),
-    Industry VARCHAR(50),
->>>>>>> d95514bebc627c2a9b42f0b415e20309726a9bbb
     PRIMARY KEY (EnterpriseId),
     FOREIGN KEY (EnterpriseId) REFERENCES User(UserId)
 );
@@ -63,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `Job` (
     JobURL TEXT,
     PostedDate DATE,
     PRIMARY KEY (JobId),
-    FOREIGN KEY (EnterpriseId) REFERENCES Enterprise(EnterpriseId)
+    FOREIGN KEY (EnterpriseId) REFERENCES Enterprise(EnterpriseId) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `Applies` (
