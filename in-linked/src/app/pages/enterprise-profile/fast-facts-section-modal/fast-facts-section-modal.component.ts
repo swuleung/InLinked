@@ -23,14 +23,14 @@ export class FastFactsSectionModalComponent {
   constructor(private modalService: NgbModal, private user: UserService) { }
 
   open(content) {
-    this.modalService.open(content, { size: 'lg' });
+    this.modalRef = this.modalService.open(content, { size: 'lg' });
     this.populateForm();
   }
 
   populateForm() {
     if (this.user.enterpriseData) {
       const currUser = this.user.enterpriseData;
-      this.enterpriseHeadquarters = currUser.headquarters;
+      this.enterpriseHeadquarters = currUser.headquarters || '';
       this.enterpriseCeo = currUser.ceo;
       this.enterpriseIndustry = currUser.industry;
       this.enterpriseDescription = currUser.enterpriseDescription;
@@ -56,11 +56,8 @@ export class FastFactsSectionModalComponent {
 
     this.user.update(updatedUser).subscribe((res) => {
       if (res) {
-        // Reload the user data before updating profile data
-        this.user.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe((user) => {
-          this.factsUpdateUser.emit(true);
-          this.modalRef.close('Updated user');
-        });
+        this.factsUpdateUser.emit(true);
+        this.modalRef.close('Updated user');
       } else {
         window.alert('Could not update profile');
       }
