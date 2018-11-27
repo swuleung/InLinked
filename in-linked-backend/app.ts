@@ -27,9 +27,12 @@ class App {
         this.app.use(helmet());
         this.app.use(morgan('dev')); // HTTP request logger
         this.app.use(bodyParser.urlencoded({
-            extended: true
+            extended: true,
+            limit: '50mb'
         }));
-        this.app.use(bodyParser.json());
+        this.app.use(bodyParser.json({
+            limit: '50mb'
+        }));
 
         // Establish MySql connection
         const db = new MySql({
