@@ -19,7 +19,7 @@ export class UserService {
   apiUrl = 'http://localhost:8080/api/v1';
   public candidateData: Candidate;
   public enterpriseData: Enterprise;
-  private currentAccountType: string; // Candidate or enterprise
+  public currentAccountType: string; // Candidate or enterprise
   private decoded: AuthUser;
 
   constructor(

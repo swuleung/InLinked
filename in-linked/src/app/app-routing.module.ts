@@ -14,6 +14,7 @@ import { ServiceTestComponent } from './pages/service-test/service-test.componen
 import { AuthGuard } from './guards/auth.guard';
 import { ErrorComponent } from './pages/error/error.component';
 import { CreateJobComponent } from './pages/create-job/create-job.component';
+import { ViewJobsComponent } from './pages/view-jobs/view-jobs.component';
 
 const routes: Routes = [
   {
@@ -69,6 +70,10 @@ const routes: Routes = [
       {
         path: 'job',
         component: CreateJobComponent
+      },
+      {
+          path: 'job/viewjobs',
+          component: ViewJobsComponent
       },
       {
         path: 'job/:jobid',

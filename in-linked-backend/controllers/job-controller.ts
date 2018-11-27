@@ -81,6 +81,7 @@ export class JobController extends IController {
     /* SPECIAL FUNCTIONS */
     public async getByEnterpriseId(req: Request, res: Response, next: NextFunction) {
         try {
+            console.log('\n\n\n:( SAD\n\n\n');
             const jobs = await this.jobManager.getByEnterpriseId(req.params.enterpriseId);
             res.status(200).send(this.buildSuccessRes(`Successfully fetched jobs posted by enterprise id '${req.params.enterpriseId}'.`, jobs));
         } catch (ex) {

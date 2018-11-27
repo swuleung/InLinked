@@ -102,7 +102,7 @@ export class JobService {
   getByEnterpriseId(enterpriseId: number): Observable<any> {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
       'Content-Type': 'application/json' });
-    return this.http.post<any>(`${environment.api_path}/job/enterprise/${enterpriseId}`, this.userService.buildAuthBody(), { headers: headers })
+    return this.http.post<any>(`${environment.api_path}/job/enterprise/${enterpriseId}`, { user: this.userService.buildAuthBody()}, { headers: headers })
       .pipe(
         map(result => {
           if (!result.success || result.success === 0) {
