@@ -11,7 +11,7 @@ export interface Job {
     province?: string;
     country?: string;
     jobUrl: string;
-    postedDate: Date;
+    postedDate: string;
 }
 
 export function isJob(obj: any): boolean {

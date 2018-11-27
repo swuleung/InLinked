@@ -24,10 +24,10 @@ CREATE TABLE IF NOT EXISTS `User` (
 CREATE TABLE IF NOT EXISTS `Enterprise` (
     EnterpriseId INTEGER NOT NULL,
     EnterpriseName VARCHAR(90) NOT NULL,
-    EnterpriseDescription VARCHAR(255) NOT NULL,
+    EnterpriseDescription LONGTEXT NOT NULL,
     CEO VARCHAR(50),
     Headquarters VARCHAR(255),
-    Industry VARCHAR(50),
+    Industry VARCHAR(255),
     PRIMARY KEY (EnterpriseId),
     FOREIGN KEY (EnterpriseId) REFERENCES User(UserId)
 );
