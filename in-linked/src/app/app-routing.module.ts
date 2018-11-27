@@ -13,6 +13,7 @@ import { AdminComponent } from './pages/admin/admin.component';
 import { ServiceTestComponent } from './pages/service-test/service-test.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ErrorComponent } from './pages/error/error.component';
+import { CreateJobComponent } from './pages/create-job/create-job.component';
 
 const routes: Routes = [
   {
@@ -67,7 +68,7 @@ const routes: Routes = [
       },
       {
         path: 'job',
-        component: JobComponent
+        component: CreateJobComponent
       },
       {
         path: 'job/:jobid',
