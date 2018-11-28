@@ -39,6 +39,7 @@ export class NavbarComponent implements OnInit {
         /* Do all searches in services and redirect to search page */
         this.searchService.searchAll(this.searchQuery);
         this.router.navigate(['/dashboard/search']);
+        this.searchService.clearAllResults();
     }
 
     logout() {

@@ -14,6 +14,7 @@ export class SearchService {
   private searchJobsResult = [];
 
   private filteredJobs = [];
+  appliedFilters = {};
 
   constructor(private http: HttpClient, private userService: UserService) { }
 
@@ -150,9 +151,14 @@ export class SearchService {
     }
     // Clear filtered first
     this.filteredJobs = [];
+    this.appliedFilters = {};
     // Keep only the values of the checked employmentTypes and experienceLevels
     employmentTypes = employmentTypes.filter((v) => v.checked === true).map((emp) => emp.value);
     experienceLevels = experienceLevels.filter((v) => v.checked === true).map((exp) => exp.value);
+    this.appliedFilters['employmentTypes'] = employmentTypes;
+    this.appliedFilters['experienceLevel'] = experienceLevels;
+    this.appliedFilters['educationLevel'] = educationLevel;
+    this.appliedFilters['date'] = date;
     for (const job of this.searchJobsResult) {
       const inEmployment = employmentTypes.length === 0 ? true : employmentTypes.includes(job.job.employmentType) ? true : false;
       const inExperience = experienceLevels.length === 0 ? true : experienceLevels.includes(job.job.experienceLevel) ? true : false;
@@ -188,5 +194,14 @@ export class SearchService {
 
   clearJobFilterResults() {
     this.filteredJobs = [];
+    this.appliedFilters = {};
+  }
+  
+  clearAllResults() {
+    this.searchCandidateResult = [];
+    this.searchEnterpriseResult = [];
+    this.searchJobsResult = [];
+    this.filteredJobs = [];
+    this.appliedFilters = {};
   }
 }

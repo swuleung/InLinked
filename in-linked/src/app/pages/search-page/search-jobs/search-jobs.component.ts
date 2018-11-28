@@ -48,6 +48,29 @@ export class SearchJobsComponent implements OnInit {
     constructor(private router: Router, private jobService: JobService, private searchService: SearchService) { }
 
     ngOnInit() {
+        console.log(this.searchService.appliedFilters);
+        // Sync the filters
+        if (this.searchService.appliedFilters['employmentTypes'] && this.searchService.appliedFilters['employmentTypes'].length) {
+            for (const emp of this.employmentTypes) {
+                if (this.searchService.appliedFilters['employmentTypes'].includes(emp.value)) {
+                    emp.checked = true;
+                }
+            }
+        }
+        if (this.searchService.appliedFilters['experienceLevels'] && this.searchService.appliedFilters['experienceLevels'].length) {
+            for (const exp of this.experienceLevels) {
+                if (this.searchService.appliedFilters['experienceLevels'].includes(exp.value)) {
+                    exp.checked = true;
+                }
+            }
+        }
+        if (this.searchService.appliedFilters['educationLevel']) {
+            this.educationLevel = this.searchService['educationLevel'];
+        }
+        if (this.searchService.appliedFilters['date']) {
+            this.date = this.searchService.appliedFilters['date'];
+        }
+        console.log(this.employmentTypes);
     }
 
     onSubmit() {
