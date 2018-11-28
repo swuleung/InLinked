@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS `User` (
     CreateDate DATE,
     LastActiveDate DATE,
     PRIMARY KEY (UserId),
-    UNIQUE (Email)
+    UNIQUE (Email),
+    UNIQUE (Username)
 );
 
 -- Inherits User
