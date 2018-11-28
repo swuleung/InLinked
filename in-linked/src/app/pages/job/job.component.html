@@ -2,7 +2,7 @@
     <div class="card">
         <div class="row">
             <div class="col-md-3 col-sm-12">
-                <img class="company-profile-photo d-inline" src="../../../assets/dog-butt.png">
+                <img class="company-profile-photo d-inline" src="{{ (enterprise)?.profilePicture }}">
             </div>
             <div class="col-md col-sm-12">
                 <h4>{{ (job)?.jobTitle || 'Unavailable job title...'  | titlecase}}</h4>

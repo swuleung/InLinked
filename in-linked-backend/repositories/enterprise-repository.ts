@@ -19,7 +19,7 @@ export class EnterpriseRepository {
                 EnterpriseName: enterprise.enterpriseName,
                 EnterpriseDescription: enterprise.enterpriseDescription,
                 CEO: enterprise.ceo,
-                HeadQuarters: enterprise.headquarters,
+                Headquarters: enterprise.headquarters,
                 Industry: enterprise.industry
             });
 
@@ -59,7 +59,7 @@ export class EnterpriseRepository {
                 EnterpriseName: enterprise.enterpriseName,
                 EnterpriseDescription: enterprise.enterpriseDescription,
                 CEO: enterprise.ceo,
-                HeadQuarters: enterprise.headquarters,
+                Headquarters: enterprise.headquarters,
                 Industry: enterprise.industry
             });
         return enterprise;
@@ -136,7 +136,7 @@ export class EnterpriseRepository {
             enterpriseName: row.EnterpriseName,
             enterpriseDescription: row.EnterpriseDescription,
             ceo: row.CEO,
-            headquarters: row.HeadQuarters,
+            headquarters: row.Headquarters,
             industry: row.Industry,
         }
     }
