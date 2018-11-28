@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Job } from '../../models/job';
 import { JobService } from '../../services/job/job.service';
 import { UserService } from '../../services/user/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { Enterprise } from 'src/app/models/enterprise';
 import { AuthUser } from 'src/app/models/auth-user';
@@ -19,10 +19,13 @@ export class ViewJobsComponent implements OnInit {
     enterprise: Enterprise;
     jobsList: any;
 
-    constructor(private route: ActivatedRoute, private userService: UserService, private jobService: JobService) { }
+    constructor(private router: Router, private route: ActivatedRoute, private userService: UserService, private jobService: JobService) { }
 
     ngOnInit() {
         this.authUser = this.userService.decode(localStorage.getItem(environment.token_key)); // Get the current user
+        if (this.userService.candidateData) {
+            this.router.navigate([`/dashboard/candidate/${this.userService.candidateData.username}`]);
+        }
         this.initViewJobs();
     }
 
@@ -40,6 +43,7 @@ export class ViewJobsComponent implements OnInit {
                         this.jobsList = resu;
                     });
                 } else {
+                    this.router.navigate([`/dashboard/candidate/${this.userService.candidateData.username}`]);
                     console.log('not an enterprise');
                 }
             });

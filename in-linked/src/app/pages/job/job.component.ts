@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Job } from '../../models/job';
 import { JobService } from '../../services/job/job.service';
 import { UserService } from '../../services/user/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { Enterprise } from 'src/app/models/enterprise';
 import { AuthUser } from 'src/app/models/auth-user';
@@ -18,10 +18,13 @@ export class JobComponent implements OnInit {
     job: Job;
     enterprise: Enterprise;
 
-    constructor(private route: ActivatedRoute, private jobService: JobService, private userService: UserService) { }
+    constructor(private router: Router, private route: ActivatedRoute, private jobService: JobService, private userService: UserService) { }
 
     ngOnInit() {
         this.authUser = this.userService.decode(localStorage.getItem(environment.token_key));
+        if (this.userService.candidateData) {
+            this.router.navigate([`/dashboard/candidate/${this.userService.candidateData.username}`]);
+        }
         this.route.params.subscribe(params => {
             this.initJob(+params['jobid']);
         });
