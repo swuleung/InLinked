@@ -56,6 +56,13 @@ export class EnterpriseProfileComponent implements OnInit {
       if (!this.enterprise) {
         this.userService.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe((res: Enterprise) => {
           this.enterprise = res;
+          // Default images
+          if (this.enterprise.coverPhoto === '') {
+            this.enterprise.coverPhoto = environment.COVER_IMG_BASE64;
+          }
+          if (this.enterprise.profilePicture === '') {
+            this.enterprise.profilePicture = environment.PROFILE_IMG_BASE64;
+          }
         });
       }
     } else {
@@ -66,6 +73,13 @@ export class EnterpriseProfileComponent implements OnInit {
           return;
         }
         this.enterprise = res;
+        // Default images
+        if (this.enterprise.coverPhoto === '') {
+          this.enterprise.coverPhoto = environment.COVER_IMG_BASE64;
+        }
+        if (this.enterprise.profilePicture === '') {
+          this.enterprise.profilePicture = environment.PROFILE_IMG_BASE64;
+        }
       });
     }
   }

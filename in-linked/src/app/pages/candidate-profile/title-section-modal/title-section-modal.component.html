@@ -66,6 +66,31 @@
           </div>
         </div>
       </div>
+
+      <div id="image-upload">
+        <div class="form-row">
+          <div class="form-group col">
+              <label style="display: block" for="profilePicture">Profile Picture</label>
+              <input 
+                accept="image/*"
+                name="profilePicture"
+                style="display: none" 
+                type="file" (change)="onProfilePictureChanged($event)" 
+              #profilePicture>
+            <button class="btn btn-info" (click)="profilePicture.click()">Select Image</button>
+          </div>
+          <div class="form-group col">
+            <label style="display: block" for="coverPhoto">Cover Photo</label>
+            <input
+              accept="image/*"
+              name="coverPhoto" 
+              style="display: none" 
+              type="file" (change)="onCoverPhotoChanged($event)" 
+            #coverPhoto>
+            <button class="btn btn-info" (click)="coverPhoto.click()">Select Image</button>
+          </div>
+        </div>
+      </div>
     </form>
   </div>
   <div class="modal-footer">

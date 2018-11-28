@@ -75,7 +75,7 @@ export class EnterpriseTitleSectionModalComponent {
       this.errorMessage = 'New password does not match the confirm password.';
     }
     let countEmpty = 0;
-    for(const pw of [this.currPassword, this.newPassword, this.newConfirm]) {
+    for (const pw of [this.currPassword, this.newPassword, this.newConfirm]) {
       if (pw !== '') {
         countEmpty++;
       }

@@ -24,6 +24,11 @@ export class TitleSectionModalComponent {
   private errorMessage = '';
   closeResult: string;
 
+  private selectedProfilePicture: File;
+  private profilePictureEncoded: string;
+  private selectedCoverPhoto: File;
+  private coverPhotoEncoded: string;
+
   constructor(
     private modalService: NgbModal,
     private user: UserService) {}
@@ -45,13 +50,36 @@ export class TitleSectionModalComponent {
     }
   }
 
+  onProfilePictureChanged(event: any) {
+    this.selectedProfilePicture = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsBinaryString(this.selectedProfilePicture);
+    reader.onload = () => {
+      this.profilePictureEncoded = 'data:image/png;base64,' + btoa(reader.result as any);
+      // console.log(this.profilePictureEncoded);
+      this.user.candidateData.profilePicture = this.profilePictureEncoded;
+    };
+  }
+
+  onCoverPhotoChanged(event: any) {
+    this.selectedCoverPhoto = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsBinaryString(this.selectedCoverPhoto);
+    reader.onload = () => {
+      console.log('selected photo');
+      this.coverPhotoEncoded = 'data:image/png;base64,' + btoa(reader.result as any);
+      // console.log(this.coverPhotoEncoded);
+      this.user.candidateData.profilePicture = this.coverPhotoEncoded;
+    };
+  }
+
   onSubmit(): void {
     // Check if fields are valid, close on success
     if (this.newPassword !== this.newConfirm) {
       this.errorMessage = 'New password does not match the confirm password.';
     }
     let countEmpty = 0;
-    for(const pw of [this.currPassword, this.newPassword, this.newConfirm]) {
+    for (const pw of [this.currPassword, this.newPassword, this.newConfirm]) {
       if (pw !== '') {
         countEmpty++;
       }
@@ -65,8 +93,8 @@ export class TitleSectionModalComponent {
         username: this.user.candidateData.username,
         headline: this.headline,
         email: this.email,
-        profilePicture: this.user.candidateData.profilePicture,
-        coverPhoto: this.user.candidateData.coverPhoto,
+        profilePicture: this.profilePictureEncoded,
+        coverPhoto: this.coverPhotoEncoded,
         role: 'user',
         acctype: 'candidate',
         fullName: this.firstName + ' ' + this.lastName,

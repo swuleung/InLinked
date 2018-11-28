@@ -57,7 +57,13 @@ export class CandidateProfileComponent implements OnInit {
 
           this.candidate = res;
           this.skills = res.skills.split(',');
-          
+          // Make sure images are valid
+          if (this.candidate.coverPhoto === '') {
+            this.candidate.coverPhoto = environment.COVER_IMG_BASE64;
+          }
+          if (this.candidate.profilePicture === '') {
+            this.candidate.profilePicture = environment.PROFILE_IMG_BASE64;
+          }
           // If skills just contains an empty string, set it to null
           console.log(this.skills.length);
           if (this.skills.length > 0 && this.skills[0] === '') {
@@ -90,6 +96,13 @@ export class CandidateProfileComponent implements OnInit {
         // If skills just contains an empty string, set it to null
         if (this.skills.length > 0 && this.skills[0] === '') {
           this.skills = null;
+        }
+        // Make sure images are valid
+        if (this.candidate.coverPhoto === '') {
+          this.candidate.coverPhoto = environment.COVER_IMG_BASE64;
+        }
+        if (this.candidate.profilePicture === '') {
+          this.candidate.profilePicture = environment.PROFILE_IMG_BASE64;
         }
         this.initExperience(this.candidate.candidateId);
         this.initEducation(this.candidate.candidateId);
