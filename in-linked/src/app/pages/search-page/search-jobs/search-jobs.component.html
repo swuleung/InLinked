@@ -56,16 +56,16 @@
 
 <div *ngIf="searchService.filteredJobs.length; else checkJobResults">
     <ul class="list-group list-group-flush">
-        <li *ngFor="let job of searchService.filteredJobs" class="list-group-item list-group-item-action" (click)="navigateToJobPage(job.jobId)">
+        <li *ngFor="let job of searchService.filteredJobs" class="list-group-item list-group-item-action" (click)="navigateToJobPage(job.job.jobId)">
             <div class="row">
                 <div class="col-1">
-                    <img class="inline-image" src="../../../assets/dog-butt.png">
+                    <img class="inline-image" src="{{job.enterprise.profilePicture}}">
                 </div>
                 <div class="col">
-                    <a class="btn-block" href="/dashboard/job/{{job.jobId}}">
-                        {{ job.jobTitle }}
+                    <a class="btn-block" href="/dashboard/job/{{job.job.jobId}}">
+                        {{ job.job.jobTitle }}
                         <br>
-                        {{ job.enterpriseId }}
+                        {{ job.enterprise.enterpriseName }}
                     </a>
                 </div>
             </div>
@@ -75,16 +75,16 @@
 <ng-template #checkJobResults>
     <div *ngIf="searchService.searchJobsResult.length; else noJobResults">
         <ul class="list-group list-group-flush">
-            <li *ngFor="let job of searchService.searchJobsResult" class="list-group-item list-group-item-action" (click)="navigateToJobPage(job.jobId)">
+            <li *ngFor="let job of searchService.searchJobsResult" class="list-group-item list-group-item-action" (click)="navigateToJobPage(job.job.jobId)">
                 <div class="row">
                     <div class="col-1">
-                        <img class="inline-image" src="../../../assets/dog-butt.png">
+                        <img class="inline-image" src="{{job.enterprise.profilePicture}}">
                     </div>
                     <div class="col">
-                        <a class="btn-block" href="/dashboard/job/{{job.jobId}}">
-                            {{ job.jobTitle }}
+                        <a class="btn-block" href="/dashboard/job/{{job.job.jobId}}">
+                            {{ job.job.jobTitle }}
                             <br>
-                            {{ job.enterpriseId }}
+                            {{ job.enterprise.enterpriseName }}
                         </a>
                     </div>
                 </div>

@@ -133,15 +133,13 @@ export class SearchService {
       result => {
         /* Substitute the enterpriseId with enterpriseName */
         for (const job of result) {
-          console.log(job);
           this.userService.get(job.enterpriseId).subscribe(
             enterprise => {
-              enterprise.success ? job['enterpriseId'] = enterprise.data.enterpriseName : job['enterpriseId'] = 'N/A';
+              // enterprise.success ? job['enterpriseId'] = enterprise.data.enterpriseName : job['enterpriseId'] = 'N/A';
+              this.searchJobsResult.push({job: job, enterprise: enterprise.data});
             }
           );
         }
-        this.searchJobsResult = result;
-        console.log(this.searchJobsResult);
       }
     );
   }
@@ -155,32 +153,15 @@ export class SearchService {
     // Keep only the values of the checked employmentTypes and experienceLevels
     employmentTypes = employmentTypes.filter((v) => v.checked === true).map((emp) => emp.value);
     experienceLevels = experienceLevels.filter((v) => v.checked === true).map((exp) => exp.value);
-    console.log(employmentTypes);
-    console.log(experienceLevels);
     for (const job of this.searchJobsResult) {
-      /*
-      if (employmentTypes.includes(job.employmentType)) {
-        console.log(job);
-        this.filteredJobs.push(job);
-      } else if (experienceLevels.includes(job.experienceLevel)) {
-        console.log(job);
-        this.filteredJobs.push(job);
-      } else if (educationLevel === job.educationLevel) {
-        console.log(job);
-        this.filteredJobs.push(job);
-      } else if (this.checkJobDate(job, date)) {
-        console.log(job);
-        this.filteredJobs.push(job);
-      }*/
-      const inEmployment = employmentTypes.length === 0 ? true : employmentTypes.includes(job.employmentType) ? true : false;
-      const inExperience = experienceLevels.length === 0 ? true : experienceLevels.includes(job.experienceLevel) ? true : false;
-      const inEducation = !educationLevel ? true : educationLevel === job.educationLevel ? true : false;
-      const inDate = !date ? true : this.checkJobDate(job, date) ? true : false;
+      const inEmployment = employmentTypes.length === 0 ? true : employmentTypes.includes(job.job.employmentType) ? true : false;
+      const inExperience = experienceLevels.length === 0 ? true : experienceLevels.includes(job.job.experienceLevel) ? true : false;
+      const inEducation = !educationLevel ? true : educationLevel === job.job.educationLevel ? true : false;
+      const inDate = !date ? true : this.checkJobDate(job.job, date) ? true : false;
       if (inEmployment && inExperience && inEducation && inDate) {
         this.filteredJobs.push(job);
       }
     }
-    console.log(this.filteredJobs);
   }
 
   checkJobDate(job: any, date: string): boolean {
