@@ -115,7 +115,7 @@ export class EnterpriseRepository {
             enterpriseName: row.EnterpriseName,
             enterpriseDescription: row.EnterpriseDescription,
             ceo: row.CEO,
-            headquarters: row.HeadQuarters,
+            headquarters: row.Headquarters,
             industry: row.Industry
         };
     }
