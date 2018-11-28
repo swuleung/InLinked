@@ -13,7 +13,6 @@ import { buildErrorRes } from '../utils/errors';
 export function authorization(roles: Role[]) {
     return async (req: Request, res: Response, next: () => Promise<any>) => {
         try {
-            console.log(req.body);
             if (!req.body || !req.body.user) {
                 throw new ExceptionBase(10000, 'Missing request body with user role.');
             }
