@@ -3,7 +3,7 @@
     <li *ngFor="let result of searchService.searchCandidateResult" class="list-group-item list-group-item-action" (click)="navigateToCandidateProfile(result.username)">
       <div class="row">
         <div class="col-1">
-          <img class="inline-image" src="data:image/png;base64,{{result.profilePicture}}" onerror="this.src='http://phoenixcavaliers.com/wp-content/uploads/Blenheim-puppy-Tatum-web-4.jpg'">
+          <img class="inline-image" src="{{ result.profilePicture }}">
         </div>
         <div class="col">
           <a>

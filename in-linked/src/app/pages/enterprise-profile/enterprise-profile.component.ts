@@ -64,6 +64,14 @@ export class EnterpriseProfileComponent implements OnInit {
             this.enterprise.profilePicture = environment.PROFILE_IMG_BASE64;
           }
         });
+      } else {
+        // Default images
+        if (this.enterprise.coverPhoto === '') {
+          this.enterprise.coverPhoto = environment.COVER_IMG_BASE64;
+        }
+        if (this.enterprise.profilePicture === '') {
+          this.enterprise.profilePicture = environment.PROFILE_IMG_BASE64;
+        }
       }
     } else {
       console.log('other account');

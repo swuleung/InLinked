@@ -81,6 +81,13 @@ export class CandidateProfileComponent implements OnInit {
           console.log('null');
           this.skills = null;
         }
+        // Make sure images are valid
+        if (this.candidate.coverPhoto === '') {
+          this.candidate.coverPhoto = environment.COVER_IMG_BASE64;
+        }
+        if (this.candidate.profilePicture === '') {
+          this.candidate.profilePicture = environment.PROFILE_IMG_BASE64;
+        }
         this.initExperience(this.candidate.candidateId);
         this.initEducation(this.candidate.candidateId);
       }

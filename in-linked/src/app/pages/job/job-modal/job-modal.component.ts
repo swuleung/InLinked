@@ -22,7 +22,7 @@ export class JobModalComponent {
     ];
 
     private experienceLevels = [
-        'Entry-level',
+        'Entry level',
         'Internship',
         'Associate',
         'Senior',

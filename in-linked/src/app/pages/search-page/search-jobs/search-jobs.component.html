@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="text-right">
-            <button type="button" class="btn btn-link">Cancel</button>
+            <button type="button" class="btn btn-link" (click)="clearJobFilterResults($event)">Cancel</button>
             <button type="submit" class="btn btn-primary">Apply</button>
         </div>
     </form>
@@ -56,15 +56,17 @@
 
 <div *ngIf="searchService.filteredJobs.length; else checkJobResults">
     <ul class="list-group list-group-flush">
-        <li *ngFor="let result of searchService.filteredJobs" class="list-group-item list-group-item-action" (click)="navigateToJobPage(result.jobId)">
+        <li *ngFor="let job of searchService.filteredJobs" class="list-group-item list-group-item-action" (click)="navigateToJobPage(job.jobId)">
             <div class="row">
                 <div class="col-1">
                     <img class="inline-image" src="../../../assets/dog-butt.png">
                 </div>
                 <div class="col">
-                    {{ job.jobTitle }}
-                    <br>
-                    {{ job.enterpriseId }}
+                    <a class="btn-block" href="/dashboard/job/{{job.jobId}}">
+                        {{ job.jobTitle }}
+                        <br>
+                        {{ job.enterpriseId }}
+                    </a>
                 </div>
             </div>
         </li>
@@ -73,15 +75,17 @@
 <ng-template #checkJobResults>
     <div *ngIf="searchService.searchJobsResult.length; else noJobResults">
         <ul class="list-group list-group-flush">
-            <li *ngFor="let result of searchService.searchJobsResult" class="list-group-item list-group-item-action" (click)="navigateToJobPage(result.jobId)">
+            <li *ngFor="let job of searchService.searchJobsResult" class="list-group-item list-group-item-action" (click)="navigateToJobPage(job.jobId)">
                 <div class="row">
                     <div class="col-1">
                         <img class="inline-image" src="../../../assets/dog-butt.png">
                     </div>
                     <div class="col">
-                        {{ job.jobTitle }}
-                        <br>
-                        {{ job.enterpriseId }}
+                        <a class="btn-block" href="/dashboard/job/{{job.jobId}}">
+                            {{ job.jobTitle }}
+                            <br>
+                            {{ job.enterpriseId }}
+                        </a>
                     </div>
                 </div>
             </li>

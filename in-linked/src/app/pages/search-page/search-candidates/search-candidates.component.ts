@@ -15,7 +15,7 @@ export class SearchCandidatesComponent implements OnInit {
   }
 
   navigateToCandidateProfile(username: string) {
-    this.router.navigate([`/dashboard/candidate/${username}`])
+    this.router.navigate([`/dashboard/candidate/${username}`]);
   }
 
 }

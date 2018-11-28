@@ -19,7 +19,7 @@ export class SearchJobsComponent implements OnInit {
     ];
 
     private experienceLevels = [
-        {value: 'Entry-level', checked: false},
+        {value: 'Entry level', checked: false},
         {value: 'Internship', checked: false},
         {value: 'Associate', checked: false},
         {value: 'Senior', checked: false},
@@ -61,5 +61,17 @@ export class SearchJobsComponent implements OnInit {
 
     navigateToJobPage(jobId: number) {
         this.router.navigate([`/job/${jobId}`]);
+    }
+
+    clearJobFilterResults(event) {
+        this.searchService.clearJobFilterResults();
+        for (const emp of this.employmentTypes) {
+            emp.checked = false;
+        }
+        for (const exp of this.experienceLevels) {
+            exp.checked = false;
+        }
+        this.educationLevel = undefined;
+        this.date = undefined;
     }
 }

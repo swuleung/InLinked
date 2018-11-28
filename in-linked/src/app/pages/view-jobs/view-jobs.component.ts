@@ -47,6 +47,10 @@ export class ViewJobsComponent implements OnInit {
                     console.log('not an enterprise');
                 }
             });
+        } else {
+            this.jobService.getByEnterpriseId(this.enterprise.userId).subscribe((result: any) => {
+                this.jobsList = result;
+            });
         }
     }
 

@@ -30,7 +30,7 @@ export class CreateJobComponent implements OnInit {
     ];
 
     private experienceLevels = [
-        'Entry-level',
+        'Entry level',
         'Internship',
         'Associate',
         'Senior',

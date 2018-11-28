@@ -136,7 +136,7 @@ export class SearchService {
           console.log(job);
           this.userService.get(job.enterpriseId).subscribe(
             enterprise => {
-              enterprise ? job['enterpriseId'] = enterprise.enterpriseName : job['enterpriseId'] = 'N/A';
+              enterprise.success ? job['enterpriseId'] = enterprise.data.enterpriseName : job['enterpriseId'] = 'N/A';
             }
           );
         }
@@ -150,25 +150,62 @@ export class SearchService {
     if (!this.searchJobsResult.length) {
       return;
     }
+    // Clear filtered first
+    this.filteredJobs = [];
+    // Keep only the values of the checked employmentTypes and experienceLevels
     employmentTypes = employmentTypes.filter((v) => v.checked === true).map((emp) => emp.value);
-    experienceLevels = experienceLevels.filter((v) => v.check === true).map((exp) => exp.value);
+    experienceLevels = experienceLevels.filter((v) => v.checked === true).map((exp) => exp.value);
+    console.log(employmentTypes);
+    console.log(experienceLevels);
     for (const job of this.searchJobsResult) {
-      if (job.employmentType in employmentTypes) {
+      /*
+      if (employmentTypes.includes(job.employmentType)) {
+        console.log(job);
         this.filteredJobs.push(job);
-      } else if (job.experienceLevel in experienceLevels) {
+      } else if (experienceLevels.includes(job.experienceLevel)) {
+        console.log(job);
         this.filteredJobs.push(job);
-      } else if (job.educationLevel === educationLevel) {
+      } else if (educationLevel === job.educationLevel) {
+        console.log(job);
         this.filteredJobs.push(job);
       } else if (this.checkJobDate(job, date)) {
+        console.log(job);
+        this.filteredJobs.push(job);
+      }*/
+      const inEmployment = employmentTypes.length === 0 ? true : employmentTypes.includes(job.employmentType) ? true : false;
+      const inExperience = experienceLevels.length === 0 ? true : experienceLevels.includes(job.experienceLevel) ? true : false;
+      const inEducation = !educationLevel ? true : educationLevel === job.educationLevel ? true : false;
+      const inDate = !date ? true : this.checkJobDate(job, date) ? true : false;
+      if (inEmployment && inExperience && inEducation && inDate) {
         this.filteredJobs.push(job);
       }
     }
+    console.log(this.filteredJobs);
   }
 
   checkJobDate(job: any, date: string): boolean {
+    const checkDate = (new Date(job.postedDate)).getTime();
+    const currDate = (new Date()).getTime();
     if (date === 'Any Time') {
       return true;
+    } else if (date === 'Past Week') {
+      // Compare the millisecond times
+      if (Math.abs(checkDate - currDate) <= 604800000) {
+        return true;
+      }
+    } else if (date === 'Past Month') {
+      if (Math.abs(checkDate - currDate) <= 2678400000) {
+        return true;
+      }
+    } else if (date === 'Past Year') {
+      if (Math.abs(checkDate - currDate) <= 32140800000) {
+        return true;
+      }
     }
-    return true;
+    return false;
+  }
+
+  clearJobFilterResults() {
+    this.filteredJobs = [];
   }
 }
