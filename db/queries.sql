@@ -12,10 +12,7 @@ CREATE TABLE IF NOT EXISTS `User` (
     Email CHAR(60) NOT NULL,
     ProfilePicture LONGTEXT,
     CoverPhoto LONGTEXT,
-    Role CHAR(20) NOT NULL,
     AccType CHAR(20) NOT NULL,
-    CreateDate DATE,
-    LastActiveDate DATE,
     PRIMARY KEY (UserId),
     UNIQUE (Email),
     UNIQUE (Username)
@@ -37,8 +34,6 @@ CREATE TABLE IF NOT EXISTS `Enterprise` (
 CREATE TABLE IF NOT EXISTS `Candidate` (
     CandidateId INTEGER NOT NULL,
     FullName VARCHAR(50),
-    Skills TEXT,
-    EducationLevel VARCHAR(30),
     DisplayEmail BIT DEFAULT 0,
     PRIMARY KEY (CandidateId),
     FOREIGN KEY (CandidateId) REFERENCES User(UserId)
@@ -60,15 +55,6 @@ CREATE TABLE IF NOT EXISTS `Job` (
     PostedDate DATE,
     PRIMARY KEY (JobId),
     FOREIGN KEY (EnterpriseId) REFERENCES Enterprise(EnterpriseId) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS `Applies` (
-    JobId INTEGER,
-    CandidateId INTEGER,
-    DateApplied DATE,
-    PRIMARY KEY (JobId, CandidateId),
-    FOREIGN KEY (JobId) REFERENCES Job(JobId),
-    FOREIGN KEY (CandidateId) REFERENCES Candidate(CandidateId)
 );
 
 CREATE TABLE IF NOT EXISTS `Experience` (
