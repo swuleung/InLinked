@@ -69,7 +69,7 @@ export class TitleSectionModalComponent {
       console.log('selected photo');
       this.coverPhotoEncoded = 'data:image/png;base64,' + btoa(reader.result as any);
       // console.log(this.coverPhotoEncoded);
-      this.user.candidateData.profilePicture = this.coverPhotoEncoded;
+      this.user.candidateData.coverPhoto = this.coverPhotoEncoded;
     };
   }
 

@@ -7,10 +7,12 @@
 
     <div class="collapse navbar-collapse justify-content-around" [ngClass]="status ? 'show-nav' : 'hide-nav'" id="navbarSupportedContent">
         <form class="navbar-form text-center search-form" role="search" #search="ngForm" (ngSubmit)="onSubmit()">
-            <div class="form-group">
+            <div class="input-group">
                 <input type="search" class="form-control search-bar" placeholder="Search for an enterprise or candidate"
                     name="search-query" [(ngModel)]="searchQuery">
-                <input class="btn btn-success search-submit" type="submit" value="Search">
+                <div class="input-group-append">
+                    <input class="btn btn-success search-submit" type="submit" value="Search">
+                </div>
             </div>
         </form>
         <div class="navbar-right">
