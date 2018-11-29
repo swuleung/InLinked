@@ -99,7 +99,6 @@ export class TitleSectionModalComponent {
         acctype: 'candidate',
         fullName: this.firstName + ' ' + this.lastName,
         skills: this.user.candidateData.skills,
-        educationLevel: this.user.candidateData.educationLevel,
         displayEmail: this.displayEmail === 'yes-email' ? 1 : 0
       };
       console.log(updatedUser.displayEmail);

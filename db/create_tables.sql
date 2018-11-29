@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `User` (
     Email CHAR(60) NOT NULL,
     ProfilePicture LONGTEXT,
     CoverPhoto LONGTEXT,
+    Role CHAR(20) NOT NULL,
     AccType CHAR(20) NOT NULL,
     PRIMARY KEY (UserId),
     UNIQUE (Email),

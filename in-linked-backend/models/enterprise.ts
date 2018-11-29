@@ -16,8 +16,6 @@ export interface EnterpriseExt {
     coverPhoto?: string;
     role: string;
     acctype: string;
-    createDate: string;
-    lastActiveDate: string;
     enterpriseId: number;
     enterpriseName: string;
     enterpriseDescription: string;

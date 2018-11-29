@@ -2,7 +2,6 @@ export interface Candidate {
     candidateId: number;
     fullName: string;
     skills?: string;
-    educationLevel?: string;
     displayEmail?: boolean;
 }
 
@@ -16,12 +15,9 @@ export interface CandidateExt {
     coverPhoto?: string;
     role: string;
     acctype: string;
-    createDate: string;
-    lastActiveDate: string;
     candidateId: number;
     fullName: string;
     skills?: string;
-    educationLevel?: string;
     displayEmail?: boolean;
 }
 

@@ -13,7 +13,6 @@ export interface Candidate {
     acctype: string;
     fullName: string;
     skills: string;
-    educationLevel: string;
     displayEmail: number;
 }
 

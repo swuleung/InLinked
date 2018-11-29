@@ -14,14 +14,6 @@ export class CreateAccountComponent implements OnInit {
   private userPassword = '';
   private enterpriseCheck = false;
   private errorMessage = '';
-  private educationLevels = [
-    'High School',
-    'Bachelors',
-    'Masters',
-    'Doctorate',
-    'Postdoc'
-  ];
-  private educationLevel = '';
 
   constructor(
     private user: UserService,
@@ -33,7 +25,7 @@ export class CreateAccountComponent implements OnInit {
   onSubmit(): void {
     // Try to add the account to the database, error on fail
     const acctype = this.enterpriseCheck ? 'enterprise' : 'candidate';
-    this.user.create(this.fullName, this.userName, this.userPassword, this.userEmail, this.educationLevel, acctype)
+    this.user.create(this.fullName, this.userName, this.userPassword, this.userEmail, acctype)
       .subscribe(
         (created) => {
           if (!created) {

@@ -11,8 +11,6 @@ export interface User {
     coverPhoto?: string;
     role: string;
     acctype: string;
-    createDate: string;
-    lastActiveDate: string;
 }
 
 export function isUser(obj: any): boolean {

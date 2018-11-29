@@ -63,7 +63,6 @@ export class UserService {
               acctype: result.data.acctype,
               fullName: result.data.fullName,
               skills: result.data.skills,
-              educationLevel: result.data.educationLevel.toLocaleLowerCase(),
               displayEmail: result.data.displayEmail.data[0]
             };
             console.log(result.data.role);
@@ -97,12 +96,11 @@ export class UserService {
    * @param {string} username - user's username
    * @param {string} password - user's password
    * @param {string} email - user's email
-   * @param {string} educationLevel - user's education level
    * @param {string} acctype - user's account type (either candidate or enterprise)
    * @returns {Observable<boolean>} - true on success, false otherwise
    * @memberof UserService
    */
-  create(fullName: string, username: string, password: string, email: string, educationLevel: string, acctype: string):
+  create(fullName: string, username: string, password: string, email: string, acctype: string):
     Observable<boolean | Subscription> {
 
     const newUser = {
@@ -125,7 +123,6 @@ export class UserService {
         candidateId: 0,
         fullName: fullName,
         skills: '',
-        educationLevel: educationLevel.toLocaleLowerCase(),
         displayEmail: 1
       };
     } else {
@@ -154,7 +151,6 @@ export class UserService {
               acctype: result.acctype,
               fullName: fullName,
               skills: '',
-              educationLevel: educationLevel.toLocaleLowerCase(),
               displayEmail: 1
             };
           } else {
@@ -211,7 +207,7 @@ export class UserService {
   }
 
   /**
-   * Update a candidate's fullName, skills, educationLevel, and/or displayEmail
+   * Update a candidate's fullName, skill, and/or displayEmail
    * or an enterprise's enterpriseName, enterpriseDescription, ceo, headquarters, and/ or industry.
    * Can also update corresponding user's headline, profilePicture, coverPhoto, or lastActive
    *
@@ -255,7 +251,6 @@ export class UserService {
         candidateId: user.candidateId,
         fullName: user.fullName,
         skills: user.skills,
-        educationLevel: user.educationLevel,
         displayEmail: user.displayEmail
       };
       body = {

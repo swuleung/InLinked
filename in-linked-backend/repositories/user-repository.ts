@@ -35,8 +35,6 @@ export class UserRepository {
                 CoverPhoto: user.coverPhoto,
                 Role: user.role,
                 AccType: user.acctype,
-                CreateDate: user.createDate,
-                LastActiveDate: user.lastActiveDate
             });
 
             user.userId = res[0];
@@ -83,8 +81,7 @@ export class UserRepository {
             .update({
                 Headline: user.headline,
                 ProfilePicture: user.profilePicture,
-                CoverPhoto: user.coverPhoto,
-                LastActiveDate: user.lastActiveDate
+                CoverPhoto: user.coverPhoto
             });
         return user;
     }
@@ -191,9 +188,7 @@ export class UserRepository {
             profilePicture: row.ProfilePicture,
             coverPhoto: row.CoverPhoto,
             role: row.Role,
-            acctype: row.AccType,
-            createDate: row.CreateDate,
-            lastActiveDate: row.LastActiveDate
+            acctype: row.AccType
         };
     }
 

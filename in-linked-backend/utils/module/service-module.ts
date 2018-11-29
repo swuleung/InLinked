@@ -1,5 +1,5 @@
-import { UserManager, EnterpriseManager, CandidateManager, ExperienceManager, JobManager, AppliesManager, EducationManager } from '../../managers';
-import { UserRepository, CandidateRepository, EnterpriseRepository, ExperienceRepository, JobRepository, AppliesRepository, EducationRepository } from '../../repositories';
+import { UserManager, EnterpriseManager, CandidateManager, ExperienceManager, JobManager, EducationManager } from '../../managers';
+import { UserRepository, CandidateRepository, EnterpriseRepository, ExperienceRepository, JobRepository, EducationRepository } from '../../repositories';
 import { IAuth, JWTAuth } from '../lib/auth';
 import { MySql } from '../lib/database';
 import { BCryptHash, IHash } from '../lib/hash';
@@ -18,7 +18,6 @@ export interface ServiceModule {
         enterprise: EnterpriseManager;
         experience: ExperienceManager;
         job: JobManager;
-        applies: AppliesManager;
         education: EducationManager;
     };
     repositories: {
@@ -27,7 +26,6 @@ export interface ServiceModule {
         enterprise: EnterpriseRepository,
         experience: ExperienceRepository
         job: JobRepository,
-        applies: AppliesRepository,
         education: EducationRepository
     };
 }
@@ -46,7 +44,6 @@ export function buildModule(db: MySql): ServiceModule {
     const enterpriseRepo = new EnterpriseRepository(db);
     const experienceRepo = new ExperienceRepository(db);
     const jobRepo = new JobRepository(db);
-    const appliesRepo = new AppliesRepository(db);
     const educationRepo = new EducationRepository(db);
 
     const auth = new JWTAuth(userRepo);
@@ -63,7 +60,6 @@ export function buildModule(db: MySql): ServiceModule {
             enterprise: new EnterpriseManager(enterpriseRepo),
             experience: new ExperienceManager(experienceRepo, userRepo),
             job: new JobManager(jobRepo, userRepo),
-            applies: new AppliesManager(appliesRepo),
             education: new EducationManager(educationRepo, userRepo)
         },
         repositories: {
@@ -72,7 +68,6 @@ export function buildModule(db: MySql): ServiceModule {
             enterprise: enterpriseRepo,
             experience: experienceRepo,
             job: jobRepo,
-            applies: appliesRepo,
             education: educationRepo
         }
     }

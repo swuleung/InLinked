@@ -17,7 +17,6 @@ export class CandidateRepository {
                 CandidateId: candidate.candidateId,
                 FullName: candidate.fullName,
                 Skills: candidate.skills,
-                EducationLevel: candidate.educationLevel,
                 DisplayEmail: candidate.displayEmail
             });
             return candidate;
@@ -55,7 +54,6 @@ export class CandidateRepository {
             .update({
                 FullName: candidate.fullName,
                 Skills: candidate.skills,
-                EducationLevel: candidate.educationLevel,
                 DisplayEmail: candidate.displayEmail
             });
         return candidate;
@@ -111,7 +109,6 @@ export class CandidateRepository {
             candidateId: row.CandidateId,
             fullName: row.FullName,
             skills: row.Skills,
-            educationLevel: row.EducationLevel,
             displayEmail: row.DisplayEmail
         }
     }
@@ -126,12 +123,9 @@ export class CandidateRepository {
             coverPhoto: row.CoverPhoto,
             role: row.Role,
             acctype: row.AccType,
-            createDate: row.CreateDate,
-            lastActiveDate: row.LastActiveDate,
             candidateId: row.CandidateId,
             fullName: row.FullName,
             skills: row.Skills,
-            educationLevel: row.EducationLevel,
             displayEmail: row.DisplayEmail,
         };
     }

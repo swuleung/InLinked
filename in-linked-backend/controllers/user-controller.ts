@@ -80,7 +80,6 @@ export class UserController extends IController {
             user.coverPhoto = newUserData.coverPhoto || user.coverPhoto;
             user.headline = newUserData.headline;
             user.profilePicture = newUserData.profilePicture || user.profilePicture;
-            user.lastActiveDate = newUserData.lastActiveDate;
 
             await this.userManager.update(user);
 
@@ -90,7 +89,6 @@ export class UserController extends IController {
 
                 cand.fullName = newCandData.fullName;
                 cand.skills = newCandData.skills;
-                cand.educationLevel = newCandData.educationLevel || cand.educationLevel;
                 cand.displayEmail = newCandData.displayEmail;
 
                 await this.candidateManager.update(cand);

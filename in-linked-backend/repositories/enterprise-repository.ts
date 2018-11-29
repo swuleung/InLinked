@@ -130,8 +130,6 @@ export class EnterpriseRepository {
             coverPhoto: row.CoverPhoto,
             role: row.Role,
             acctype: row.AccType,
-            createDate: row.CreateDate,
-            lastActiveDate: row.LastActiveUser,
             enterpriseId: row.EnterpriseId,
             enterpriseName: row.EnterpriseName,
             enterpriseDescription: row.EnterpriseDescription,
