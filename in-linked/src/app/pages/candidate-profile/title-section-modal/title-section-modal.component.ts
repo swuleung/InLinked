@@ -43,7 +43,7 @@ export class TitleSectionModalComponent {
       const currUser = this.user.candidateData;
       const name = currUser.fullName.split(' ');
       this.firstName = name[0] ? name[0] : '';
-      this.lastName = name[1] ? name[1] : '';
+      this.lastName = name.length >= 1 ? name.slice(1).join(' ') : '';
       this.headline = currUser.headline;
       this.email = currUser.email;
       this.displayEmail = currUser.displayEmail ? 'yes-email' : 'no-email';
