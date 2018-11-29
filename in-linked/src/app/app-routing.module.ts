@@ -6,10 +6,8 @@ import { CandidateProfileComponent } from './pages/candidate-profile/candidate-p
 import { EnterpriseProfileComponent } from './pages/enterprise-profile/enterprise-profile.component';
 import { JobComponent } from './pages/job/job.component';
 import { SearchPageComponent } from './pages/search-page/search-page.component';
-import { SettingsComponent } from './pages/settings/settings.component';
 import { UserFeedComponent } from './pages/user-feed/user-feed.component';
 import { CreateAccountComponent } from './pages/create-account/create-account.component';
-import { AdminComponent } from './pages/admin/admin.component';
 import { ServiceTestComponent } from './pages/service-test/service-test.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ErrorComponent } from './pages/error/error.component';
@@ -43,14 +41,6 @@ const routes: Routes = [
         path: '',
         component: UserFeedComponent
       },
-      { // temporary - no candidates can be loaded yet
-        path: 'candidate',
-        component: CandidateProfileComponent
-      },
-      { // temporary - no enterprises can be loaded yet
-        path: 'enterprise',
-        component: EnterpriseProfileComponent
-      },
       {
         path: 'candidate/:username',
         component: CandidateProfileComponent
@@ -78,14 +68,6 @@ const routes: Routes = [
       {
         path: 'job/:jobid',
         component: JobComponent
-      },
-      {
-        path: 'settings',
-        component: SettingsComponent
-      },
-      {
-        path: 'admin',
-        component: AdminComponent
       },
       {
         path: 'error',
