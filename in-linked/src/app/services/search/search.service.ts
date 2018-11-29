@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { catchError, map } from 'rxjs/operators';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { of, Observable } from 'rxjs';
+import { of, Observable, forkJoin } from 'rxjs';
 import { UserService } from '../user/user.service';
 
 @Injectable({
@@ -133,14 +133,19 @@ export class SearchService {
     this.searchJobs(query).subscribe(
       result => {
         /* Substitute the enterpriseId with enterpriseName */
+        const observables: Observable<any>[] = [];
         for (const job of result) {
-          this.userService.get(job.enterpriseId).subscribe(
-            enterprise => {
-              // enterprise.success ? job['enterpriseId'] = enterprise.data.enterpriseName : job['enterpriseId'] = 'N/A';
-              this.searchJobsResult.push({job: job, enterprise: enterprise.data});
-            }
-          );
+          observables.push(this.userService.get(job.enterpriseId));
         }
+
+        // Run our observables
+        forkJoin(observables).subscribe(enterprises => {
+          // For each result, push to the job results
+            // enterprise.success ? job['enterpriseId'] = enterprise.data.enterpriseName : job['enterpriseId'] = 'N/A';
+            for (let i = 0; i < result.length; i++) {
+              this.searchJobsResult.push({job: result[i], enterprise: enterprises[i].data});
+            }
+        });
       }
     );
   }

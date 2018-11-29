@@ -172,7 +172,6 @@ export class UserService {
           }
           return true;
         }),
-        delay(250),
         map(res => {
           return this.authService.login(email, password).subscribe(val => {
             return val.success === 1 && res; // Only return success on creating account and logging in

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user/user.service';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-create-account',
@@ -31,7 +32,8 @@ export class CreateAccountComponent implements OnInit {
           if (!created) {
             this.errorMessage = 'There is already an account with that email, try again.';
           } else {
-            this.router.navigate(['/dashboard']);
+            console.log(localStorage.getItem(`${environment.token_key}`));
+            
           }
         }
       );

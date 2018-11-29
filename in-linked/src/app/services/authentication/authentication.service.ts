@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { environment } from '../../../environments/environment';
 export class AuthenticationService {
   apiUrl = 'http://localhost:8080/api/v1'; // URL for server
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   login(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { email: email, password: password })
@@ -23,6 +24,7 @@ export class AuthenticationService {
             if (user && user.data.authToken) {
               localStorage.setItem(environment.token_key, user.data.authToken);
             }
+            this.router.navigate(['/dashboard']);
             return user.data;
           }
         ),
