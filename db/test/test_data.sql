@@ -1,8 +1,8 @@
 /*
     TESTING INSERTION FOR USER/ORGANIZATION
 */
-INSERT INTO User (Username, Headline, Password, Email)
-VALUES ('Google', 'The Best Thing Ever', 'googlerocks', 'google@gmail.com'); -- User
+INSERT INTO User (Username, Headline, Password, Email, Role, AccType)
+VALUES ('Google', 'The Best Thing Ever', 'googlerocks', 'google@gmail.com', 'user', 'enterprise'); -- User
 
 INSERT INTO Enterprise (EnterpriseId, EnterpriseName, EnterpriseDescription, CEO, HeadQuarters, Industry)
 VALUES (1, 'Google', 'Best Company Ever', 'Sundar Pichai', 'Mountain View, CA', 'Internet/Software');
