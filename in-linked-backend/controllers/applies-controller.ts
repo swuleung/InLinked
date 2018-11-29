@@ -89,7 +89,7 @@ export class AppliesController extends IController {
         app.route(`/${config.app.api_route}/${config.app.api_ver}/applies`)
             .post(
                 middleware.authentication(module.libs.auth),
-                middleware.authorization([Role.USER, Role.ADMIN]),
+                // middleware.authorization([Role.USER, Role.ADMIN]),
                 this.create.bind(this)
             );
 
@@ -100,26 +100,26 @@ export class AppliesController extends IController {
             )
             .put(
                 middleware.authentication(module.libs.auth),
-                middleware.authorization([Role.USER, Role.ADMIN]),
+                // middleware.authorization([Role.USER, Role.ADMIN]),
                 this.update.bind(this)
             )
             .delete(
                 middleware.authentication(module.libs.auth),
-                middleware.authorization([Role.USER, Role.ADMIN]),
+                // middleware.authorization([Role.USER, Role.ADMIN]),
                 this.delete.bind(this)
             );
 
         app.route(`/${config.app.api_route}/${config.app.api_ver}/applies/candidate/:candidateId`)
             .post(
                 middleware.authentication(module.libs.auth),
-                middleware.authorization([Role.USER, Role.ADMIN]),
+                // middleware.authorization([Role.USER, Role.ADMIN]),
                 this.getByCandidate.bind(this)
             );
 
         app.route(`/${config.app.api_route}/${config.app.api_ver}/applies/job/:jobId`)
             .post(
                 middleware.authentication(module.libs.auth),
-                middleware.authorization([Role.USER, Role.ADMIN]),
+                // middleware.authorization([Role.USER, Role.ADMIN]),
                 this.getByJob.bind(this)
             );
 
