@@ -62,8 +62,8 @@ const routes: Routes = [
         component: CreateJobComponent
       },
       {
-          path: 'job/viewjobs',
-          component: ViewJobsComponent
+        path: 'job/viewjobs',
+        component: ViewJobsComponent
       },
       {
         path: 'job/:jobid',
