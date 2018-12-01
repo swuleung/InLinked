@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from 'src/app/services/user/user.service';
 import { environment } from 'src/environments/environment';
 
@@ -12,6 +12,9 @@ export class ErrorComponent implements OnInit {
   private profileName = '';
   private link = '';
 
+  @ViewChild('redirect')
+  redirect: ElementRef;
+
   constructor(private userService: UserService) { }
 
   ngOnInit() {
@@ -22,8 +25,10 @@ export class ErrorComponent implements OnInit {
           this.profileName = this.userService.candidateData ? this.userService.candidateData.username : this.userService.enterpriseData.username;
           if (this.profileType === '' || this.profileName === '') {
             this.link = '/login';
+            this.redirect.nativeElement.innerText = 'To Login';
           } else {
             this.link = `/dashboard/${this.profileType}/${this.profileName}`;
+            this.redirect.nativeElement.innerText = 'To Profile';
           }
         }
       }
