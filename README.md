@@ -22,8 +22,6 @@ $ npm start
 * :speak_no_evil: [knex](https://knexjs.org/) - query builder for interfacing with the database.
 * :whale: [MySQL](https://www.mysql.com/) - the database management
 
-## Endpoint Tasks
+## Future Updates
 * Add more endpoints for different types of data.
 * Add middleware to verify `acctype` accesses (like prevent candidates from tampering with jobs).
-* Work with services.
-* Applies perform checks based on application params (check if candidateid is candidate, etc)
