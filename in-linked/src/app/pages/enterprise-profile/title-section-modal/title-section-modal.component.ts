@@ -103,7 +103,7 @@ export class EnterpriseTitleSectionModalComponent {
           this.user.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe((user) => {
             this.titleUpdateUser.emit(true);
           });
-        } else {
+        } else if (res === false) {
           window.alert('Could not update profile');
         }
       });

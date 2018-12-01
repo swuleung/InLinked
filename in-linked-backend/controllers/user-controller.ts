@@ -77,6 +77,7 @@ export class UserController extends IController {
             const user = await this.userManager.get(req.params.id);
 
             // Update vars
+            user.email = newUserData.email || user.email;
             user.coverPhoto = newUserData.coverPhoto || user.coverPhoto;
             user.headline = newUserData.headline;
             user.profilePicture = newUserData.profilePicture || user.profilePicture;
@@ -242,12 +243,12 @@ export class UserController extends IController {
             )
             .put(
                 middleware.authentication(module.libs.auth),
-                // middleware.authorization([Role.USER, Role.ADMIN]),
+                middleware.authorization([Role.USER, Role.ADMIN]),
                 this.update.bind(this)
             )
             .delete(
                 middleware.authentication(module.libs.auth),
-                // middleware.authorization([Role.USER, Role.ADMIN]),
+                middleware.authorization([Role.USER, Role.ADMIN]),
                 this.delete.bind(this)
             );
 
@@ -259,14 +260,14 @@ export class UserController extends IController {
         app.route(`/${config.app.api_route}/${config.app.api_ver}/user/changepass`)
             .post(
                 middleware.authentication(module.libs.auth),
-                // middleware.authorization([Role.USER, Role.ADMIN]),
+                middleware.authorization([Role.USER, Role.ADMIN]),
                 this.changePassword.bind(this)
             );
 
         app.route(`/${config.app.api_route}/${config.app.api_ver}/user/:username`)
             .post(
                 middleware.authentication(module.libs.auth),
-                // middleware.authorization([Role.USER, Role.ADMIN]),
+                middleware.authorization([Role.USER, Role.ADMIN]),
                 this.findByUsername.bind(this)
             );
 

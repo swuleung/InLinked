@@ -5,6 +5,7 @@ import { Enterprise } from '../../models/enterprise';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { catchError, delay, map, mergeMap } from 'rxjs/operators';
 import { Observable, of, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../authentication/authentication.service';
 import { AuthUser } from '../../models/auth-user';
@@ -24,7 +25,8 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthenticationService) { }
+    private authService: AuthenticationService,
+    private router: Router) { }
 
   decode(token: string): AuthUser {
     return helper.decodeToken(token);
@@ -113,8 +115,8 @@ export class UserService {
       coverPhoto: environment.COVER_IMG_BASE64,
       role: 'user',
       acctype: acctype,
-      createDate: new Date().toISOString().slice(0,10),
-      lastActiveDate: new Date().toISOString().slice(0,10)
+      createDate: new Date().toISOString().slice(0, 10),
+      lastActiveDate: new Date().toISOString().slice(0, 10)
     };
     const body: any = {};
     body.user = newUser;
@@ -215,6 +217,7 @@ export class UserService {
    * @memberof UserService
    */
   update(user: any): Observable<boolean> {
+    const authUser: AuthUser = this.decode(localStorage.getItem(environment.token_key));
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
      'Content-Type': 'application/json' });
 
@@ -264,6 +267,14 @@ export class UserService {
           if (!res.success || res.success === 0) {
             return false;
           }
+
+          // If the given email is different than the auth token, logout since our token would be invalid now
+          if (authUser.email !== user.email) {
+            this.authService.logout();
+            this.router.navigate(['/login']);
+            return null;
+          }
+
           return true;
         }),
         catchError(err => {
