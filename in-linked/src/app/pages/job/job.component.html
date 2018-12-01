@@ -13,7 +13,7 @@
                 <h5 class="d-inline" *ngIf="(job)?.country"> {{ (job)?.country| titlecase}}</h5>
             </div>
             <div class="col-md-3 col-sm-12 text-right">
-                <a *ngIf="(job)?.jobUrl" href="{{(job)?.jobUrl}}" class="btn btn-primary" role="button" target="_blank"> Apply Externally </a>
+                <a *ngIf="(job)?.jobUrl" routerLink="{{(job)?.jobUrl}}" class="btn btn-primary" role="button" target="_blank"> Apply Externally </a>
                 <div *ngIf="isCurrentEnterprise" class="section-edit">
                     <app-job-modal (jobUpdated)="onJobUpdate($event)"></app-job-modal>
                 </div>

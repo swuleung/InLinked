@@ -73,6 +73,10 @@ const routes: Routes = [
         path: 'error',
         component: ErrorComponent
       },
+      {
+        path: 'dashboard/**',
+        redirectTo: 'dashboard/error'
+      }
     ]
   },
   // 404

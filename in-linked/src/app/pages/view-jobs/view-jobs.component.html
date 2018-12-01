@@ -4,10 +4,10 @@
             <div class="h1"> Posted Jobs </div>
             <div class="text-secondary"> Click on a job posting to edit the details. </div>
         </div>
-        <a class="btn btn-success float-right" href="/dashboard/job">Create a new Job Posting </a>
+        <a class="btn btn-success float-right" routerLink="/dashboard/job">Create a new Job Posting </a>
     </div>
     <div class="list-group mt-3">
-        <a href="/dashboard/job/{{job.jobId}}" class="list-group-item list-group-item-action" *ngFor="let job of jobsList">
+        <a routerLink="/dashboard/job/{{job.jobId}}" class="list-group-item list-group-item-action" *ngFor="let job of jobsList">
             <div class="row">
                 <div class="col-md-5 col-xs-12"> {{job.jobTitle}}</div>
                 <div class="col-md-4 col-xs-12">
