@@ -21,7 +21,6 @@ export class DashboardComponent implements OnInit {
     this.user = this.userService.getCorrespondingUserData();
     if (!this.user) {
       this.userService.loadCurrentUser(localStorage.getItem(environment.token_key)).subscribe(res => {
-        console.log(res);
         this.user = res;
         this.username = res.username;
         this.acctype = res.acctype;
@@ -32,7 +31,6 @@ export class DashboardComponent implements OnInit {
     
     this.username = this.user.username;
     this.acctype = this.user.acctype;
-    console.log(this.user);
   }
 
 }

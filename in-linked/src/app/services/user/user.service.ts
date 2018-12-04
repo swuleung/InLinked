@@ -47,7 +47,6 @@ export class UserService {
     return this.http.get<any>(`${this.apiUrl}/user/${this.decoded.id}`, {headers: headers})
       .pipe(
         map(result => {
-          console.log('argaegaegra');
           if (!result.success || result.success === 0) {
             return null; // If there is an error
           }
@@ -316,7 +315,6 @@ export class UserService {
       return this.http.post<any>(`${this.apiUrl}/user/changepass`, payload, { headers: headers })
         .pipe(
           map(res => {
-            console.log(res);
             if (res && res.success === 0) {
               return false;
             }
