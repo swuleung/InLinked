@@ -47,7 +47,8 @@ export class UserService {
     return this.http.get<any>(`${this.apiUrl}/user/${this.decoded.id}`, {headers: headers})
       .pipe(
         map(result => {
-          if (result.success && result.success === 0) {
+          console.log('argaegaegra');
+          if (!result.success || result.success === 0) {
             return null; // If there is an error
           }
           this.currentAccountType = result.data.acctype;
@@ -87,7 +88,13 @@ export class UserService {
           }
           return result.data;
         }),
-        catchError(err => of(null))
+        catchError(err => {
+          if (err.error.data.code === 30002) {
+            this.authService.logout();
+            this.router.navigate(['/login']);
+          }
+          return null;
+        })
       );
   }
 
@@ -199,11 +206,15 @@ export class UserService {
           if (!res.success || res.success === 0) {
             return null;
           }
-          console.log('get this id');
-          console.log(res);
           return res;
         }),
-        catchError(err => of(null))
+        catchError(err => {
+          if (err.error.data.code === 30002) {
+            this.authService.logout();
+            this.router.navigate(['/login']);
+          }
+          return null;
+        })
       );
   }
 
@@ -330,7 +341,13 @@ export class UserService {
 
             return userData.data;
           }),
-          catchError(err => of(null))
+          catchError(err => {
+            if (err.error.data.code === 30002) {
+              this.authService.logout();
+              this.router.navigate(['/login']);
+            }
+            return null;
+          })
         );
   }
 
