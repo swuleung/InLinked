@@ -5,6 +5,7 @@ import { Enterprise } from '../../models/enterprise';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { catchError, delay, map, mergeMap } from 'rxjs/operators';
 import { Observable, of, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../authentication/authentication.service';
 import { AuthUser } from '../../models/auth-user';
@@ -24,7 +25,8 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthenticationService) { }
+    private authService: AuthenticationService,
+    private router: Router) { }
 
   decode(token: string): AuthUser {
     return helper.decodeToken(token);
@@ -45,7 +47,8 @@ export class UserService {
     return this.http.get<any>(`${this.apiUrl}/user/${this.decoded.id}`, {headers: headers})
       .pipe(
         map(result => {
-          if (result.success && result.success === 0) {
+          console.log('argaegaegra');
+          if (!result.success || result.success === 0) {
             return null; // If there is an error
           }
           this.currentAccountType = result.data.acctype;
@@ -85,7 +88,13 @@ export class UserService {
           }
           return result.data;
         }),
-        catchError(err => of(null))
+        catchError(err => {
+          if (err.error.data.code === 30002) {
+            this.authService.logout();
+            this.router.navigate(['/login']);
+          }
+          return null;
+        })
       );
   }
 
@@ -113,8 +122,8 @@ export class UserService {
       coverPhoto: environment.COVER_IMG_BASE64,
       role: 'user',
       acctype: acctype,
-      createDate: new Date().toISOString().slice(0,10),
-      lastActiveDate: new Date().toISOString().slice(0,10)
+      createDate: new Date().toISOString().slice(0, 10),
+      lastActiveDate: new Date().toISOString().slice(0, 10)
     };
     const body: any = {};
     body.user = newUser;
@@ -197,11 +206,15 @@ export class UserService {
           if (!res.success || res.success === 0) {
             return null;
           }
-          console.log('get this id');
-          console.log(res);
           return res;
         }),
-        catchError(err => of(null))
+        catchError(err => {
+          if (err.error.data.code === 30002) {
+            this.authService.logout();
+            this.router.navigate(['/login']);
+          }
+          return null;
+        })
       );
   }
 
@@ -215,6 +228,7 @@ export class UserService {
    * @memberof UserService
    */
   update(user: any): Observable<boolean> {
+    const authUser: AuthUser = this.decode(localStorage.getItem(environment.token_key));
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem(environment.token_key)}`,
      'Content-Type': 'application/json' });
 
@@ -264,6 +278,14 @@ export class UserService {
           if (!res.success || res.success === 0) {
             return false;
           }
+
+          // If the given email is different than the auth token, logout since our token would be invalid now
+          if (authUser.email !== user.email) {
+            this.authService.logout();
+            this.router.navigate(['/login']);
+            return null;
+          }
+
           return true;
         }),
         catchError(err => {
@@ -319,7 +341,13 @@ export class UserService {
 
             return userData.data;
           }),
-          catchError(err => of(null))
+          catchError(err => {
+            if (err.error.data.code === 30002) {
+              this.authService.logout();
+              this.router.navigate(['/login']);
+            }
+            return null;
+          })
         );
   }
 

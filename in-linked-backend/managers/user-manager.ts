@@ -34,7 +34,7 @@ export class UserManager {
     }
 
     public async update(user: User): Promise<User> {
-            return await this.repo.update(user);
+        return await this.repo.update(user);
     }
 
     public async delete(id: number): Promise<void> {

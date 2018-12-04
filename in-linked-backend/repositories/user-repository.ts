@@ -79,6 +79,7 @@ export class UserRepository {
         await conn.table(this.TABLE_NAME)
             .where({ UserId: user.userId })
             .update({
+                Email: user.email,
                 Headline: user.headline,
                 ProfilePicture: user.profilePicture,
                 CoverPhoto: user.coverPhoto
