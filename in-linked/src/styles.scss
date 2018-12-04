@@ -19,6 +19,7 @@
 
 /* Custom styles */
 @import './global/components/button';
+@import './global/app';
 @import './global/colors';
 
 /* Fonts */
@@ -33,7 +34,12 @@ html, body {
 }
 
 body {
-    background-color: $whisper;
+    background-color: $porcelain;
+    color: $pickled-bluewood;
+}
+
+.text-accent {
+    color: $theme-accent-inactive;
 }
 
 hr {

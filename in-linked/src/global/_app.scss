@@ -1,6 +1,10 @@
 /* Maps component color names to the color names */
 @import './colors.scss';
 
+/* Theme */
+$theme-accent-active: $blue-ribbon;
+$theme-accent-inactive: $lochmara;
+
 /* Body Base */
 $body-background: $whisper;
 
@@ -14,6 +18,9 @@ $login-gradient-1: $elephant;
 $login-gradient-2: $chathams-blue;
 $login-warning: $gold;
 $create-warning: $scarlet;
+
+/* Profile */
+$section-header-border: $gallery;
 
 $padding-base: 1rem;
 

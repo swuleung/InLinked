@@ -15,7 +15,7 @@
 <div class="container information-container">
     <div class="card information-card">
         <div class="section-header">
-            <div class="h2 section-title">Experience</div>
+            <div class="h4 section-title">Experience</div>
             <div *ngIf="isCurrentUser" class="section-edit">
                 <app-candidate-experience-section-modal [experienceList]="experienceList" (experienceUpdateUser)="onTitleModalUpdate($event)"></app-candidate-experience-section-modal>
             </div>
@@ -24,17 +24,17 @@
         <ng-template [ngIf]="(experienceList)?.length > 0" [ngIfElse]="noExperience">
             <div class="experience" *ngFor="let experience of experienceList">
                 <h5 class="font-weight-bold">{{ experience.positionName }}</h5>
-                <h6>{{ experience.enterpriseName }}</h6>
+                <h6 class="mb-1 font-weight-bold text-accent">{{ experience.enterpriseName }}</h6>
 
                 <ng-template [ngIf]="experience.endMonth !== null || experience.endYear !== null" [ngIfElse]="presentWorkPlace">
-                    <h6>{{ experience.startMonth | MonthConversion }} {{ experience.startYear }} - {{
+                    <h6 class="mb-1 text-secondary">{{ experience.startMonth | MonthConversion }} {{ experience.startYear }} - {{
                         experience.endMonth | MonthConversion }} {{ experience.endYear }}</h6>
                 </ng-template>
                 <ng-template #presentWorkPlace>
-                    <h6>{{ experience.startMonth | MonthConversion }} {{ experience.startYear }} - Present<i class="mdi mdi-format-header-6"></i></h6>
+                    <h6 class="mb-1 text-secondary">{{ experience.startMonth | MonthConversion }} {{ experience.startYear }} - Present<i class="mdi mdi-format-header-6"></i></h6>
                 </ng-template>
 
-                <h6 *ngIf="experience.location !== null">{{ experience.location }}</h6>
+                <h6 *ngIf="experience.location !== null"class="mb-4 text-secondary">{{ experience.location }}</h6>
                 <p *ngIf="experience.description !== null">{{ experience.description }}</p>
                 <hr />
             </div>
@@ -52,7 +52,7 @@
 <div class="container information-container">
     <div class="card information-card">
         <div class="section-header">
-            <div class="h2 section-title">Skills</div>
+            <div class="h4 section-title">Skills</div>
             <div *ngIf="isCurrentUser" class="section-edit">
                 <app-candidate-skills-section-modal [skillsList]="skills" (skillsUpdateUser)="onTitleModalUpdate($event)"></app-candidate-skills-section-modal>
             </div>
@@ -76,7 +76,7 @@
 <div class="container information-container">
     <div class="card information-card">
         <div class="section-header">
-            <div class="h2 section-title">Education</div>
+            <div class="h4 section-title">Education</div>
             <div *ngIf="isCurrentUser" class="section-edit">
                 <app-candidate-education-section-modal [educationList]="educationList" (educationUpdateUser)="onTitleModalUpdate($event)"></app-candidate-education-section-modal>
             </div>
@@ -109,7 +109,7 @@
 <div class="container information-container">
     <div class="card information-card">
         <div class="section-header">
-            <div class="h2 section-title">Contact</div>
+            <div class="h4 section-title">Contact</div>
         </div>
 
         <ng-template [ngIf]="(candidate)?.displayEmail" [ngIfElse]="emailHidden">

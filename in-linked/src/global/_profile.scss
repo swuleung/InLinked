@@ -1,7 +1,15 @@
+.information-container {
+    .card {
+        border: 1px solid transparent;
+        box-shadow: 0 0.2rem 1.25rem 0 rgba(27, 30, 36, 0.07);
+        margin: 1.5rem 0;
+    }
+}
+
 .profile-photo {
     background-color: white;
     border: 5px solid white;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 4px 15px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1), 0 4px 15px 0 rgba(0, 0, 0, 0.05);
     height: 150px;
     margin-top: -125px;
     z-index: 1;
@@ -11,17 +19,25 @@
 }
 
 .cover-photo{
-    padding: 0;
     background-size: cover;
     background-position: center;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
     height: 300px;
+    padding: 0;
 }
 
 .title-section {
     min-height: 75px;
 }
 
+.information-container .section-header {
+    border-bottom: 1px solid $section-header-border;
+    margin-bottom: 1.5rem;
+}
+
 .section-header {
+    
     .section-title {
         float: left;
     }
@@ -32,6 +48,8 @@
 }
 
 .card-move-up {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
     padding-left: 215px;
     padding-right: 20px;
     margin-top: -75px;
@@ -61,8 +79,6 @@
     margin-top: 10px;
 
     .information-card {
-        padding-top: 20px;
-        padding-left: 20px;
-        padding-right: 20px;
+        padding: 1.5rem;
     }
 }

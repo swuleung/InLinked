@@ -3,18 +3,18 @@
 
 .profile-photo {
     border-radius: 50%;
-    height: 200px;
-    width: 200px;
+    height: 175px;
+    width: 175px;
 }
 
 .skill-pill {
     background-color: $blue-dianne;
-    color: white;
     border-radius: 15px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
+    color: white;
+    font-size: .9rem;
+    min-width: 4rem;
+    padding: 5px 10px;
+    text-align: center;
 }
 
 .placeholder {
