@@ -22,9 +22,6 @@ export class JobComponent implements OnInit {
 
     ngOnInit() {
         this.authUser = this.userService.decode(localStorage.getItem(environment.token_key));
-        if (this.userService.candidateData) {
-            this.router.navigate([`/dashboard/candidate/${this.userService.candidateData.username}`]);
-        }
         this.route.params.subscribe(params => {
             this.initJob(+params['jobid']);
         });
