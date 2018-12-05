@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `Candidate` (
 CREATE TABLE IF NOT EXISTS `Job` (
     JobId INTEGER NOT NULL AUTO_INCREMENT,
     EnterpriseId INTEGER NOT NULL,
-    JobTitle VARCHAR(50) NOT NULL,
+    JobTitle VARCHAR(255) NOT NULL,
     JobDescription TEXT NOT NULL,
     Salary VARCHAR(255),
     EmploymentType VARCHAR(30),
