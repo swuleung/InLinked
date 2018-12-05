@@ -112,7 +112,7 @@
             <div class="h4 section-title">Contact</div>
         </div>
 
-        <ng-template [ngIf]="(candidate)?.displayEmail" [ngIfElse]="emailHidden">
+        <ng-template [ngIf]="(candidate)?.displayEmail === 1" [ngIfElse]="emailHidden">
             <p class="mb-1"><strong>Email</strong></p>
             <p class="text-secondary mb-2">{{ (candidate)?.email }}</p>
         </ng-template>
