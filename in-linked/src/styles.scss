@@ -48,3 +48,7 @@ hr {
     border: 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
+
+p, h1, h2, h3, h4, h5, h6 {
+    white-space: pre-wrap;
+}
