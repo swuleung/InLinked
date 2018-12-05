@@ -50,9 +50,11 @@
 .card-move-up {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+    margin-top: -75px;
+    padding-bottom: .5rem;
     padding-left: 215px;
     padding-right: 20px;
-    margin-top: -75px;
+    padding-top: .5rem;
     z-index: 0;
 }
 

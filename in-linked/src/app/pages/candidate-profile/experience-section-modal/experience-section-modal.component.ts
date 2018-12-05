@@ -71,6 +71,10 @@ export class ExperienceSectionModalComponent implements OnInit {
   removeExperience(experienceIndex): void {
     this.experiences = this.experienceForm.get('experiences') as FormArray;
     const formData = this.experiences.at(experienceIndex).value;
+    if (formData.expdata === 0) {
+      this.experiences.removeAt(experienceIndex);
+      return;
+    }
     
     this.experienceToUpdate.delete(formData.expdata);
     this.experienceToRemove.add(formData.expdata);
