@@ -65,7 +65,7 @@ export class EnterpriseTitleSectionModalComponent {
       console.log('selected photo');
       this.coverPhotoEncoded = 'data:image/png;base64,' + btoa(reader.result as any);
       console.log(this.coverPhotoEncoded);
-      this.user.enterpriseData.profilePicture = this.coverPhotoEncoded;
+      this.user.enterpriseData.coverPhoto = this.coverPhotoEncoded;
     };
   }
 
