@@ -43,7 +43,7 @@ export class CompanyDetailsSectionModalComponent {
       enterpriseId: this.user.enterpriseData.enterpriseId,
       username: this.user.enterpriseData.username,
       headline: this.user.enterpriseData.headline,
-      email: this.user.enterpriseData.headline,
+      email: this.user.enterpriseData.email,
       profilePicture: this.user.enterpriseData.profilePicture,
       coverPhoto: this.user.enterpriseData.coverPhoto,
       acctype: 'enterprise',

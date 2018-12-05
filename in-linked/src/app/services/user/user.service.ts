@@ -210,6 +210,7 @@ export class UserService {
         catchError(err => {
           if (err.error.data.code === 30002) {
             this.authService.logout();
+            this.clearUserData();
             this.router.navigate(['/login']);
           }
           return null;
@@ -274,13 +275,17 @@ export class UserService {
     return this.http.put<any>(`${this.apiUrl}/user/${userID}`, body, {headers: headers})
       .pipe(
         map(res => {
+          console.log(res);
           if (!res.success || res.success === 0) {
+            console.log('test');
             return false;
           }
 
           // If the given email is different than the auth token, logout since our token would be invalid now
           if (authUser.email !== user.email) {
+            console.log(authUser.email, user.email);
             this.authService.logout();
+            this.clearUserData();
             this.router.navigate(['/login']);
             return null;
           }
@@ -342,6 +347,7 @@ export class UserService {
           catchError(err => {
             if (err.error.data.code === 30002) {
               this.authService.logout();
+              this.clearUserData();
               this.router.navigate(['/login']);
             }
             return null;
@@ -364,5 +370,10 @@ export class UserService {
         userId: curUser.id,
         role: curUser.role
     };
+  }
+
+  clearUserData() {
+    this.candidateData = null;
+    this.enterpriseData = null;
   }
 }
