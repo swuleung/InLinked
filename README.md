@@ -25,3 +25,10 @@ $ npm start
 ## Future Updates
 * Add more endpoints for different types of data.
 * Add middleware to verify `acctype` accesses (like prevent candidates from tampering with jobs).
+
+## Screenshots
+![Company Page](https://i.imgur.com/Mc9TzEy.png "Company Page")
+![Job Page](https://i.imgur.com/HgfpyVw.png "Job Page")
+![Search Page](https://i.imgur.com/uve2Bb9.png "Search Page")
+![Profile Page](https://i.imgur.com/VIFpUYF.jpg "Profile Page")
+![Job Search Page](https://i.imgur.com/a3tvJFA.png "Job Search Page")
